@@ -1,5 +1,4 @@
-export class Hello {
-  public sayHello() {
-    return 'hello, world!';
-  }
-}
+export * from './aws-factory';
+export * from './bucket';
+export * from './factory';
+export * from './app';

@@ -1,8 +1,9 @@
 {
   "name": "polyconstruct",
+  "description": "Polymorphic constructs",
   "repository": {
     "type": "git",
-    "url": "git@github.com:monadahq/polyconstruct.git"
+    "url": "https://github.com/monadahq/polyconstruct.git"
   },
   "scripts": {
     "build": "npx projen build",
@@ -31,7 +32,7 @@
   },
   "author": {
     "name": "Elad Ben-Israel",
-    "email": "elad.benisrael@gmail.com",
+    "email": "eladb@monada.co",
     "organization": false
   },
   "devDependencies": {
@@ -55,6 +56,13 @@
     "standard-version": "^9",
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.3"
+  },
+  "peerDependencies": {
+    "constructs": "^10.0.119"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.20.0",
+    "constructs": "^10"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
