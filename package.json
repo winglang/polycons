@@ -40,10 +40,13 @@
     "@types/node": "^12",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
+    "chalk": "*",
     "eslint": "^8",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.5.1",
     "jest-junit": "^13",
     "jsii": "^1.56.0",
@@ -52,26 +55,25 @@
     "jsii-pacmak": "^1.56.0",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
+    "prettier": "^2.6.2",
     "projen": "^0.54.32",
     "standard-version": "^9",
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
-    "constructs": "^10.0.119"
+    "constructs": "^10"
   },
   "dependencies": {
+    "@pulumi/pulumi": "^3.33.1",
     "aws-cdk-lib": "^2.20.0",
-    "constructs": "^10"
+    "constructs": "^10",
+    "esbuild": "^0.14.39"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.0.0",
   "jest": {
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/?(*.)+(spec|test).ts?(x)"
-    ],
     "clearMocks": true,
     "collectCoverage": true,
     "coverageReporters": [
