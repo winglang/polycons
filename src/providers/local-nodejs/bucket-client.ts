@@ -3,7 +3,7 @@ import { IBucketClient } from "../../std/clients/bucket-client";
 export class LocalBucketClient implements IBucketClient {
   private bucket: any;
   constructor(bucketId: string) {
-    this.bucket = (globalThis as any).MyCloud[bucketId];
+    this.bucket = (global as any).MyCloud[bucketId];
   }
   get<TObjectType>(key: string): TObjectType {
     return this.bucket.get(key);
