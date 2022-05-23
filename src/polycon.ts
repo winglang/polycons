@@ -14,7 +14,7 @@ export class Polycon extends Construct implements IConstruct {
 
     const constructFunction = Reflect.get(factory, `construct${type}`);
     if (constructFunction === undefined) {
-      throw `Factory does not support "${type}"`;
+      throw `Factory does not support "${type}", no "construct${type}" method available`;
     }
 
     const innie = constructFunction(this, id, props) as any;
@@ -31,5 +31,9 @@ export class Polycon extends Construct implements IConstruct {
         return innie[p];
       },
     });
+  }
+
+  protected proxyError(...args: any[]) {
+    return new Error(`Proxy method not used. ARGS: ${args.join(",")}`);
   }
 }

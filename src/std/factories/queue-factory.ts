@@ -18,13 +18,13 @@ export class Queue extends Polycon implements IQueue {
   constructor(scope: Construct, id: string, props: QueueProps) {
     super("Queue", scope, id, props);
   }
-  addWorkerFunction(_func: IFunction) {
-    throw new Error("Proxy method not used.");
+  addWorkerFunction(func: IFunction) {
+    throw this.proxyError(func);
   }
-  enqueue(_scope: IConstruct, _id: string, _stuff: any): void {
-    throw new Error("Proxy method not used.");
+  enqueue(scope: IConstruct, id: string, stuff: any): void {
+    throw this.proxyError(scope, id, stuff);
   }
-  dequeue(_scope: IConstruct, _id: string) {
-    throw new Error("Proxy method not used.");
+  dequeue(scope: IConstruct, id: string) {
+    throw this.proxyError(scope, id);
   }
 }

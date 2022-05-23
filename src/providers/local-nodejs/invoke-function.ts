@@ -11,7 +11,7 @@ export class InvokeFunction extends JavascriptConstruct {
     super(scope, id);
   }
   renderPrefix(): string {
-    return `console.group('Ivoking Function "${this.functionToInvoke.node.id}"');\n`;
+    return `console.group('Invoking Function "${this.functionToInvoke.node.id}"');\n`;
   }
   renderPostfix(): string {
     return `console.groupEnd();`;

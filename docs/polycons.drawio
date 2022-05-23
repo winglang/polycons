@@ -1,0 +1,31 @@
+<mxfile host="65bd71144e">
+    <diagram id="OTu5ItVXOnMR48FIOblI" name="Page-1">
+        <mxGraphModel dx="1166" dy="530" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="17" value="App" style="swimlane;fontStyle=0" vertex="1" parent="1">
+                    <mxGeometry x="200" y="190" width="550" height="380" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="&lt;b&gt;LocalCloudFactory&lt;/b&gt;&lt;br&gt;constructQueue()&lt;br&gt;gets concrete implementation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
+                    <mxGeometry x="350" y="140" width="171" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="17" source="2" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="17" source="5" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Queue (proxied)" style="swimlane;dashed=1;dashPattern=1 4;fontStyle=0" vertex="1" parent="17">
+                    <mxGeometry x="39.5" y="50" width="230" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="&lt;b&gt;Polyconstruct (Base)&lt;/b&gt;&lt;br&gt;&lt;span&gt;constructor()&lt;/span&gt;&lt;br&gt;&lt;span&gt;Calls out to factory in scope&lt;br&gt;returns proxied Queue&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 4;" vertex="1" parent="16">
+                    <mxGeometry x="29" y="40" width="170" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="LocalCloudQueue" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="16">
+                    <mxGeometry x="30" y="150" width="170" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

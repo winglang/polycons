@@ -22,6 +22,6 @@ export class App extends Polycon implements IApp {
     super("App", root, "App", props);
   }
   synth(): string {
-    throw new Error("Proxy method not used.");
+    throw this.proxyError();
   }
 }

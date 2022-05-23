@@ -23,7 +23,7 @@ export class Function extends Polycon implements IFunction {
   constructor(scope: Construct, id: string, props: FunctionProps) {
     super("Function", scope, id, props);
   }
-  invoke(_scope: IConstruct, _id: string, _args?: any) {
-    throw new Error("Proxy method not used.");
+  invoke(scope: IConstruct, id: string, args?: any) {
+    throw this.proxyError(scope, id, args);
   }
 }
