@@ -1,15 +1,16 @@
+import { IConstruct } from "constructs";
 import { IBucket } from "../../std/factories/bucket-factory";
 import { JavascriptConstruct } from "./javascript-construct";
 
 export class BucketFunction extends JavascriptConstruct implements IBucket {
   public: boolean = true;
-  renderPrefix(): string {
-    return ``;
+  constructor(scope: IConstruct, id: string) {
+    super(scope, id, {
+      assign: true,
+      iife: true,
+    });
   }
-  renderPostfix(): string {
-    return ``;
-  }
-  renderScript(): string {
+  render(): string {
     const fn = () => {
       const _data: any = {};
       return {
@@ -22,6 +23,9 @@ export class BucketFunction extends JavascriptConstruct implements IBucket {
       };
     };
 
-    return `(${fn.toString()})()`;
+    return fn.toString();
+  }
+  renderPrefix(): string {
+    return "";
   }
 }

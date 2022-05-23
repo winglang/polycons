@@ -15,6 +15,8 @@ const MyCloud = {
 const func = new Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
+    QUEUE_ID: MyCloud.Queue.node.path,
+    BUCKET_ID: MyCloud.Storage.node.path,
   },
   function: async () => {
     // This code is currently serialized via .toString()
@@ -23,8 +25,8 @@ const func = new Function(app, "AdderLambda", {
     console.group(
       testRequire.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`)
     );
-    const bucket = MyCloud["App/App/Storage/Storage"] as any;
-    const queue = MyCloud["App/App/Queue/Queue"] as any;
+    const bucket = MyCloud[process.env.BUCKET_ID] as any;
+    const queue = MyCloud[process.env.QUEUE_ID] as any;
 
     let queueValue = queue.dequeue();
     while (queueValue !== undefined) {

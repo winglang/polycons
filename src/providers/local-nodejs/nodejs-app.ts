@@ -5,25 +5,37 @@ import { JavascriptConstruct } from "./javascript-construct";
 
 export class LocalNodeJSApp extends Construct implements IApp {
   synth() {
-    let returnString = "#!/usr/bin/env node\nconst MyCloud = {};\n";
+    let returnString = `\
+#!/usr/bin/env node
+const MyCloud = {};
+
+`;
 
     for (const construct of this.node.findAll()) {
       if (construct instanceof JavascriptConstruct) {
+        const rendered = construct.iife
+          ? `(${construct.render()})()`
+          : construct.render();
+        const statement = construct.assign
+          ? `${construct.identifierExpression()} = ${rendered}\n\n`
+          : rendered;
+
         returnString += construct.renderPrefix();
-        returnString += `MyCloud[${JSON.stringify(
-          construct.node.path
-        )}] = ${construct.renderScript()};`;
-        returnString += construct.renderPostfix();
+        returnString += statement;
         returnString += "\n\n";
       }
     }
 
-    returnString += `\nconsole.log("Your cloud, available via 'MyCloud':", MyCloud);\nconst repl = require('repl').start('MyCloudREPL::> ');\nrepl.context.MyCloud = MyCloud;\n`;
+    returnString += `
+console.log("Your cloud, available via 'MyCloud':", MyCloud);
+const repl = require('repl').start('MyCloudREPL::> ');
+repl.context.MyCloud = MyCloud;
+`;
 
     const build = esbuild.buildSync({
       bundle: true,
       platform: "node",
-      target: "node14",
+      target: "node16",
       stdin: {
         contents: returnString,
         resolveDir: process.cwd(),
