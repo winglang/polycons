@@ -1,4 +1,4 @@
 export interface IBucketClient {
-  get(key: string): any;
-  set(key: string, value: any): void;
+  get<TObjectType>(key: string): TObjectType;
+  set<TObjectType>(key: string, value: TObjectType): void;
 }

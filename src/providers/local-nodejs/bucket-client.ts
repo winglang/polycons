@@ -1,12 +1,14 @@
 import { IBucketClient } from "../../std/clients/bucket-client";
 
 export class LocalBucketClient implements IBucketClient {
-  constructor(private readonly bucketId: string) {}
-
-  get(key: string) {
-    throw new Error("Method not implemented.");
+  private bucket: any;
+  constructor(bucketId: string) {
+    this.bucket = (globalThis as any).MyCloud[bucketId];
   }
-  set(key: string, value: any): void {
-    throw new Error("Method not implemented.");
+  get<TObjectType>(key: string): TObjectType {
+    return this.bucket.get(key);
+  }
+  set<TObjectType>(key: string, value: TObjectType): void {
+    this.bucket.set(key, value);
   }
 }

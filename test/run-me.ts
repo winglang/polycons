@@ -19,14 +19,17 @@ const func = new Function(app, "AdderLambda", {
     BUCKET_ID: MyCloud.Storage.node.path,
   },
   function: async () => {
+    const getClient = (id: string) => {
+      return MyCloud[id] as any;
+    };
     // This code is currently serialized via .toString()
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const testRequire: ChalkInstance = require("chalk").default;
     console.group(
       testRequire.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`)
     );
-    const bucket = MyCloud[process.env.BUCKET_ID] as any;
-    const queue = MyCloud[process.env.QUEUE_ID] as any;
+    const bucket = getClient(process.env.BUCKET_ID);
+    const queue = getClient(process.env.QUEUE_ID);
 
     let queueValue = queue.dequeue();
     while (queueValue !== undefined) {

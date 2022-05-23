@@ -28,7 +28,7 @@ const MyCloud = {};
 
     returnString += `
 console.log("Your cloud, available via 'MyCloud':", MyCloud);
-const repl = require('repl').start('MyCloudREPL::> ');
+const repl = require('repl').start('MyCloud> ');
 repl.context.MyCloud = MyCloud;
 `;
 
