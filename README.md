@@ -28,6 +28,12 @@ Responsible for instantiating concrete construct implementations
 ## ?? Concrete Resolver
 Responsible for mapping a polycon to an actual construct
 
+## Clients
+
+Every polycon should have a client of some kind so that can interact with it via some sort of id
+This is typically for use in Function runtimes
+? Maybe not linked to any particular factory, even though it kinda is
+
 ## Asset Handling
 Provisioners should handle assets.
 Can/Should polycon-level abstraction avoid assets completely through APIs? Probably
