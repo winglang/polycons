@@ -1,13 +1,14 @@
 import { Construct } from "constructs";
 import * as esbuild from "esbuild";
 import { IApp } from "../../std/factories/app-factory";
+import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 import { JavascriptConstruct } from "./javascript-construct";
 
 export class LocalNodeJSApp extends Construct implements IApp {
   synth() {
     let returnString = `\
 #!/usr/bin/env node
-const MyCloud = {};
+const ${LOCAL_CLOUD_IDENTIFIER} = {};
 
 `;
 
@@ -27,9 +28,9 @@ const MyCloud = {};
     }
 
     returnString += `
-console.log("Your cloud, available via 'MyCloud':", MyCloud);
-const repl = require('repl').start('MyCloud> ');
-repl.context.MyCloud = MyCloud;
+console.log("Your cloud, available via '${LOCAL_CLOUD_IDENTIFIER}':", ${LOCAL_CLOUD_IDENTIFIER});
+const repl = require('repl').start('${LOCAL_CLOUD_IDENTIFIER}> ');
+repl.context.${LOCAL_CLOUD_IDENTIFIER} = ${LOCAL_CLOUD_IDENTIFIER};
 `;
 
     const build = esbuild.buildSync({

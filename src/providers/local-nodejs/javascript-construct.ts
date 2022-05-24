@@ -1,4 +1,5 @@
 import { Construct } from "constructs";
+import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 
 export interface JavascriptConstructOptions {
   assign: boolean;
@@ -17,12 +18,12 @@ export abstract class JavascriptConstruct extends Construct {
   }
 
   identifierExpression() {
-    return `MyCloud[${JSON.stringify(this.node.path)}]`;
+    return `${LOCAL_CLOUD_IDENTIFIER}[${JSON.stringify(this.node.path)}]`;
   }
 
   invokeExpression(...args: any[]) {
     const argText = args.length === 0 ? "" : JSON.stringify(args);
-    return `MyCloud[${JSON.stringify(this.node.path)}](${argText})`;
+    return `${this.identifierExpression()}(${argText})`;
   }
 
   abstract renderPrefix(): string;
