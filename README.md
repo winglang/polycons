@@ -96,7 +96,6 @@ Name is kinda stolen from Nitric
 
 ## Diagrams
 
-![polycons](./docs/polycons.drawio.png)
+![polycons](./docs/polycons.drawio.svg)
 
-
-![stdlib](./docs/stdlib.drawio.png)
+![stdlib](./docs/stdlib.drawio.svg)
