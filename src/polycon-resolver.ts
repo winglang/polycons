@@ -1,0 +1,48 @@
+import { Construct, IConstruct } from "constructs";
+import { PolyconFactory } from "./polycon-factory";
+
+export interface IResolverRule {
+  readonly selector: string;
+  readonly construction: (
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props: any
+  ) => Construct;
+}
+
+const DEFAULT_RULE: IResolverRule = {
+  selector: "*",
+  construction(qualifier: string, scope: IConstruct, id: string, props: any) {
+    const factory = PolyconFactory.of(scope);
+    if (!factory) {
+      throw `No factory defined within scope of "${id}"`;
+    }
+
+    const constructFunction = Reflect.get(factory, `construct${qualifier}`);
+    if (constructFunction === undefined) {
+      throw `Factory does not support "${qualifier}", no "construct${qualifier}" method available`;
+    }
+
+    return constructFunction(scope, id, props) as Construct;
+  },
+};
+
+export abstract class PolyconResolver {
+  public static addRule(rule: IResolverRule) {
+    this.rules.push(rule);
+  }
+
+  public static resolve(
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props: any
+  ) {
+    // TODO just use default for now
+    // TODO qualifer can be used for matching rules. Perhaps a CSS like matching system?
+    return this.rules[0].construction(qualifier, scope, id, props);
+  }
+
+  private static rules: IResolverRule[] = [DEFAULT_RULE];
+}

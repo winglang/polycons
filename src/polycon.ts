@@ -1,34 +1,24 @@
 import { Construct, IConstruct } from "constructs";
-import { PolyconFactory } from "./polycon-factory";
+import { PolyconResolver } from "./polycon-resolver";
 
 export class Polycon extends Construct implements IConstruct {
   protected readonly innie: IConstruct;
 
-  constructor(type: string, scope: Construct, id: string, props?: any) {
+  constructor(qualifier: string, scope: Construct, id: string, props?: any) {
     super(scope, id);
 
-    const factory = PolyconFactory.of(this);
-    if (!factory) {
-      throw `No factory defined within scope of "${id}"`;
-    }
-
-    const constructFunction = Reflect.get(factory, `construct${type}`);
-    if (constructFunction === undefined) {
-      throw `Factory does not support "${type}", no "construct${type}" method available`;
-    }
-
-    const innie = constructFunction(this, id, props) as any;
+    const innie = PolyconResolver.resolve(qualifier, this, id, props);
     this.innie = innie;
 
     // or just this if we don't want/need a proxy
     // return innie;
 
     return new Proxy<Polycon>(this, {
-      get(target: Polycon, p: string | symbol, _receiver: any) {
-        if (p === "innie") {
-          return target.innie;
+      get(_target: Polycon, prop: string | symbol, _receiver: any) {
+        if (prop === "innie") {
+          return innie;
         }
-        return innie[p];
+        return Reflect.get(innie, prop);
       },
     });
   }

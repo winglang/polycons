@@ -27,6 +27,20 @@ Should you be able to use "raw"/"concrete" constructs without going through the 
 ---
 
 
+# Basic Polycon Primitives
+
+## Polycon
+
+A construct whose underlying implementation is determined at runtime.
+
+## Resolver
+
+Responsible for determination the method of instatiationg for polycons.
+
+## Factory
+
+Responsible for instantiation of concrete constructs
+
 # Some Words
 
 ## Provisioner

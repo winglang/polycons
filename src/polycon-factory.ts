@@ -1,6 +1,6 @@
 import { IConstruct } from "constructs";
 
-const FACTORY_SYMBOL = Symbol.for("Factory");
+const FACTORY_SYMBOL = Symbol.for("_Factory");
 
 export abstract class PolyconFactory {
   public static of(scope: IConstruct): PolyconFactory | undefined {
