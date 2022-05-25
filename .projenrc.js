@@ -8,7 +8,7 @@ const project = new cdk.JsiiProject({
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/monadahq/polyconstruct.git",
   deps: ["constructs@^10", "aws-cdk-lib"],
-  bundledDeps: ["esbuild"],
+  bundledDeps: ["esbuild@0.14.31"],
   peerDeps: ["constructs@^10"],
   devDeps: ["chalk"],
   prettier: true,

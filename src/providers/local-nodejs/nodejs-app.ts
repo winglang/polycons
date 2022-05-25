@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import * as esbuild from "esbuild";
+import { buildSync } from "esbuild";
 import { IApp } from "../../std/factories/app-factory";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 import { JavascriptConstruct } from "./javascript-construct";
@@ -33,7 +33,7 @@ const repl = require('repl').start('${LOCAL_CLOUD_IDENTIFIER}> ');
 repl.context.${LOCAL_CLOUD_IDENTIFIER} = ${LOCAL_CLOUD_IDENTIFIER};
 `;
 
-    const build = esbuild.buildSync({
+    const build = buildSync({
       bundle: true,
       platform: "node",
       target: "node16",
