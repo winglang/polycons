@@ -65,11 +65,13 @@
     "constructs": "^10"
   },
   "dependencies": {
-    "@pulumi/pulumi": "^3.33.1",
     "aws-cdk-lib": "^2.20.0",
     "constructs": "^10",
     "esbuild": "^0.14.39"
   },
+  "bundledDependencies": [
+    "esbuild"
+  ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.0.0",

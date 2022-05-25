@@ -104,13 +104,13 @@
       "type": "build"
     },
     {
+      "name": "esbuild",
+      "type": "bundled"
+    },
+    {
       "name": "constructs",
       "version": "^10",
       "type": "peer"
-    },
-    {
-      "name": "@pulumi/pulumi",
-      "type": "runtime"
     },
     {
       "name": "aws-cdk-lib",
@@ -119,10 +119,6 @@
     {
       "name": "constructs",
       "version": "^10",
-      "type": "runtime"
-    },
-    {
-      "name": "esbuild",
       "type": "runtime"
     }
   ],

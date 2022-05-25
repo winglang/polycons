@@ -24,6 +24,6 @@ export class Polycon extends Construct implements IConstruct {
   }
 
   protected proxyError(...args: any[]) {
-    return new Error(`Proxy method not used. ARGS: ${args.join(",")}`);
+    return `Proxy method not used. ARGS: ${args.join(",")}`;
   }
 }

@@ -13,10 +13,8 @@ export interface IBucketFactory {
   constructBucket(scope: Construct, id: string, props: BucketProps): IBucket;
 }
 
-export class Bucket extends Polycon implements IBucket {
-  readonly public!: boolean;
-
-  constructor(scope: Construct, id: string, props: BucketProps) {
-    super("Bucket", scope, id, props);
-  }
-}
+export const Bucket: {
+  new (scope: Construct, id: string, props: BucketProps): IBucket;
+} = function (scope: Construct, id: string, props: BucketProps) {
+  return new Polycon("Bucket", scope, id, props) as unknown as IBucket;
+} as any;

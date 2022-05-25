@@ -7,7 +7,7 @@ import {
   IBucketFactory,
 } from "../../std/factories/bucket-factory";
 import {
-  FunctionProps,
+  IFunctionProps,
   IFunction,
   IFunctionFactory,
 } from "../../std/factories/function-factory";
@@ -42,7 +42,7 @@ export class LocalNodeJSFactory
   constructFunction(
     scope: Construct,
     id: string,
-    props: FunctionProps
+    props: IFunctionProps
   ): IFunction {
     return new FunctionFunction(scope, id, props);
   }

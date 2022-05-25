@@ -3,12 +3,12 @@ import { PolyconFactory } from "./polycon-factory";
 
 export interface IResolverRule {
   readonly selector: string;
-  readonly construction: (
+  construction(
     qualifier: string,
     scope: IConstruct,
     id: string,
     props: any
-  ) => Construct;
+  ): Construct;
 }
 
 const DEFAULT_RULE: IResolverRule = {

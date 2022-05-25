@@ -1,5 +1,8 @@
 import { IConstruct } from "constructs";
-import { FunctionProps, IFunction } from "../../std/factories/function-factory";
+import {
+  IFunctionProps,
+  IFunction,
+} from "../../std/factories/function-factory";
 import { JavascriptConstruct } from "./javascript-construct";
 import { RawJavascript } from "./raw";
 
@@ -7,7 +10,7 @@ export class FunctionFunction extends JavascriptConstruct implements IFunction {
   private functionDefinition: () => any;
   private env: any;
 
-  constructor(scope: IConstruct, id: string, props: FunctionProps) {
+  constructor(scope: IConstruct, id: string, props: IFunctionProps) {
     super(scope, id, {
       assign: true,
       iife: false,

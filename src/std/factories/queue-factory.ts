@@ -24,7 +24,7 @@ export class Queue extends Polycon implements IQueue {
   enqueue(scope: IConstruct, id: string, stuff: any): void {
     throw this.proxyError(scope, id, stuff);
   }
-  dequeue(scope: IConstruct, id: string) {
+  dequeue(scope: IConstruct, id: string): any {
     throw this.proxyError(scope, id);
   }
 }
