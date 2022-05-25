@@ -1,6 +1,6 @@
 import { Construct, IConstruct } from "constructs";
 import { Polycon } from "../../polycon";
-import { PolyconFactory } from "./base-factory";
+import { PolyconFactory } from "../../polycon-factory";
 
 export interface AppProps {
   readonly factory: PolyconFactory;

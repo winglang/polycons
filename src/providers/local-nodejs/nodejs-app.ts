@@ -37,6 +37,7 @@ repl.context.${LOCAL_CLOUD_IDENTIFIER} = ${LOCAL_CLOUD_IDENTIFIER};
       bundle: true,
       platform: "node",
       target: "node16",
+      keepNames: true,
       stdin: {
         contents: returnString,
         resolveDir: process.cwd(),

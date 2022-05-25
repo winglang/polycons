@@ -4,6 +4,17 @@ Polycons ("polymorphic constructs").
 
 Consider this the L4 Construct
 
+## Current Repo Organization
+
+This branch is currently muddling together multiple concepts that do not normally belong together:
+
+polycons (/src root)
+standard library (/src/std)
+factory implementations (local nodejs currently) (/src/providers) 
+
+This is done currently to be able to do some e2e experiments.  
+This repo should end up only being very abstract, with some interfaces and base abstract classes
+
 ## Mark's Notes
 
 Current attempts are trying to keep the "constructor pattern" that all CDKs do. This is difficult, as `new Whatever()` doesn't make sense when `Whatever` doesn't have a default concrete class of its own.
@@ -14,6 +25,7 @@ Should you be able to use "raw"/"concrete" constructs without going through the 
 
 
 ---
+
 
 # Some Words
 
@@ -47,7 +59,7 @@ Factory is responsible for responsible for providing a token resolver.
 ## Permissions
 
 Role-based abstraction? Handled by factories? Should we bother at all?
-Idea, fluent API, stringy: (stolen from iam-floyd) 
+Idea, fluent API, stringy: (stolen from `iam-floyd`) 
 ```typescript
 Permissions.of(polyconstruct)
 // principal, could have polycon-level abstractions here (User)

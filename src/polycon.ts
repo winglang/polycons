@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { PolyconFactory } from "./std/factories/base-factory";
+import { PolyconFactory } from "./polycon-factory";
 
 export class Polycon extends Construct implements IConstruct {
   protected readonly innie: IConstruct;

@@ -1,6 +1,6 @@
 import { Construct, IConstruct } from "constructs";
+import { PolyconFactory } from "../../polycon-factory";
 import { AppProps, IAppFactory } from "../../std/factories/app-factory";
-import { PolyconFactory } from "../../std/factories/base-factory";
 import {
   BucketProps,
   IBucket,
