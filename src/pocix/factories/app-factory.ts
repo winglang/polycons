@@ -1,7 +1,7 @@
 import { Construct, IConstruct } from "constructs";
 import { polycons } from "../..";
 
-export const APP_QUALIFIER = "pocix.App";
+export const APP_QUALIFIER = "std.App";
 
 export interface AppProps {
   readonly factory: polycons.PolyconFactory;

@@ -1,10 +1,10 @@
 import { Construct } from "constructs";
 import { buildSync } from "esbuild";
-import { pocix } from "../..";
+import { std } from "../..";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 import { JavascriptConstruct } from "./javascript-construct";
 
-export class LocalNodeJSApp extends Construct implements pocix.IApp {
+export class LocalNodeJSApp extends Construct implements std.IApp {
   synth() {
     let returnString = `\
 #!/usr/bin/env node

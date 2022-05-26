@@ -1,2 +1,2 @@
 export * as polycons from "./polycons";
-export * as pocix from "./pocix";
+export * as std from "./pocix";

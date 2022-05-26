@@ -1,7 +1,7 @@
 import { Construct, IConstruct } from "constructs";
 import { polycons } from "../..";
 
-export const FUNCTION_QUALIFIER = "pocix.Function";
+export const FUNCTION_QUALIFIER = "std.Function";
 
 export interface IFunction extends IConstruct {
   invoke(scope: IConstruct, id: string, args?: any): any;

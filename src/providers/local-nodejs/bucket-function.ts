@@ -1,11 +1,8 @@
 import { IConstruct } from "constructs";
-import { pocix } from "../..";
+import { std } from "../..";
 import { JavascriptConstruct } from "./javascript-construct";
 
-export class BucketFunction
-  extends JavascriptConstruct
-  implements pocix.IBucket
-{
+export class BucketFunction extends JavascriptConstruct implements std.IBucket {
   public: boolean = true;
   constructor(scope: IConstruct, id: string) {
     super(scope, id, {

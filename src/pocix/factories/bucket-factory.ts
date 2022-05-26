@@ -1,7 +1,7 @@
 import { Construct, IConstruct } from "constructs";
 import { polycons } from "../..";
 
-export const BUCKET_QUALIFIER = "pocix.Bucket";
+export const BUCKET_QUALIFIER = "std.Bucket";
 
 export interface IBucket extends IConstruct {
   readonly public: boolean;

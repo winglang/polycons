@@ -2,7 +2,7 @@ import { Construct, IConstruct } from "constructs";
 import { polycons } from "../..";
 import { IFunction } from "./function-factory";
 
-export const QUEUE_QUALIFIER = "pocix.Queue";
+export const QUEUE_QUALIFIER = "std.Queue";
 
 export interface IQueue extends IConstruct {
   enqueue(scope: IConstruct, id: string, stuff: any): void;
