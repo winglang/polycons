@@ -19,12 +19,12 @@ const DEFAULT_RULE: IResolverRule = {
       throw `No factory defined within scope of "${id}"`;
     }
 
-    const constructFunction = Reflect.get(factory, `construct${qualifier}`);
+    const constructFunction = factory.constructors[qualifier];
     if (constructFunction === undefined) {
       throw `Factory does not support "${qualifier}", no "construct${qualifier}" method available`;
     }
 
-    return constructFunction(scope, id, props) as Construct;
+    return new constructFunction(scope, id, props);
   },
 };
 

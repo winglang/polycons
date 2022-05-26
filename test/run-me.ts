@@ -5,7 +5,9 @@ import { Bucket } from "../src/std/factories/bucket-factory";
 import { Function } from "../src/std/factories/function-factory";
 import { Queue } from "../src/std/factories/queue-factory";
 
-const app = new App({ factory: new LocalNodeJSFactory() });
+const app = new App({
+  factory: new LocalNodeJSFactory(),
+});
 
 const MyCloud = {
   Queue: new Queue(app, "Queue", {}),

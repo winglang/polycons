@@ -1,6 +1,14 @@
-import { IConstruct } from "constructs";
+import { Construct, IConstruct } from "constructs";
 
 const FACTORY_SYMBOL = Symbol.for("_Factory");
+
+export interface IPolconFactoryConstructors {
+  readonly [qualifier: string]: new (
+    scope: Construct,
+    id: string,
+    props?: any
+  ) => IConstruct;
+}
 
 export abstract class PolyconFactory {
   public static of(scope: IConstruct): PolyconFactory | undefined {
@@ -14,4 +22,6 @@ export abstract class PolyconFactory {
       enumerable: false,
     });
   }
+
+  public constructors: IPolconFactoryConstructors = {};
 }

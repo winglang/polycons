@@ -1,6 +1,8 @@
 import { Construct, IConstruct } from "constructs";
 import { Polycon } from "../../polycon";
 
+export const FUNCTION_QUALIFIER = "pocix.Function";
+
 export interface IFunction extends IConstruct {
   invoke(scope: IConstruct, id: string, args?: any): any;
 }
@@ -11,19 +13,13 @@ export interface IFunctionProps {
   function(): any;
 }
 
-export interface IFunctionFactory {
-  constructFunction(
-    scope: Construct,
-    id: string,
-    props: IFunctionProps
-  ): IFunction;
-}
-
-export class Function extends Polycon implements IFunction {
-  constructor(scope: Construct, id: string, props: IFunctionProps) {
-    super("Function", scope, id, props);
-  }
-  invoke(scope: IConstruct, id: string, args?: any): any {
-    throw this.proxyError(scope, id, args);
-  }
-}
+export const Function: {
+  new (scope: Construct, id: string, props: IFunctionProps): IFunction;
+} = function (scope: Construct, id: string, props: IFunctionProps) {
+  return new Polycon(
+    FUNCTION_QUALIFIER,
+    scope,
+    id,
+    props
+  ) as unknown as IFunction;
+} as any;
