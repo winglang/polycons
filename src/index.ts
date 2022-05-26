@@ -1,4 +1,2 @@
-export * from "./polycon";
-export * from "./polycon-factory";
-export * from "./polycon-resolver";
-export * as pocix from "./std";
+export * as polycons from "./polycons";
+export * as pocix from "./pocix";

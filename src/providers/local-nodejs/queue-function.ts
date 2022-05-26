@@ -1,11 +1,11 @@
 import { IConstruct } from "constructs";
-import { IQueue } from "../../std/factories/queue-factory";
+import { pocix } from "../..";
 import { FunctionFunction } from "./function-function";
 import { JavascriptConstruct } from "./javascript-construct";
 import { RawJavascript } from "./raw";
 
 // The worst "fifo queue" implementation you've ever seen lol
-export class QueueFuction extends JavascriptConstruct implements IQueue {
+export class QueueFuction extends JavascriptConstruct implements pocix.IQueue {
   constructor(scope: IConstruct, id: string) {
     super(scope, id, {
       assign: true,

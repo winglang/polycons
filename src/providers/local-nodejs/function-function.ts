@@ -1,16 +1,16 @@
 import { IConstruct } from "constructs";
-import {
-  IFunctionProps,
-  IFunction,
-} from "../../std/factories/function-factory";
+import { pocix } from "../..";
 import { JavascriptConstruct } from "./javascript-construct";
 import { RawJavascript } from "./raw";
 
-export class FunctionFunction extends JavascriptConstruct implements IFunction {
+export class FunctionFunction
+  extends JavascriptConstruct
+  implements pocix.IFunction
+{
   private functionDefinition: () => any;
   private env: any;
 
-  constructor(scope: IConstruct, id: string, props: IFunctionProps) {
+  constructor(scope: IConstruct, id: string, props: pocix.IFunctionProps) {
     super(scope, id, {
       assign: true,
       iife: false,

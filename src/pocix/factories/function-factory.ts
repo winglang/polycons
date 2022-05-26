@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { Polycon } from "../../polycon";
+import { polycons } from "../..";
 
 export const FUNCTION_QUALIFIER = "pocix.Function";
 
@@ -16,7 +16,7 @@ export interface IFunctionProps {
 export const Function: {
   new (scope: Construct, id: string, props: IFunctionProps): IFunction;
 } = function (scope: Construct, id: string, props: IFunctionProps) {
-  return new Polycon(
+  return new polycons.Polycon(
     FUNCTION_QUALIFIER,
     scope,
     id,

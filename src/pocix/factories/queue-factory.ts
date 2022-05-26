@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { Polycon } from "../../polycon";
+import { polycons } from "../..";
 import { IFunction } from "./function-factory";
 
 export const QUEUE_QUALIFIER = "pocix.Queue";
@@ -15,5 +15,10 @@ export interface QueueProps {}
 export const Queue: {
   new (scope: Construct, id: string, props: QueueProps): IQueue;
 } = function (scope: Construct, id: string, props: QueueProps) {
-  return new Polycon(QUEUE_QUALIFIER, scope, id, props) as unknown as IFunction;
+  return new polycons.Polycon(
+    QUEUE_QUALIFIER,
+    scope,
+    id,
+    props
+  ) as unknown as IFunction;
 } as any;

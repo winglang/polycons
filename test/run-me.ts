@@ -1,20 +1,17 @@
 import chalk, { ChalkInstance } from "chalk";
+import { pocix } from "../src";
 import { LocalNodeJSFactory } from "../src/providers/local-nodejs/nodejs-factory";
-import { App } from "../src/std/factories/app-factory";
-import { Bucket } from "../src/std/factories/bucket-factory";
-import { Function } from "../src/std/factories/function-factory";
-import { Queue } from "../src/std/factories/queue-factory";
 
-const app = new App({
+const app = new pocix.App({
   factory: new LocalNodeJSFactory(),
 });
 
 const MyCloud = {
-  Queue: new Queue(app, "Queue", {}),
-  Storage: new Bucket(app, "Storage", {}),
+  Queue: new pocix.Queue(app, "Queue", {}),
+  Storage: new pocix.Bucket(app, "Storage", {}),
 };
 
-const func = new Function(app, "AdderLambda", {
+const func = new pocix.Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
     QUEUE_ID: MyCloud.Queue.node.path,
