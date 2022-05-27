@@ -1,4 +1,4 @@
-import chalk, { ChalkInstance } from "chalk";
+import chalk from "chalk";
 import { std } from "../src";
 import { LocalNodeJSFactory } from "../src/providers/local-nodejs/nodejs-factory";
 
@@ -12,8 +12,8 @@ const storage = new std.Bucket(app, "Storage", {});
 const func = new std.Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
-    QUEUE_ID: queue.node.path,
-    BUCKET_ID: storage.node.path,
+    QUEUE_ID: queue.node.addr,
+    BUCKET_ID: storage.node.addr,
   },
   file: __dirname + "/test-lambda.ts",
 });
@@ -34,6 +34,7 @@ console.log(chalk.green("Starting Cloud..."));
 (function runStuff() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const MyCloud = require(code);
+  console.log(MyCloud);
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const repl = require("repl").start("MyCloud> ");
   repl.context.MyCloud = MyCloud;

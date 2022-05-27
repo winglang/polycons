@@ -10,7 +10,10 @@ import { JavascriptModule } from "./javascript-module";
 export class LocalNodeJSApp extends Construct implements std.IApp {
   synth() {
     let entryFileLines = Array<string>();
-    entryFileLines.push(`global.${LOCAL_CLOUD_IDENTIFIER} = {};`);
+    entryFileLines.push(`global.${LOCAL_CLOUD_IDENTIFIER} = { modules: {}};`);
+    entryFileLines.push(
+      `var ${LOCAL_CLOUD_IDENTIFIER} = global.${LOCAL_CLOUD_IDENTIFIER};`
+    );
 
     const outdir = posix.join(
       cwd().replace(/\\/g, "/"),
@@ -31,6 +34,9 @@ export class LocalNodeJSApp extends Construct implements std.IApp {
 
         writeFileSync(path, moduleText);
         entryFileLines.push(`${construct.identifierRequireConst()};`);
+        entryFileLines.push(
+          `${LOCAL_CLOUD_IDENTIFIER}.modules["${moduleName}"] = ${moduleName};`
+        );
         entryFileLines.push(
           `${LOCAL_CLOUD_IDENTIFIER}[${JSON.stringify(
             construct.node.path
