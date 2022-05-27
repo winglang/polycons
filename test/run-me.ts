@@ -33,5 +33,8 @@ console.log(chalk.green("Starting Cloud..."));
 // wrapped in function for scope
 (function runStuff() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  require(code);
+  const MyCloud = require(code);
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const repl = require("repl").start("MyCloud> ");
+  repl.context.MyCloud = MyCloud;
 })();

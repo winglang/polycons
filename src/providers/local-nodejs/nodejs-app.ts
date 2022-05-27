@@ -9,53 +9,45 @@ import { JavascriptModule } from "./javascript-module";
 
 export class LocalNodeJSApp extends Construct implements std.IApp {
   synth() {
-    let mainFile = `\
-#!/usr/bin/env node
-${LOCAL_CLOUD_IDENTIFIER} = {};
+    let entryFileLines = Array<string>();
+    entryFileLines.push(`global.${LOCAL_CLOUD_IDENTIFIER} = {};`);
 
-`;
+    const outdir = posix.join(
+      cwd().replace(/\\/g, "/"),
+      "polycons.out/local-nodejs/"
+    );
+    const rawDir = posix.join(outdir, `prebundle/`);
 
-    const files = [];
-    const dir = posix.join(cwd().replace(/\\/g, "/"), "polycons.out/");
-    mkdirSync(dir, {
+    mkdirSync(rawDir, {
       recursive: true,
     });
 
     for (const construct of this.node.findAll()) {
       if (construct instanceof JavascriptModule) {
-        let fileContents = "";
-        fileContents += construct.renderPrefix();
-        fileContents += construct.render();
-        fileContents += construct.renderPostfix();
-        fileContents += "\n\n";
+        const moduleName = construct.identifier();
+        const moduleText = `${construct.renderPrefix()}${construct.render()}${construct.renderPostfix()}`;
 
-        const path = posix.join(dir, `${construct.identifier()}.js`);
+        const path = posix.join(rawDir, `${moduleName}.js`);
 
-        writeFileSync(path, fileContents);
-        mainFile += `${construct.identifierRequireConst()};\n`;
-        mainFile += `${LOCAL_CLOUD_IDENTIFIER}[${JSON.stringify(
-          construct.node.path
-        )}] = ${construct.identifier()};\n`;
-
-        files.push(path);
+        writeFileSync(path, moduleText);
+        entryFileLines.push(`${construct.identifierRequireConst()};`);
+        entryFileLines.push(
+          `${LOCAL_CLOUD_IDENTIFIER}[${JSON.stringify(
+            construct.node.path
+          )}] = ${moduleName};`
+        );
       }
     }
 
-    mainFile += `
-console.log("Your cloud, available via '${LOCAL_CLOUD_IDENTIFIER}':", ${LOCAL_CLOUD_IDENTIFIER});
-const repl = require('repl').start('${LOCAL_CLOUD_IDENTIFIER}> ');
-repl.context.${LOCAL_CLOUD_IDENTIFIER} = ${LOCAL_CLOUD_IDENTIFIER};
-`;
+    entryFileLines.push(`module.exports = ${LOCAL_CLOUD_IDENTIFIER};`);
 
-    const mainFilePath = posix.join(dir, `entry.ts`);
+    const mainFilePath = posix.join(rawDir, `_prebundle.js`);
+    writeFileSync(mainFilePath, entryFileLines.join("\n"));
 
-    writeFileSync(mainFilePath, mainFile);
-    const outfile = posix.join(dir, "cloud.js");
-
+    const outfile = posix.join(outdir, "mycloud.js");
     buildSync({
       bundle: true,
       platform: "node",
-      target: "node16",
       keepNames: true,
       entryPoints: [mainFilePath],
       format: "cjs",
