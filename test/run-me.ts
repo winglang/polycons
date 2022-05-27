@@ -6,53 +6,23 @@ const app = new std.App({
   factory: new LocalNodeJSFactory(),
 });
 
-const MyCloud = {
-  Queue: new std.Queue(app, "Queue", {}),
-  Storage: new std.Bucket(app, "Storage", {}),
-};
+const queue = new std.Queue(app, "Queue", {});
+const storage = new std.Bucket(app, "Storage", {});
 
 const func = new std.Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
-    QUEUE_ID: MyCloud.Queue.node.path,
-    BUCKET_ID: MyCloud.Storage.node.path,
+    QUEUE_ID: queue.node.path,
+    BUCKET_ID: storage.node.path,
   },
-  function: async () => {
-    const getClient = (id: string) => {
-      return MyCloud[id] as any;
-    };
-    // This code is currently serialized via .toString()
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const testRequire: ChalkInstance = require("chalk").default;
-    console.group(
-      testRequire.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`)
-    );
-    const bucket = getClient(process.env.BUCKET_ID);
-    const queue = getClient(process.env.QUEUE_ID);
-
-    let queueValue = queue.dequeue();
-    while (queueValue !== undefined) {
-      let val = bucket.get("counter") as number;
-      let newVal = (val ?? 0) + 1;
-
-      bucket.set("counter", newVal);
-      console.log(
-        testRequire.yellow(`Dequeued ${queueValue}\n`),
-        testRequire.yellow(`Counter: ${newVal}\n`)
-      );
-
-      queueValue = queue.dequeue();
-    }
-    console.log(testRequire.yellow(`Queue is empty, function complete`));
-    console.groupEnd();
-  },
+  file: __dirname + "/test-lambda.ts",
 });
 
-MyCloud.Queue.enqueue(MyCloud.Queue, "Enqueue1", "blah1");
-MyCloud.Queue.enqueue(MyCloud.Queue, "Enqueue2", "blah2");
+queue.enqueue(queue, "Enqueue1", "blah1");
+queue.enqueue(queue, "Enqueue2", "blah2");
 func.invoke(func, "Invoke1");
 
-MyCloud.Queue.addWorkerFunction(func);
+queue.addWorkerFunction(func);
 
 const code = app.synth();
 
@@ -62,5 +32,6 @@ console.log(chalk.green("Starting Cloud..."));
 
 // wrapped in function for scope
 (function runStuff() {
-  eval(code);
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require(code);
 })();

@@ -1,71 +1,69 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { FunctionFunction } from "./function-function";
-import { JavascriptConstruct } from "./javascript-construct";
-import { RawJavascript } from "./raw";
+import { JavascriptFunctionModule } from "./javascript-function-module";
+import { RawJavascriptModule } from "./raw-module";
 
 // The worst "fifo queue" implementation you've ever seen lol
-export class QueueFuction extends JavascriptConstruct implements std.IQueue {
+export class QueueFuction
+  extends JavascriptFunctionModule
+  implements std.IQueue
+{
   constructor(scope: IConstruct, id: string) {
     super(scope, id, {
-      assign: true,
-      iife: true,
+      fn: () => {
+        const _data: any[] = [];
+        const _workers: any[] = [];
+
+        setInterval(() => {
+          if (_workers.length > 0 && _data.length > 0) {
+            for (const worker of _workers) {
+              worker();
+            }
+          }
+        }, 1000);
+
+        return {
+          dequeue() {
+            return _data.pop();
+          },
+          enqueue(value: any) {
+            _data.push(value);
+          },
+          size() {
+            return _data.length;
+          },
+          addWorker(worker: any) {
+            return _workers.push(worker);
+          },
+        };
+      },
+      invokeWith: [],
     });
   }
 
   enqueue(scope: IConstruct, id: string, stuff: any): void {
-    new RawJavascript(
+    new RawJavascriptModule(
       scope,
       id,
-      `${this.identifierExpression()}.enqueue(JSON.parse(\`${JSON.stringify(
+      `${this.identifierRequire()}.enqueue(JSON.parse(\`${JSON.stringify(
         stuff
       )}\`))`
     );
   }
   dequeue(scope: IConstruct, id: string) {
-    new RawJavascript(scope, id, `${this.identifierExpression()}.dequeue()`);
+    new RawJavascriptModule(scope, id, `${this.identifierRequire()}.dequeue()`);
   }
   addWorkerFunction(func: FunctionFunction): void {
-    const construct = new RawJavascript(
+    const construct = new RawJavascriptModule(
       func,
       `Listener${func.node.id}`,
-      `${this.identifierExpression()}.addWorker(${func.identifierExpression()})`
+      `\
+${func.module.identifierRequireConst()};
+${this.identifierRequireConst()};
+${this.identifier()}.addWorker(${func.module.identifier()});`
     );
 
     construct.node.addDependency(this);
-  }
-  renderPrefix(): string {
-    return "";
-  }
-  render(): string {
-    const fn = () => {
-      const _data: any[] = [];
-      const _workers: any[] = [];
-
-      setInterval(() => {
-        if (_workers.length > 0 && _data.length > 0) {
-          for (const worker of _workers) {
-            worker();
-          }
-        }
-      }, 1000);
-
-      return {
-        dequeue() {
-          return _data.pop();
-        },
-        enqueue(value: any) {
-          _data.push(value);
-        },
-        size() {
-          return _data.length;
-        },
-        addWorker(worker: any) {
-          return _workers.push(worker);
-        },
-      };
-    };
-
-    return fn.toString();
   }
 }

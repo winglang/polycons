@@ -10,7 +10,7 @@ export interface IFunction extends IConstruct {
 export interface IFunctionProps {
   readonly env?: any;
   readonly file?: string;
-  function(): any;
+  fn?(): any;
 }
 
 export const Function: {

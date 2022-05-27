@@ -35,24 +35,18 @@ A construct whose underlying implementation is determined at runtime.
 
 ## Resolver
 
-Responsible for determination the method of instatiationg for polycons.
+Responsible for determination where to concretize polycons.
 
 ## Factory
 
-Responsible for instantiation of concrete constructs
+Responsible for instantiation of concrete constructs.
 
 # Some Words
 
 ## Provisioner
 The underlying "target", responsible for synthesis/deploy/etc
-Typically represented by a factory, but a provisioner can have different factory implementations (aka cdk-aws vs cdk-azure)
+Typically represented by a factory, but a single provisioner can have different factory implementations (aka cdk-aws vs cdk-azure)
 CDK, terraform, etc.
-
-## Factories
-Responsible for instantiating concrete construct implementations
-
-## ?? Concrete Resolver
-Responsible for mapping a polycon to an actual construct
 
 ## Clients
 
@@ -125,6 +119,8 @@ Easy output system for display/data/automation purposes
 ### Document
 Key/value object storage
 Name is kinda stolen from Nitric
+
+### StateMachine
 
 ## Diagrams
 

@@ -14,7 +14,7 @@ const project = new cdk.JsiiProject({
   prettier: true,
 });
 
-// temp fix for windows
-delete project.jest.config.testMatch;
+// just for testing
+project.addGitIgnore("polycons.out/");
 
 project.synth();
