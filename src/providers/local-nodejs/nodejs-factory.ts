@@ -6,7 +6,7 @@ import { QueueFuction } from "./queue-function";
 
 // Sythesized to single nodejs file
 export class LocalNodeJSFactory extends polycons.PolyconFactory {
-  public constructors: polycons.IPolconFactoryConstructors = {
+  public constructors: polycons.IPolyconFactoryConstructors = {
     [std.APP_QUALIFIER]: LocalNodeJSApp,
     [std.BUCKET_QUALIFIER]: BucketFunction,
     [std.QUEUE_QUALIFIER]: QueueFuction,

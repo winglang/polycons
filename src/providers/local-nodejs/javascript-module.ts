@@ -1,8 +1,8 @@
 import { Construct, IConstruct } from "constructs";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 
-export abstract class JavascriptModule extends Construct implements IConstruct {
-  constructor(scope: Construct, id: string) {
+export abstract class JavascriptModule extends Construct {
+  constructor(scope: IConstruct, id: string) {
     super(scope, id);
   }
 

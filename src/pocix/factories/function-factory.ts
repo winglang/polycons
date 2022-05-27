@@ -1,4 +1,4 @@
-import { Construct, IConstruct } from "constructs";
+import { IConstruct } from "constructs";
 import { polycons } from "../..";
 
 export const FUNCTION_QUALIFIER = "std.Function";
@@ -14,12 +14,5 @@ export interface IFunctionProps {
 }
 
 export const Function: {
-  new (scope: Construct, id: string, props: IFunctionProps): IFunction;
-} = function (scope: Construct, id: string, props: IFunctionProps) {
-  return new polycons.Polycon(
-    FUNCTION_QUALIFIER,
-    scope,
-    id,
-    props
-  ) as unknown as IFunction;
-} as any;
+  new (scope: IConstruct, id: string, props: IFunctionProps): IFunction;
+} = polycons.PolyconResolver.createPolyconConstructor(FUNCTION_QUALIFIER);

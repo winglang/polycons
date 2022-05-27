@@ -1,4 +1,4 @@
-import { Construct, IConstruct } from "constructs";
+import { IConstruct } from "constructs";
 import { polycons } from "../..";
 
 export const BUCKET_QUALIFIER = "std.Bucket";
@@ -12,12 +12,5 @@ export interface BucketProps {
 }
 
 export const Bucket: {
-  new (scope: Construct, id: string, props: BucketProps): IBucket;
-} = function (scope: Construct, id: string, props: BucketProps) {
-  return new polycons.Polycon(
-    BUCKET_QUALIFIER,
-    scope,
-    id,
-    props
-  ) as unknown as IBucket;
-} as any;
+  new (scope: IConstruct, id: string, props: BucketProps): IBucket;
+} = polycons.PolyconResolver.createPolyconConstructor(BUCKET_QUALIFIER);

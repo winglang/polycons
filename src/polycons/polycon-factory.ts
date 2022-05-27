@@ -1,27 +1,47 @@
-import { Construct, IConstruct } from "constructs";
+import { IConstruct } from "constructs";
 
-const FACTORY_SYMBOL = Symbol.for("_Factory");
-
-export interface IPolconFactoryConstructors {
+/**
+ * Map of a polycon qualifier to an existing constructor
+ */
+export interface IPolyconFactoryConstructors {
   readonly [qualifier: string]: new (
-    scope: Construct,
+    scope: IConstruct,
     id: string,
     props?: any
   ) => IConstruct;
 }
 
+/**
+ *
+ */
 export abstract class PolyconFactory {
+  /**
+   * Returns the polycon factory associated with a Construct
+   */
   public static of(scope: IConstruct): PolyconFactory | undefined {
-    const root = scope.node.root;
-    return (root as any)[FACTORY_SYMBOL] as PolyconFactory;
+    return (scope.node.root as any)[
+      PolyconFactory.FACTORY_SYMBOL
+    ] as PolyconFactory;
   }
 
+  /**
+   * Adds a factory at the root of the construct tree.
+   * This factory will be used by default for polycon concretization.
+   *
+   * @param scope construct within the tree to register the factory
+   * @param factory a PolyconFactory to register
+   */
   public static register(scope: IConstruct, factory: PolyconFactory) {
-    Object.defineProperty(scope.node.root, FACTORY_SYMBOL, {
+    Object.defineProperty(scope.node.root, PolyconFactory.FACTORY_SYMBOL, {
       value: factory,
       enumerable: false,
     });
   }
 
-  public abstract readonly constructors: IPolconFactoryConstructors;
+  private static FACTORY_SYMBOL = Symbol.for("_Factory");
+
+  /**
+   * Map of a polycon qualifier to an existing constructor to be used in concretization
+   */
+  public abstract readonly constructors: IPolyconFactoryConstructors;
 }

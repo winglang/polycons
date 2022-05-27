@@ -21,7 +21,7 @@ const DEFAULT_RULE: IResolverRule = {
 
     const concreteConstructor = factory.constructors[qualifier];
     if (concreteConstructor === undefined) {
-      throw `Factory does not support "${qualifier}", no "${qualifier}" constructor available`;
+      throw `Factory does not support "${qualifier}"`;
     }
 
     return new concreteConstructor(scope, id, props);
@@ -44,5 +44,25 @@ export abstract class PolyconResolver {
     return this.rules[0].construction(qualifier, scope, id, props);
   }
 
+  public static createPolyconConstructor(qualifier: string): {
+    new (scope: IConstruct, id: string, props?: any): any;
+  } {
+    if (PolyconResolver.polycons.has(qualifier)) {
+      throw `"${qualifier}" is already a registered Polycon`;
+    } else {
+      PolyconResolver.polycons.add(qualifier);
+    }
+    return function (scope: IConstruct, id: string, props?: any) {
+      const polycon = PolyconResolver.resolve(
+        qualifier,
+        scope,
+        id,
+        props
+      ) as any;
+      return polycon;
+    } as any;
+  }
+
   private static rules: IResolverRule[] = [DEFAULT_RULE];
+  private static polycons: Set<string> = new Set<string>();
 }
