@@ -23,5 +23,5 @@ export abstract class PolyconFactory {
     });
   }
 
-  public constructors: IPolconFactoryConstructors = {};
+  public abstract readonly constructors: IPolconFactoryConstructors;
 }
