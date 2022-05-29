@@ -13,6 +13,9 @@ export interface IFunctionProps {
   fn?(): any;
 }
 
-export const Function: {
+export type Function = {
   new (scope: IConstruct, id: string, props: IFunctionProps): IFunction;
-} = polycons.PolyconResolver.createPolyconConstructor(FUNCTION_QUALIFIER);
+};
+
+export const Function: Function =
+  polycons.PolyconResolver.registerPolycon(FUNCTION_QUALIFIER);

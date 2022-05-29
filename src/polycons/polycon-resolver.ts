@@ -7,13 +7,13 @@ export interface IResolverRule {
     qualifier: string,
     scope: IConstruct,
     id: string,
-    props: any
+    props?: any
   ): Construct;
 }
 
 const DEFAULT_RULE: IResolverRule = {
   selector: "*",
-  construction(qualifier: string, scope: IConstruct, id: string, props: any) {
+  construction(qualifier: string, scope: IConstruct, id: string, props?: any) {
     const factory = PolyconFactory.of(scope);
     if (!factory) {
       throw `No factory defined within scope of "${id}"`;
@@ -44,22 +44,21 @@ export abstract class PolyconResolver {
     return this.rules[0].construction(qualifier, scope, id, props);
   }
 
-  public static createPolyconConstructor(qualifier: string): {
-    new (scope: IConstruct, id: string, props?: any): any;
-  } {
+  /**
+   * Ensures the resolver is aware of the qualifier and returns the constructor
+   * @param qualifier
+   * @returns
+   */
+  public static registerPolycon(qualifier: string): any {
+    // Note the return type is "any" because JSII does not support the actual type
+
     if (PolyconResolver.polycons.has(qualifier)) {
       throw `"${qualifier}" is already a registered Polycon`;
     } else {
       PolyconResolver.polycons.add(qualifier);
     }
     return function (scope: IConstruct, id: string, props?: any) {
-      const polycon = PolyconResolver.resolve(
-        qualifier,
-        scope,
-        id,
-        props
-      ) as any;
-      return polycon;
+      return PolyconResolver.resolve(qualifier, scope, id, props) as any;
     } as any;
   }
 

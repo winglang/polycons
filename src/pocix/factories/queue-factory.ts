@@ -10,8 +10,11 @@ export interface IQueue extends IConstruct {
   addWorkerFunction(func: IFunction): void;
 }
 
-export interface QueueProps {}
+export interface IQueueProps {}
 
-export const Queue: {
-  new (scope: IConstruct, id: string, props: QueueProps): IQueue;
-} = polycons.PolyconResolver.createPolyconConstructor(QUEUE_QUALIFIER);
+export type Queue = {
+  new (scope: IConstruct, id: string, props: IQueueProps): IQueue;
+};
+
+export const Queue: Queue =
+  polycons.PolyconResolver.registerPolycon(QUEUE_QUALIFIER);
