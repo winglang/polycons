@@ -20,7 +20,10 @@ export type App = {
 export const App: App = function (props: IAppProps) {
   const root = new Construct(undefined as any, "");
   polycons.PolyconFactory.register(root, props.factory);
-  return new (polycons.PolyconResolver.registerPolycon(
-    APP_QUALIFIER
-  ) as any)() as any;
+  console.log("register");
+  return new (polycons.PolyconResolver.registerPolycon(APP_QUALIFIER) as any)(
+    root,
+    "App",
+    props
+  ) as any;
 } as any;
