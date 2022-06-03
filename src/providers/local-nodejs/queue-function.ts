@@ -61,7 +61,7 @@ export class QueueFuction
       `\
 ${func.module.identifierRequireConst()};
 ${this.identifierRequireConst()};
-${this.identifier()}.addWorker(${func.module.identifier()});`
+${this.identifier()}.addWorker(${func.module.identifier()}.default);`
     );
 
     construct.node.addDependency(this);
