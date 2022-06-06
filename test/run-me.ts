@@ -1,10 +1,8 @@
 import chalk from "chalk";
 import { std } from "../src";
-import { LocalNodeJSFactory } from "../src/providers/local-nodejs/nodejs-factory";
+import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
-const app = new std.App({
-  factory: new LocalNodeJSFactory(),
-});
+const app = new LocalNodeJSApp();
 
 const queue = new std.Queue(app, "Queue", {});
 const storage = new std.Bucket(app, "Storage", {});

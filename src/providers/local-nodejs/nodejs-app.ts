@@ -3,11 +3,17 @@ import { posix } from "path";
 import { cwd } from "process";
 import { Construct } from "constructs";
 import { buildSync } from "esbuild";
-import { std } from "../..";
+import { polycons, std } from "../..";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 import { JavascriptModule } from "./javascript-module";
+import { LocalNodeJSFactory } from "./nodejs-factory";
 
-export class LocalNodeJSApp extends Construct implements std.IApp {
+export class LocalNodeJSApp extends Construct {
+  constructor() {
+    super(undefined as any, "");
+    polycons.PolyconFactory.register(this, new LocalNodeJSFactory());
+  }
+
   synth() {
     let entryFileLines = Array<string>();
     entryFileLines.push(`global.${LOCAL_CLOUD_IDENTIFIER} = { modules: {}};`);
