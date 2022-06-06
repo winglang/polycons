@@ -1,11 +1,10 @@
 // import * as aws from 'aws-cdk-lib';
-import { writeFileSync } from "fs";
-import { Bucket, App } from "../src";
-import { LocalNodeJSFactory } from "../src/providers/local-nodejs/nodejs-factory";
+import { Bucket } from "../src/pocix";
+import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
 test("hello", () => {
   // const app = new App({ factory: new AwsFactory() });
-  const app = new App({ factory: new LocalNodeJSFactory() });
+  const app = new LocalNodeJSApp();
   new Bucket(app, "AbstractBucket", {
     public: true,
   });
@@ -14,7 +13,6 @@ test("hello", () => {
   // });
 
   const dir = app.synth();
-  writeFileSync("test.js", dir, "utf8");
 
   console.log(dir);
 });
