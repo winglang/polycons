@@ -3,7 +3,7 @@ import { posix } from "path";
 import { cwd } from "process";
 import { Construct } from "constructs";
 import { buildSync } from "esbuild";
-import { polycons, std } from "../..";
+import { polycons } from "../..";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
 import { JavascriptModule } from "./javascript-module";
 import { LocalNodeJSFactory } from "./nodejs-factory";
