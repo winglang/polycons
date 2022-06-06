@@ -2,7 +2,19 @@
 import { Bucket } from "../src/pocix";
 import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
-test("hello", () => {
+test("local app", () => {
+  // const app = new App({ factory: new AwsFactory() });
+  const app = new LocalNodeJSApp();
+  new Bucket(app, "AbstractBucket", {
+    public: true,
+  });
+
+  const file = app.synth();
+
+  console.log(file);
+});
+
+test("cdk app", () => {
   // const app = new App({ factory: new AwsFactory() });
   const app = new LocalNodeJSApp();
   new Bucket(app, "AbstractBucket", {
