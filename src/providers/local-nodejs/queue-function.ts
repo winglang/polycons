@@ -64,6 +64,6 @@ ${this.identifierRequireConst()};
 ${this.identifier()}.addWorker(${func.module.identifier()}.default);`
     );
 
-    construct.node.addDependency(this);
+    construct.node.addDependency(this, func);
   }
 }

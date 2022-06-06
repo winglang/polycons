@@ -1,17 +1,31 @@
-import { Construct, IConstruct } from "constructs";
+import { IConstruct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
+/**
+ *
+ */
 export interface IResolverRule {
+  /**
+   *
+   */
   readonly selector: string;
+
+  /**
+   *
+   * @param qualifier
+   * @param scope
+   * @param id
+   * @param props
+   */
   construction(
     qualifier: string,
     scope: IConstruct,
     id: string,
     props?: any
-  ): Construct;
+  ): IConstruct;
 }
 
-const DEFAULT_RULE: IResolverRule = {
+const GLOBAL_FACTORY_RULE: IResolverRule = {
   selector: "*",
   construction(qualifier: string, scope: IConstruct, id: string, props?: any) {
     const factory = PolyconFactory.of(scope);
@@ -30,7 +44,7 @@ const DEFAULT_RULE: IResolverRule = {
 
 export abstract class PolyconResolver {
   public static addRule(rule: IResolverRule) {
-    this.rules.push(rule);
+    this._rules.push(rule);
   }
 
   public static resolve(
@@ -41,7 +55,7 @@ export abstract class PolyconResolver {
   ) {
     // TODO just use default for now
     // TODO qualifer can be used for matching rules. Perhaps a CSS like matching system?
-    return this.rules[0].construction(qualifier, scope, id, props);
+    return this._rules[0].construction(qualifier, scope, id, props);
   }
 
   /**
@@ -50,18 +64,18 @@ export abstract class PolyconResolver {
    * @returns
    */
   public static registerPolycon(qualifier: string): any {
-    // Note the return type is "any" because JSII does not support the actual type
+    // Note the return type is "any" because JSII does not support the actual type `new (...)`
 
-    if (PolyconResolver.polycons.has(qualifier)) {
+    if (PolyconResolver._polycons.has(qualifier)) {
       throw `"${qualifier}" is already a registered Polycon`;
     } else {
-      PolyconResolver.polycons.add(qualifier);
+      PolyconResolver._polycons.add(qualifier);
     }
     return function (scope: IConstruct, id: string, props?: any) {
       return PolyconResolver.resolve(qualifier, scope, id, props) as any;
     } as any;
   }
 
-  private static rules: IResolverRule[] = [DEFAULT_RULE];
-  private static polycons: Set<string> = new Set<string>();
+  private static _rules: IResolverRule[] = [GLOBAL_FACTORY_RULE];
+  private static _polycons: Set<string> = new Set<string>();
 }

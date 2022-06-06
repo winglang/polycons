@@ -13,7 +13,7 @@ export interface IFunctionProps {
   fn?(): any;
 }
 
-export type Function = {
+type Function = {
   new (scope: IConstruct, id: string, props: IFunctionProps): IFunction;
 };
 

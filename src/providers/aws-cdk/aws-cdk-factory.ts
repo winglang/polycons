@@ -31,10 +31,10 @@ export class AWSCDKQueue extends Queue implements std.IQueue {
   constructor(scope: IConstruct, id: string, _props?: IQueueProps) {
     super(scope, id);
   }
-  enqueue(scope: IConstruct, id: string, stuff: any): void {
+  enqueue(_scope: IConstruct, _id: string, _stuff: any): void {
     throw new Error("Method not implemented.");
   }
-  dequeue(scope: IConstruct, id: string) {
+  dequeue(_scope: IConstruct, _id: string) {
     throw new Error("Method not implemented.");
   }
   addWorkerFunction(func: AWSCDKFunction): void {

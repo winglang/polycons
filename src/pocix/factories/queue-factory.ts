@@ -12,7 +12,7 @@ export interface IQueue extends IConstruct {
 
 export interface IQueueProps {}
 
-export type Queue = {
+type Queue = {
   new (scope: IConstruct, id: string, props?: IQueueProps): IQueue;
 };
 
