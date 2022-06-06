@@ -4,8 +4,8 @@ import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
 const app = new LocalNodeJSApp();
 
-const queue = new std.Queue(app, "Queue", {});
-const storage = new std.Bucket(app, "Storage", {});
+const queue = new std.Queue(app, "Queue");
+const storage = new std.Bucket(app, "Storage");
 
 const func = new std.Function(app, "AdderLambda", {
   env: {

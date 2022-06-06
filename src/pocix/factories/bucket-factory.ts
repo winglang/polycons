@@ -12,7 +12,7 @@ export interface IBucketProps {
 }
 
 export type Bucket = {
-  new (scope: IConstruct, id: string, props: IBucketProps): IBucket;
+  new (scope: IConstruct, id: string, props?: IBucketProps): IBucket;
 };
 
 export const Bucket: Bucket =
