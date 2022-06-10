@@ -1,5 +1,11 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
+import { IQueueClient } from "../../pocix";
+import {
+  CaptureInfo,
+  ICapturable,
+  ICaptureSource,
+} from "../../polycons/capturable";
 import { FunctionFunction } from "./function-function";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { RawJavascriptModule } from "./raw-module";
@@ -7,39 +13,50 @@ import { RawJavascriptModule } from "./raw-module";
 // The worst "fifo queue" implementation you've ever seen lol
 export class QueueFuction
   extends JavascriptFunctionModule
-  implements std.IQueue
+  implements std.IQueue, ICapturable
 {
   constructor(scope: IConstruct, id: string) {
-    super(scope, id, {
-      fn: () => {
-        const _data: any[] = [];
-        const _workers: any[] = [];
+    const clientFunction: () => IQueueClient = () => {
+      const _data: any[] = [];
+      const _workers: any[] = [];
 
-        setInterval(() => {
-          if (_workers.length > 0 && _data.length > 0) {
-            for (const worker of _workers) {
-              worker();
-            }
+      setInterval(() => {
+        if (_workers.length > 0 && _data.length > 0) {
+          for (const worker of _workers) {
+            worker();
           }
-        }, 1000);
+        }
+      }, 1000);
 
-        return {
-          dequeue() {
-            return _data.pop();
-          },
-          enqueue(value: any) {
-            _data.push(value);
-          },
-          size() {
-            return _data.length;
-          },
-          addWorker(worker: any) {
-            return _workers.push(worker);
-          },
-        };
-      },
+      return {
+        async dequeue() {
+          return _data.pop();
+        },
+        async enqueue(value: any) {
+          return _data.push(value);
+        },
+        async size() {
+          return _data.length;
+        },
+        addWorker(worker: any) {
+          return _workers.push(worker);
+        },
+      };
+    };
+    super(scope, id, {
+      fn: clientFunction,
       invokeWith: [],
+      entrypoint: "default",
     });
+    this.subAccess = ".default";
+  }
+  capture(info: CaptureInfo): ICaptureSource {
+    return {
+      info,
+      bind: (proc) => {
+        proc.captures.push(info);
+      },
+    };
   }
 
   enqueue(scope: IConstruct, id: string, stuff: any): void {
@@ -61,7 +78,7 @@ export class QueueFuction
       `\
 ${func.module.identifierRequireConst()};
 ${this.identifierRequireConst()};
-${this.identifier()}.addWorker(${func.module.identifier()}.default);`
+${this.identifier()}.addWorker(${func.module.identifier()}.${func.entrypoint});`
     );
 
     construct.node.addDependency(this, func);

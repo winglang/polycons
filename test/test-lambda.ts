@@ -1,24 +1,28 @@
 import chalk from "chalk";
-import { getClient } from "../src/providers/local-nodejs/client";
+import { IBucketClient, IQueueClient } from "../src/pocix";
 
+interface MyCaptures {
+  bucket: IBucketClient;
+  queue: IQueueClient;
+}
 // Hack
-export default function test() {
+export async function originalEntry(event, captures: MyCaptures) {
   console.group(chalk.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`));
-  const bucket = getClient<any>(process.env.BUCKET_ID);
-  const queue = getClient<any>(process.env.QUEUE_ID);
+  const bucket = captures.bucket;
+  const queue = captures.queue;
 
   let queueValue = queue.dequeue();
   while (queueValue !== undefined) {
-    let val = bucket.get("counter");
+    let val = await bucket.download("counter");
     let newVal = (val ?? 0) + 1;
 
-    bucket.set("counter", newVal);
+    await bucket.upload("counter", newVal);
     console.log(
       chalk.yellow(`Dequeued ${queueValue}\n`),
       chalk.yellow(`Counter: ${newVal}\n`)
     );
 
-    queueValue = queue.dequeue();
+    queueValue = await queue.dequeue();
   }
   console.log(chalk.yellow(`Queue is empty, function complete`));
   console.groupEnd();

@@ -3,6 +3,7 @@ import { JavascriptModule } from "./javascript-module";
 
 export interface IJavascriptFunctionModuleOptions {
   readonly invokeWith?: any[];
+  readonly entrypoint: string;
   fn(...args: any[]): any;
 }
 
@@ -16,7 +17,9 @@ export class JavascriptFunctionModule extends JavascriptModule {
   }
   render(): string {
     if (this.props.invokeWith) {
-      return `module.exports = (${this.props.fn.toString()})(${
+      return `module.exports['${
+        this.props.entrypoint
+      }'] = (${this.props.fn.toString()})(${
         this.props.invokeWith
           .map((i) => JSON.stringify(i))
           .map((j) => `JSON.parse(\`${j}\`)`)

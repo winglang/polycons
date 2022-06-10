@@ -13,8 +13,24 @@ const func = new std.Function(app, "AdderLambda", {
     QUEUE_ID: queue.node.addr,
     BUCKET_ID: storage.node.addr,
   },
+  entrypoint: "originalEntry",
   file: __dirname + "/test-lambda.ts",
 });
+
+storage
+  .capture({
+    obj: storage,
+    symbol: "bucket",
+    methods: ["get"],
+  })
+  .bind(func);
+queue
+  .capture({
+    obj: queue,
+    symbol: "queue",
+    methods: ["enqueue", "dequeueç"],
+  })
+  .bind(func);
 
 queue.enqueue(queue, "Enqueue1", "blah1");
 queue.enqueue(queue, "Enqueue2", "blah2");

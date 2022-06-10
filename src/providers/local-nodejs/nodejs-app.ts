@@ -5,6 +5,7 @@ import { Construct } from "constructs";
 import { buildSync } from "esbuild";
 import { polycons } from "../..";
 import { LOCAL_CLOUD_IDENTIFIER } from "./constants";
+import { FunctionFunction } from "./function-function";
 import { JavascriptModule } from "./javascript-module";
 import { LocalNodeJSFactory } from "./nodejs-factory";
 
@@ -32,9 +33,14 @@ export class LocalNodeJSApp extends Construct {
     });
 
     for (const construct of this.node.findAll()) {
+      if (construct instanceof FunctionFunction) {
+        construct.resolveCaptures();
+      }
       if (construct instanceof JavascriptModule) {
         const moduleName = construct.identifier();
-        const moduleText = `${construct.renderPrefix()}${construct.render()}${construct.renderPostfix()}`;
+        const moduleText = `${construct.prefix}${construct.render()}${
+          construct.postfix
+        }`;
 
         const path = posix.join(rawDir, `${moduleName}.js`);
 
