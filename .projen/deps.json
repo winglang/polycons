@@ -106,6 +106,10 @@
       "type": "build"
     },
     {
+      "name": "aws-sdk",
+      "type": "bundled"
+    },
+    {
       "name": "esbuild",
       "version": "0.14.31",
       "type": "bundled"

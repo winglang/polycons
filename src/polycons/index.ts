@@ -1,2 +1,3 @@
 export * from "./polycon-factory";
-export * from "./polycon-resolver";
+export * from "./polycon";
+export * from "./capturable";

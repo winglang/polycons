@@ -75,7 +75,7 @@ ${Object.entries(captureObject)
         )
         .join("\n") + "\n";
   }
-  get grantable(): IConstruct {
+  grantable(): IConstruct {
     return this;
   }
 

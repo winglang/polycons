@@ -13,7 +13,7 @@ export interface CaptureInfo {
 }
 
 export interface ICapturable {
-  capture(options: CaptureInfo): ICaptureSource;
+  // getProcessBinder(): IProcessBinder;
 }
 
 /**
@@ -23,10 +23,10 @@ export interface IProcessRunner {
   captures: CaptureInfo[];
   resolveCaptures(): void;
   addEnvironment(env: { [name: string]: string }): void;
-  get grantable(): IConstruct;
+  grantable(): IConstruct;
 }
 
-export interface ICaptureSource {
+export interface IProcessBinder {
   info: CaptureInfo;
   bind(proc: IProcessRunner): void;
 }

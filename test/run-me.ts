@@ -28,7 +28,7 @@ queue
   .capture({
     obj: queue,
     symbol: "queue",
-    methods: ["enqueue", "dequeueç"],
+    methods: ["enqueue", "dequeue"],
   })
   .bind(func);
 

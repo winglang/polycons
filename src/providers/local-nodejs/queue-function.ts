@@ -1,11 +1,7 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
-import {
-  CaptureInfo,
-  ICapturable,
-  ICaptureSource,
-} from "../../polycons/capturable";
+import { ICapturable, IProcessBinder } from "../../polycons/capturable";
 import { FunctionFunction } from "./function-function";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { RawJavascriptModule } from "./raw-module";
@@ -50,13 +46,8 @@ export class QueueFuction
     });
     this.subAccess = ".default";
   }
-  capture(info: CaptureInfo): ICaptureSource {
-    return {
-      info,
-      bind: (proc) => {
-        proc.captures.push(info);
-      },
-    };
+  getProcessBinder(): IProcessBinder {
+    throw new Error("Method not implemented.");
   }
 
   enqueue(scope: IConstruct, id: string, stuff: any): void {

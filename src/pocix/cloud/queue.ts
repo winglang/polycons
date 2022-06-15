@@ -1,7 +1,7 @@
 import { IConstruct } from "constructs";
 import { polycons } from "../..";
 import { ICapturable } from "../../polycons/capturable";
-import { IFunction } from "./function-factory";
+import { IFunction } from "./function";
 
 export const QUEUE_QUALIFIER = "std.Queue";
 
@@ -16,11 +16,8 @@ export interface IQueueClient {
   enqueue(value: any): Promise<any>;
 }
 
-export interface IQueueProps {}
+export interface QueueProps {}
 
-type Queue = {
-  new (scope: IConstruct, id: string, props?: IQueueProps): IQueue;
-};
-
-export const Queue: Queue =
-  polycons.PolyconResolver.registerPolycon(QUEUE_QUALIFIER);
+export const Queue: {
+  new (scope: IConstruct, id: string, props?: QueueProps): IQueue;
+} = polycons.Polycon.createConstructor(QUEUE_QUALIFIER);

@@ -40,8 +40,10 @@ export abstract class PolyconFactory {
 
   private static FACTORY_SYMBOL = Symbol.for("_Factory");
 
-  /**
-   * Map of a polycon qualifier to an existing constructor to be used in concretization
-   */
-  public abstract readonly constructors: IPolyconFactoryConstructors;
+  public abstract resolve(
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props?: any
+  ): any;
 }

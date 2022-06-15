@@ -1,6 +1,6 @@
 {
   "name": "polyconstruct",
-  "description": "Polymorphic constructs",
+  "description": "Polymorphic constructs framework",
   "repository": {
     "type": "git",
     "url": "https://github.com/monadahq/polyconstruct.git"
@@ -31,7 +31,7 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Elad Ben-Israel",
+    "name": "Monada",
     "email": "eladb@monada.co",
     "organization": false
   },
@@ -66,10 +66,12 @@
   },
   "dependencies": {
     "aws-cdk-lib": "^2.25.0",
+    "aws-sdk": "^2.1152.0",
     "constructs": "^10",
     "esbuild": "0.14.31"
   },
   "bundledDependencies": [
+    "aws-sdk",
     "esbuild"
   ],
   "main": "lib/index.js",
