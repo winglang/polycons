@@ -1,20 +1,23 @@
 import { IConstruct } from "constructs";
-import { polycons } from "../..";
-import { IProcessRunner } from "../../polycons/capturable";
+import { Polycon } from "../../polycons";
+import { IProcess } from "../../polycons/process";
 
-export const FUNCTION_QUALIFIER = "std.Function";
+export const FUNCTION_QUALIFIER = "pocix.cloud.Function";
 
-export interface IFunction extends IConstruct, IProcessRunner {
+export interface IFunction {
   invoke(scope: IConstruct, id: string, args?: any): any;
 }
 
-export interface IFunctionProps {
+export interface FunctionProps {
   readonly env?: any;
-  readonly file?: string;
-  readonly entrypoint: string;
-  fn?(): any;
+  readonly process: IProcess;
 }
 
-export const Function: {
-  new (scope: IConstruct, id: string, props: IFunctionProps): IFunction;
-} = polycons.Polycon.createConstructor(FUNCTION_QUALIFIER);
+export class Function extends Polycon implements IFunction, IConstruct {
+  constructor(scope: IConstruct, id: string, props?: FunctionProps) {
+    super(FUNCTION_QUALIFIER, scope, id, props);
+  }
+  invoke(scope: IConstruct, id: string, args?: any) {
+    throw this.proxyError("invoke", scope, id, args);
+  }
+}

@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import { std } from "../src";
+import { NodeProcess } from "../src/polycons";
 import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
 const app = new LocalNodeJSApp();
@@ -13,24 +14,34 @@ const func = new std.Function(app, "AdderLambda", {
     QUEUE_ID: queue.node.addr,
     BUCKET_ID: storage.node.addr,
   },
-  entrypoint: "originalEntry",
-  file: __dirname + "/test-lambda.ts",
+  process: new NodeProcess({
+    id: "1",
+    entryFile: __dirname + "/test-lambda.ts",
+    entryName: "coolEntry",
+    captures: [
+      {
+        obj: storage,
+        symbol: "bucket",
+        methods: ["get"],
+        client: {
+          getClientStatement(obj: any) {
+            return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
+          },
+        },
+      },
+      {
+        obj: queue,
+        symbol: "queue",
+        methods: ["enqueue", "dequeue"],
+        client: {
+          getClientStatement(obj: any) {
+            return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
+          },
+        },
+      },
+    ],
+  }),
 });
-
-storage
-  .capture({
-    obj: storage,
-    symbol: "bucket",
-    methods: ["get"],
-  })
-  .bind(func);
-queue
-  .capture({
-    obj: queue,
-    symbol: "queue",
-    methods: ["enqueue", "dequeue"],
-  })
-  .bind(func);
 
 queue.enqueue(queue, "Enqueue1", "blah1");
 queue.enqueue(queue, "Enqueue2", "blah2");

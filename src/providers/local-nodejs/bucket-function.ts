@@ -1,6 +1,5 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
-import { IProcessBinder } from "../../polycons/capturable";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 
 export class BucketFunction
@@ -29,7 +28,7 @@ export class BucketFunction
     });
     this.subAccess = ".default";
   }
-  getProcessBinder(): IProcessBinder {
+  bindCapture(obj: IConstruct): void {
     throw new Error("Method not implemented.");
   }
 }

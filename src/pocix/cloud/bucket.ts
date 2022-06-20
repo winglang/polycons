@@ -1,10 +1,9 @@
 import { IConstruct } from "constructs";
-import { polycons } from "../..";
-import { ICapturable } from "../../polycons/capturable";
+import { ICapturable, Polycon } from "../../polycons";
 
-export const BUCKET_QUALIFIER = "pocix.Bucket";
+export const BUCKET_QUALIFIER = "pocix.cloud.Bucket";
 
-export interface IBucket extends IConstruct, ICapturable {
+export interface IBucket extends ICapturable, IConstruct {
   readonly public: boolean;
 }
 
@@ -17,6 +16,13 @@ export interface IBucketClient {
   upload(path: string, value: any): Promise<any>;
 }
 
-export const Bucket: {
-  new (scope: IConstruct, id: string, props?: BucketProps): IBucket;
-} = polycons.Polycon.createConstructor(BUCKET_QUALIFIER);
+export class Bucket extends Polycon implements IBucket, IConstruct {
+  public!: boolean;
+
+  constructor(scope: IConstruct, id: string, props?: BucketProps) {
+    super(BUCKET_QUALIFIER, scope, id, props);
+  }
+  bindCapture(obj: IConstruct): void {
+    throw this.proxyError("bindCapture", obj);
+  }
+}

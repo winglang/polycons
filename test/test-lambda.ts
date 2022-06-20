@@ -6,12 +6,12 @@ interface MyCaptures {
   queue: IQueueClient;
 }
 // Hack
-export async function originalEntry(event, captures: MyCaptures) {
+export async function coolEntry(_event, captures: MyCaptures) {
   console.group(chalk.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`));
   const bucket = captures.bucket;
   const queue = captures.queue;
 
-  let queueValue = queue.dequeue();
+  let queueValue = await queue.dequeue();
   while (queueValue !== undefined) {
     let val = await bucket.download("counter");
     let newVal = (val ?? 0) + 1;

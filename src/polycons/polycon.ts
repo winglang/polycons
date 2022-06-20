@@ -1,17 +1,24 @@
-import { IConstruct } from "constructs";
+import { IConstruct, Node } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
-export class Polycon {
-  static createConstructor(qualifier: string): any {
-    return function (scope: IConstruct, id: string, props?: any) {
-      return new Polycon(qualifier, scope, id, props);
-    } as any;
+export abstract class Polycon implements IConstruct {
+  // TODO Should traverse up tree?
+  public static of(scope: IConstruct): Polycon | undefined {
+    return (scope as any)[Polycon.POLYCON_SYMBOL] as Polycon;
   }
+  private static POLYCON_SYMBOL = Symbol.for("_Polycon");
 
   protected readonly innie: IConstruct;
-  protected readonly qualifier: string;
 
-  constructor(qualifier: string, scope: IConstruct, id: string, props?: any) {
+  public readonly qualifier: string;
+  public readonly node: Node;
+
+  protected constructor(
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props?: any
+  ) {
     const factory = PolyconFactory.of(scope);
     if (!factory) {
       throw `No factory defined within scope of "${id}"`;
@@ -24,6 +31,13 @@ export class Polycon {
 
     this.qualifier = qualifier;
     this.innie = innie;
+    this.node = this.innie.node;
+
+    // Allows one to bypass proxy
+    Object.defineProperty(innie, Polycon.POLYCON_SYMBOL, {
+      value: this,
+      enumerable: false,
+    });
 
     return new Proxy(this, {
       get(_target: Polycon, prop: string | symbol, _receiver: any) {
@@ -37,7 +51,7 @@ export class Polycon {
     });
   }
 
-  protected proxyError(...args: any[]) {
-    return `Proxy method not used. ARGS: ${args.join(",")}`;
+  protected proxyError(methodName: string, ...args: any[]) {
+    return `Proxy method "${methodName}" not used. ARGS: ${args.join(",")}`;
   }
 }

@@ -1,13 +1,13 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
-import { ICapturable, IProcessBinder } from "../../polycons/capturable";
+import { ICapturable } from "../../polycons";
 import { FunctionFunction } from "./function-function";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { RawJavascriptModule } from "./raw-module";
 
 // The worst "fifo queue" implementation you've ever seen lol
-export class QueueFuction
+export class QueueFunction
   extends JavascriptFunctionModule
   implements std.IQueue, ICapturable
 {
@@ -17,6 +17,7 @@ export class QueueFuction
       const _workers: any[] = [];
 
       setInterval(() => {
+        console.log(_workers.length, _data.length);
         if (_workers.length > 0 && _data.length > 0) {
           for (const worker of _workers) {
             worker();
@@ -46,9 +47,7 @@ export class QueueFuction
     });
     this.subAccess = ".default";
   }
-  getProcessBinder(): IProcessBinder {
-    throw new Error("Method not implemented.");
-  }
+  bindCapture(_obj: IConstruct): void {}
 
   enqueue(scope: IConstruct, id: string, stuff: any): void {
     new RawJavascriptModule(

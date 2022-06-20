@@ -1,29 +1,69 @@
 import { writeFileSync } from "fs";
 import { posix } from "path";
+import { cwd } from "process";
+import { IConstruct } from "constructs";
 import { buildSync } from "esbuild";
 
+// TODO we need an Asset system
+const GLOBAL_OUTPUT = "polycons.out/process";
 const ORIGINAL_ENTRY_FILE = "__original_entry_bundle.js";
 const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
-export interface IProcess {}
+export interface IPolyconClient {
+  getClientStatement(obj: ICapturable): string;
+}
 
-export interface ProcessOptions {
+export interface CaptureInfo {
+  /** Name of (scoped) symbol */
+  readonly symbol: string;
+
+  /** The captured object */
+  readonly obj: ICapturable;
+
+  /** Which methods are called on the captured object */
+  readonly methods?: string[];
+
+  // TODO probably doesn't belong here
+  readonly client: IPolyconClient;
+
+  // could add additional optional diagnostics here (linenumber, etc.)
+}
+
+export interface ICapturable {
+  bindCapture(obj: IConstruct): void;
+}
+
+export interface IProcess {
   readonly entryFile: string;
   readonly entryName: string;
 }
 
-export class NodeESBuildProcess implements IProcess {
-  entryFile: string;
-  entryName: string;
+export interface ProcessOptions {
+  // TODO id is only a temporary solution
+  readonly id: string;
+  readonly entryFile: string;
+  readonly entryName: string;
+  readonly captures: CaptureInfo[];
+}
+
+export class NodeProcess implements IProcess {
+  public readonly entryFile: string;
+  public readonly entryName: string;
+  public readonly captures: CaptureInfo[];
+  public readonly outputDir: string;
+
   constructor(options: ProcessOptions) {
+    const mainOutdir = posix.join(cwd(), GLOBAL_OUTPUT, options.id);
+
+    this.outputDir = mainOutdir;
     this.entryFile = options.entryFile;
     this.entryName = options.entryName;
-  }
+    this.captures = options.captures;
 
-  bundle(outDir: string, captures: { [key: string]: string }) {
     // bundle original to new place
-    const originalOutfile = posix.join(outDir, ORIGINAL_ENTRY_FILE);
+
+    const originalOutfile = posix.join(this.outputDir, ORIGINAL_ENTRY_FILE);
     const originalDirectory = posix.dirname(this.entryFile);
 
     buildSync({
@@ -40,16 +80,21 @@ export class NodeESBuildProcess implements IProcess {
     // create new entry facade that invokes true entrypoint with two args
     const newEntry = `\
 module.exports['${this.entryName}'] = function(originalEvent) {
-    return require('./${originalOutfile}')['${this.entryName}'](originalEvent, {
-        ${Object.entries(captures)
-          .map((entry) => `        ${entry[0]}: ${entry[1]},`)
+    return require('${originalOutfile}')['${this.entryName}'](originalEvent, {
+        ${this.captures
+          .map(
+            (entry) =>
+              `        ${entry.symbol}: ${entry.client.getClientStatement(
+                entry.obj
+              )},`
+          )
           .join("\n")}
           });
 }`;
-    const newEntryPath = posix.join(outDir, NEW_ENTRY_FILE);
+    const newEntryPath = posix.join(this.outputDir, NEW_ENTRY_FILE);
     writeFileSync(newEntryPath, newEntry);
 
-    const build = buildSync({
+    buildSync({
       bundle: true,
       platform: "node",
       keepNames: true,
@@ -57,9 +102,9 @@ module.exports['${this.entryName}'] = function(originalEvent) {
       format: "cjs",
       outfile: FINAL_BUNDLE,
       allowOverwrite: true,
-      absWorkingDir: outDir,
+      absWorkingDir: this.outputDir,
     });
 
-    return build.outputFiles![0].path;
+    this.entryFile = this.outputDir + "/" + FINAL_BUNDLE;
   }
 }
