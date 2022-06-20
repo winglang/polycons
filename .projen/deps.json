@@ -120,7 +120,15 @@
       "type": "peer"
     },
     {
+      "name": "@cdktf/provider-aws",
+      "type": "runtime"
+    },
+    {
       "name": "aws-cdk-lib",
+      "type": "runtime"
+    },
+    {
+      "name": "cdktf",
       "type": "runtime"
     },
     {

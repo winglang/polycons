@@ -32,7 +32,7 @@
   },
   "author": {
     "name": "Monada",
-    "email": "eladb@monada.co",
+    "email": "ping@monada.co",
     "organization": false
   },
   "devDependencies": {
@@ -65,8 +65,10 @@
     "constructs": "^10"
   },
   "dependencies": {
+    "@cdktf/provider-aws": "^8.0.12",
     "aws-cdk-lib": "^2.25.0",
     "aws-sdk": "^2.1152.0",
+    "cdktf": "^0.11.2",
     "constructs": "^10",
     "esbuild": "0.14.31"
   },
