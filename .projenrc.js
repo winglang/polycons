@@ -16,6 +16,7 @@ const project = new cdk.JsiiProject({
 
 // just for testing
 project.addGitIgnore("polycons.out/");
+project.addGitIgnore("*.tfstate");
 
 project.addTask("run-me", {
   exec: "npx esno test/run-me.ts",
