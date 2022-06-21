@@ -1,9 +1,8 @@
 import { IConstruct } from "constructs";
 import { std, polycons } from "../..";
-import { IPolyconClient } from "../../polycons";
-import { BucketFunction } from "./bucket-function";
-import { FunctionFunction } from "./function-function";
-import { QueueFunction } from "./queue-function";
+import { NodeBucket } from "./node-bucket";
+import { NodeFunction } from "./node-function";
+import { NodeQueue } from "./node-queue";
 
 // Sythesized to single nodejs file
 export class LocalNodeJSFactory extends polycons.PolyconFactory {
@@ -15,11 +14,11 @@ export class LocalNodeJSFactory extends polycons.PolyconFactory {
   ) {
     switch (qualifier) {
       case std.BUCKET_QUALIFIER:
-        return new BucketFunction(scope, id);
+        return new NodeBucket(scope, id);
       case std.QUEUE_QUALIFIER:
-        return new QueueFunction(scope, id);
+        return new NodeQueue(scope, id);
       case std.FUNCTION_QUALIFIER:
-        return new FunctionFunction(scope, id, props);
+        return new NodeFunction(scope, id, props);
       default:
         throw new Error("Qualifier not implemented.");
     }

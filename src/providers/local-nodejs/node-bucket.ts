@@ -2,7 +2,7 @@ import { IConstruct } from "constructs";
 import { std } from "../..";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 
-export class BucketFunction
+export class NodeBucket
   extends JavascriptFunctionModule
   implements std.IBucket
 {
@@ -28,7 +28,5 @@ export class BucketFunction
     });
     this.subAccess = ".default";
   }
-  bindCapture(obj: IConstruct): void {
-    throw new Error("Method not implemented.");
-  }
+  bindCapture(_obj: IConstruct): void {}
 }

@@ -1,9 +1,10 @@
 import chalk from "chalk";
 import { std } from "../src";
 import { NodeProcess } from "../src/polycons";
-import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
+import { CDKTerraformApp } from "../src/providers/cdktf-aws/cdkts-app";
+// import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
-const app = new LocalNodeJSApp();
+const app = new CDKTerraformApp();
 
 const queue = new std.Queue(app, "Queue");
 const storage = new std.Bucket(app, "Storage");
@@ -25,7 +26,8 @@ const func = new std.Function(app, "AdderLambda", {
         methods: ["get"],
         client: {
           getClientStatement(obj: any) {
-            return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
+            return "''";
+            // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
           },
         },
       },
@@ -35,7 +37,8 @@ const func = new std.Function(app, "AdderLambda", {
         methods: ["enqueue", "dequeue"],
         client: {
           getClientStatement(obj: any) {
-            return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
+            return "''";
+            // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
           },
         },
       },
@@ -43,9 +46,9 @@ const func = new std.Function(app, "AdderLambda", {
   }),
 });
 
-queue.enqueue(queue, "Enqueue1", "blah1");
-queue.enqueue(queue, "Enqueue2", "blah2");
-func.invoke(func, "Invoke1");
+// queue.enqueue("blah1");
+// queue.enqueue("blah2");
+func.invoke();
 
 queue.addWorkerFunction(func);
 
@@ -53,14 +56,14 @@ const code = app.synth();
 
 console.log(chalk.gray(code));
 
-console.log(chalk.green("Starting Cloud..."));
+console.log(chalk.green("==="));
 
 // wrapped in function for scope
-(function runStuff() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const MyCloud = require(code);
-  console.log(MyCloud);
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const repl = require("repl").start("MyCloud> ");
-  repl.context.MyCloud = MyCloud;
-})();
+// (function runStuff() {
+//   // eslint-disable-next-line @typescript-eslint/no-require-imports
+//   const MyCloud = require(code);
+//   console.log(MyCloud);
+//   // eslint-disable-next-line @typescript-eslint/no-require-imports
+//   const repl = require("repl").start("MyCloud> ");
+//   repl.context.MyCloud = MyCloud;
+// })();

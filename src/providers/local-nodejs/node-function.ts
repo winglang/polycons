@@ -4,7 +4,7 @@ import { JavascriptFileModule } from "./javascript-file-module";
 import { JavascriptModule } from "./javascript-module";
 import { RawJavascriptModule } from "./raw-module";
 
-export class FunctionFunction extends Construct implements std.IFunction {
+export class NodeFunction extends Construct implements std.IFunction {
   public readonly module: JavascriptModule;
   public readonly entrypoint: string;
 
@@ -43,12 +43,12 @@ export class FunctionFunction extends Construct implements std.IFunction {
     return this;
   }
 
-  invoke(scope: IConstruct, id: string, args?: any) {
+  invoke(args?: any) {
     const argText = args ? "" : JSON.stringify(args);
 
     new RawJavascriptModule(
-      scope,
-      id,
+      this,
+      "Invoke",
       `\
 console.group('Invoking Function "${this.node.id}"');
 (${this.module.identifierRequire()}.${this.entrypoint})(${argText});

@@ -39,16 +39,21 @@ export abstract class Polycon implements IConstruct {
       enumerable: false,
     });
 
-    return new Proxy(this, {
-      get(_target: Polycon, prop: string | symbol, _receiver: any) {
-        if (prop === "innie") {
-          return innie;
-        } else if (prop === "qualifier") {
-          return qualifier;
-        }
-        return Reflect.get(innie, prop);
-      },
-    });
+    return innie;
+
+    // return new Proxy(this, {
+    //   getPrototypeOf(_target) {
+    //     return Object.getPrototypeOf(innie);
+    //   },
+    //   get(_target: Polycon, prop: string | symbol, _receiver: any) {
+    //     if (prop === "innie") {
+    //       return innie;
+    //     } else if (prop === "qualifier") {
+    //       return qualifier;
+    //     }
+    //     return Reflect.get(innie, prop);
+    //   },
+    // });
   }
 
   protected proxyError(methodName: string, ...args: any[]) {

@@ -198,6 +198,14 @@
         }
       ]
     },
+    "run-me": {
+      "name": "run-me",
+      "steps": [
+        {
+          "exec": "npx esno test/run-me.ts"
+        }
+      ]
+    },
     "test": {
       "name": "test",
       "description": "Run tests",

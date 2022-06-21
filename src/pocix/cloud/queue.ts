@@ -5,8 +5,7 @@ import { IFunction } from "./function";
 export const QUEUE_QUALIFIER = "pocix.cloud.Queue";
 
 export interface IQueue extends IConstruct, ICapturable {
-  enqueue(scope: IConstruct, id: string, stuff: any): void;
-  dequeue(scope: IConstruct, id: string): any;
+  enqueue(obj: any): void;
   addWorkerFunction(func: IFunction): void;
 }
 
@@ -24,11 +23,8 @@ export class Queue extends Polycon implements IQueue, IConstruct {
   bindCapture(obj: IConstruct): void {
     throw this.proxyError("bindCapture", obj);
   }
-  enqueue(scope: IConstruct, id: string, stuff: any): void {
-    this.proxyError("enqueue", scope, id, stuff);
-  }
-  dequeue(scope: IConstruct, id: string) {
-    this.proxyError("dequeue", scope, id);
+  enqueue(stuff: any): void {
+    this.proxyError("enqueue", stuff);
   }
   addWorkerFunction(func: IFunction): void {
     this.proxyError("addWorkerFunction", func);

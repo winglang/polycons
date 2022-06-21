@@ -2,12 +2,12 @@ import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
 import { ICapturable } from "../../polycons";
-import { FunctionFunction } from "./function-function";
 import { JavascriptFunctionModule } from "./javascript-function-module";
+import { NodeFunction } from "./node-function";
 import { RawJavascriptModule } from "./raw-module";
 
 // The worst "fifo queue" implementation you've ever seen lol
-export class QueueFunction
+export class NodeQueue
   extends JavascriptFunctionModule
   implements std.IQueue, ICapturable
 {
@@ -49,19 +49,16 @@ export class QueueFunction
   }
   bindCapture(_obj: IConstruct): void {}
 
-  enqueue(scope: IConstruct, id: string, stuff: any): void {
+  enqueue(stuff: any): void {
     new RawJavascriptModule(
-      scope,
-      id,
+      this,
+      "Enqueue",
       `${this.identifierRequire()}.enqueue(JSON.parse(\`${JSON.stringify(
         stuff
       )}\`))`
     );
   }
-  dequeue(scope: IConstruct, id: string) {
-    new RawJavascriptModule(scope, id, `${this.identifierRequire()}.dequeue()`);
-  }
-  addWorkerFunction(func: FunctionFunction): void {
+  addWorkerFunction(func: NodeFunction): void {
     const construct = new RawJavascriptModule(
       func,
       `Listener${func.node.id}`,
