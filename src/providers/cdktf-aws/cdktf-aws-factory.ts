@@ -22,7 +22,7 @@ import {
   IQueue,
   QueueProps,
 } from "../../pocix";
-import { PolyconFactory } from "../../polycons";
+import { Polycon, PolyconFactory } from "../../polycons";
 
 export class CDKTerraformAWSFactory extends PolyconFactory {
   public resolve(
@@ -42,6 +42,19 @@ export class CDKTerraformAWSFactory extends PolyconFactory {
         throw new Error("Qualifier not implemented.");
     }
   }
+
+  public resolveClient(polycon: Polycon): any {
+    switch (polycon.qualifier) {
+      case std.BUCKET_QUALIFIER:
+        return {};
+      case std.QUEUE_QUALIFIER:
+        return {};
+      case std.FUNCTION_QUALIFIER:
+        return {};
+      default:
+        throw new Error("Qualifier not implemented.");
+    }
+  }
 }
 
 export class TFQueue extends Construct implements IQueue {
@@ -52,6 +65,7 @@ export class TFQueue extends Construct implements IQueue {
 
     this.queue = new SqsQueue(this, "Queue");
   }
+
   enqueue(_stuff: any): void {
     // TODO
     throw new Error("Method not implemented.");
@@ -76,6 +90,8 @@ export class TFQueue extends Construct implements IQueue {
       ],
     };
     if (obj instanceof TFLambdaFunction) {
+      obj.lambda.environment.variables[`_${this.node.addr}_ARN`] =
+        this.queue.arn;
       obj.lambdaRole.putInlinePolicy([
         {
           policy: JSON.stringify(queuePolicy),
@@ -171,7 +187,7 @@ export class TFLambdaFunction extends Construct implements IFunction {
     });
 
     // Add execution role for lambda to write to CloudWatch logs
-    new IamRolePolicyAttachment(this, "lambda-managed-policy", {
+    new IamRolePolicyAttachment(this, "ManagedPolicy", {
       policyArn:
         "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
       role: this.lambdaRole.name,

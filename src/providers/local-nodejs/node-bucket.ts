@@ -28,5 +28,4 @@ export class NodeBucket
     });
     this.subAccess = ".default";
   }
-  bindCapture(_obj: IConstruct): void {}
 }

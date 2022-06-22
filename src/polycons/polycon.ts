@@ -6,6 +6,7 @@ export abstract class Polycon implements IConstruct {
   public static of(scope: IConstruct): Polycon | undefined {
     return (scope as any)[Polycon.POLYCON_SYMBOL] as Polycon;
   }
+
   private static POLYCON_SYMBOL = Symbol.for("_Polycon");
 
   protected readonly innie: IConstruct;

@@ -1,57 +1,21 @@
 import { writeFileSync } from "fs";
 import { posix } from "path";
 import { cwd } from "process";
-import { IConstruct } from "constructs";
 import { buildSync } from "esbuild";
+import { Capture } from "./capture";
+import { IProcess, ProcessOptions } from "./process";
 
 // TODO we need an Asset system
 const GLOBAL_OUTPUT = "polycons.out/process";
 const ORIGINAL_ENTRY_FILE = "__original_entry_bundle.js";
 const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
-
-export interface IPolyconClient {
-  getClientStatement(obj: ICapturable): string;
-}
-
-export interface CaptureInfo {
-  /** Name of (scoped) symbol */
-  readonly symbol: string;
-
-  /** The captured object */
-  readonly obj: ICapturable;
-
-  /** Which methods are called on the captured object */
-  readonly methods?: string[];
-
-  // TODO probably doesn't belong here
-  readonly client: IPolyconClient;
-
-  // could add additional optional diagnostics here (linenumber, etc.)
-}
-
-export interface ICapturable {
-  bindCapture(obj: IConstruct): void;
-}
-
-export interface IProcess {
-  readonly entryFile: string;
-  readonly entryName: string;
-}
-
-export interface ProcessOptions {
-  // TODO id is only a temporary solution
-  readonly id: string;
-  readonly entryFile: string;
-  readonly entryName: string;
-  readonly captures: CaptureInfo[];
-}
-
 export class NodeProcess implements IProcess {
   public readonly entryFile: string;
   public readonly entryName: string;
-  public readonly captures: CaptureInfo[];
+  public readonly captures: Capture[];
   public readonly outputDir: string;
+  public readonly subprocesses: IProcess[];
 
   constructor(options: ProcessOptions) {
     const mainOutdir = posix.join(cwd(), GLOBAL_OUTPUT, options.id);
@@ -60,6 +24,7 @@ export class NodeProcess implements IProcess {
     this.entryFile = options.entryFile;
     this.entryName = options.entryName;
     this.captures = options.captures;
+    this.subprocesses = [];
 
     // bundle original to new place
 
@@ -84,9 +49,7 @@ module.exports['${this.entryName}'] = function(originalEvent) {
         ${this.captures
           .map(
             (entry) =>
-              `        ${entry.symbol}: ${entry.client.getClientStatement(
-                entry.obj
-              )},`
+              `        ${entry.symbol}: ${entry.client.renderCapture(entry)},`
           )
           .join("\n")}
           });

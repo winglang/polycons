@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { std } from "../src";
-import { NodeProcess } from "../src/polycons";
+import { NodeProcess } from "../src/process";
 import { CDKTerraformApp } from "../src/providers/cdktf-aws/cdkts-app";
 // import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
@@ -21,22 +21,22 @@ const func = new std.Function(app, "AdderLambda", {
     entryName: "coolEntry",
     captures: [
       {
-        obj: storage,
+        target: storage,
         symbol: "bucket",
         methods: ["get"],
         client: {
-          getClientStatement(obj: any) {
+          renderCapture(obj: any) {
             return "''";
             // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
           },
         },
       },
       {
-        obj: queue,
+        target: queue,
         symbol: "queue",
         methods: ["enqueue", "dequeue"],
         client: {
-          getClientStatement(obj: any) {
+          renderCapture(obj: any) {
             return "''";
             // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
           },

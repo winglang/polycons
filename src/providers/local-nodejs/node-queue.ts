@@ -1,7 +1,7 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
-import { ICapturable } from "../../polycons";
+import { Capture, ICapturable, ICapture } from "../../process";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { NodeFunction } from "./node-function";
 import { RawJavascriptModule } from "./raw-module";
@@ -47,7 +47,10 @@ export class NodeQueue
     });
     this.subAccess = ".default";
   }
-  bindCapture(_obj: IConstruct): void {}
+
+  capture(options: ICapture): Capture {
+    throw new Error("Method not implemented.");
+  }
 
   enqueue(stuff: any): void {
     new RawJavascriptModule(
