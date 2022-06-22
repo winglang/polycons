@@ -22,7 +22,7 @@ import {
   IQueue,
   QueueProps,
 } from "../../pocix";
-import { Polycon, PolyconFactory } from "../../polycons";
+import { PolyconFactory } from "../../polycons";
 
 export class CDKTerraformAWSFactory extends PolyconFactory {
   public resolve(
@@ -38,19 +38,6 @@ export class CDKTerraformAWSFactory extends PolyconFactory {
         return new TFQueue(scope, id, props);
       case std.FUNCTION_QUALIFIER:
         return new TFLambdaFunction(scope, id, props);
-      default:
-        throw new Error("Qualifier not implemented.");
-    }
-  }
-
-  public resolveClient(polycon: Polycon): any {
-    switch (polycon.qualifier) {
-      case std.BUCKET_QUALIFIER:
-        return {};
-      case std.QUEUE_QUALIFIER:
-        return {};
-      case std.FUNCTION_QUALIFIER:
-        return {};
       default:
         throw new Error("Qualifier not implemented.");
     }
