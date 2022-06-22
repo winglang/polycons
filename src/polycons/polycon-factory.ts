@@ -45,5 +45,5 @@ export abstract class PolyconFactory {
     scope: IConstruct,
     id: string,
     props?: any
-  ): any;
+  ): IConstruct;
 }
