@@ -17,13 +17,11 @@ export interface IBucketClient {
 }
 
 export class Bucket extends Polycon implements IBucket {
-  public!: boolean;
+  public get public(): boolean {
+    throw this.proxyError("public");
+  }
 
   constructor(scope: IConstruct, id: string, props?: BucketProps) {
     super(BUCKET_QUALIFIER, scope, id, props);
-  }
-
-  bindCapture(obj: IConstruct): void {
-    throw this.proxyError("bindCapture", obj);
   }
 }

@@ -21,10 +21,6 @@ export class Queue extends Polycon implements IQueue {
     super(QUEUE_QUALIFIER, scope, id, props);
   }
 
-  bindCapture(obj: IConstruct): void {
-    throw this.proxyError("bindCapture", obj);
-  }
-
   enqueue(stuff: any): void {
     throw this.proxyError("enqueue", stuff);
   }

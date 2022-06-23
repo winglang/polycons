@@ -1,6 +1,6 @@
 import { IConstruct } from "constructs";
 import { Polycon } from "../../polycons";
-import { IProcess } from "../../process";
+import { IProcess } from "../../process-construction";
 
 export const FUNCTION_QUALIFIER = "pocix.cloud.Function";
 

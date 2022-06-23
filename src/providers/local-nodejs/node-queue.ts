@@ -1,7 +1,7 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
-import { Capture, ICapturable, ICapture } from "../../process";
+import { Capture, ICapturable, ICapture } from "../../process-construction";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { NodeFunction } from "./node-function";
 import { RawJavascriptModule } from "./raw-module";

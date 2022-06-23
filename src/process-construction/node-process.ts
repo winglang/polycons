@@ -10,12 +10,13 @@ const GLOBAL_OUTPUT = "polycons.out/process";
 const ORIGINAL_ENTRY_FILE = "__original_entry_bundle.js";
 const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
+
 export class NodeProcess implements IProcess {
   public readonly entryFile: string;
   public readonly entryName: string;
   public readonly captures: Capture[];
   public readonly outputDir: string;
-  public readonly subprocesses: IProcess[];
+  public readonly dependencies?: IProcess[];
 
   constructor(options: ProcessOptions) {
     const mainOutdir = posix.join(cwd(), GLOBAL_OUTPUT, options.id);
@@ -24,7 +25,7 @@ export class NodeProcess implements IProcess {
     this.entryFile = options.entryFile;
     this.entryName = options.entryName;
     this.captures = options.captures;
-    this.subprocesses = [];
+    this.dependencies = [];
 
     // bundle original to new place
 
