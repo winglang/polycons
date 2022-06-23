@@ -1,4 +1,4 @@
-# Polycons!
+# Polycons
 
 Polycons ("polymorphic constructs").
 
@@ -32,6 +32,9 @@ Should you be able to use "raw"/"concrete" constructs without going through the 
 ## Polycon
 
 A construct whose underlying implementation is determined at runtime.
+
+## Capture
+
 
 ## Resolver
 

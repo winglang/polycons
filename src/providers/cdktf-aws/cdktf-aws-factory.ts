@@ -189,6 +189,10 @@ export class TFLambdaFunction extends Construct implements IFunction {
       runtime: "nodejs14.x",
       role: this.lambdaRole.arn,
     });
+
+    props.process.captures.forEach((capture) => {
+      capture.bindCapture(this);
+    });
   }
 
   invoke(args?: any) {

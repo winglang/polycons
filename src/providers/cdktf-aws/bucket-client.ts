@@ -20,7 +20,7 @@ export class LocalAWSBucketClient implements IBucketClient {
       })
       .promise();
   }
-  upload(path: string, value: any): Promise<any> {
+  async upload(path: string, value: any): Promise<any> {
     return this.client
       .upload({
         Bucket: this.bucketArn,

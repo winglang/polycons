@@ -40,10 +40,10 @@ export abstract class Polycon implements IConstruct {
       enumerable: false,
     });
 
-    return innie;
+    return innie as Polycon;
 
     // return new Proxy(this, {
-    //   getPrototypeOf(_target) {
+    //   getPrototypeOf() {
     //     return Object.getPrototypeOf(innie);
     //   },
     //   get(_target: Polycon, prop: string | symbol, _receiver: any) {
@@ -60,4 +60,6 @@ export abstract class Polycon implements IConstruct {
   protected proxyError(methodName: string, ...args: any[]) {
     return `Proxy method "${methodName}" not used. ARGS: ${args.join(",")}`;
   }
+
+  public capture() {}
 }
