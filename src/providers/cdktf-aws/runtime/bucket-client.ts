@@ -1,6 +1,6 @@
 import { createReadStream } from "fs";
 import { S3 } from "aws-sdk";
-import { IBucketClient } from "../../pocix";
+import { IBucketClient } from "../../../pocix";
 
 export class LocalAWSBucketClient implements IBucketClient {
   client: S3;

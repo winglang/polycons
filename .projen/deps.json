@@ -124,6 +124,10 @@
       "type": "runtime"
     },
     {
+      "name": "@cdktf/provider-azurerm",
+      "type": "runtime"
+    },
+    {
       "name": "aws-cdk-lib",
       "type": "runtime"
     },

@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "@cdktf/provider-aws": "^8.0.12",
+    "@cdktf/provider-azurerm": "^0.8.2",
     "aws-cdk-lib": "^2.25.0",
     "aws-sdk": "^2.1152.0",
     "cdktf": "^0.11.2",

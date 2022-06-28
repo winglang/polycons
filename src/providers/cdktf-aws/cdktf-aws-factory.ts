@@ -5,11 +5,7 @@ import {
   LambdaFunction,
   LambdaInvocation,
 } from "@cdktf/provider-aws/lib/lambdafunction";
-import {
-  S3Bucket,
-  S3BucketPublicAccessBlock,
-  S3Object,
-} from "@cdktf/provider-aws/lib/s3";
+import { S3Bucket, S3Object } from "@cdktf/provider-aws/lib/s3";
 import { SqsQueue } from "@cdktf/provider-aws/lib/sqs";
 import { AssetType, TerraformAsset } from "cdktf";
 import { Construct, IConstruct } from "constructs";
@@ -23,6 +19,7 @@ import {
   QueueProps,
 } from "../../pocix";
 import { PolyconFactory } from "../../polycons";
+import { TFBucket } from "./bucket";
 
 export class CDKTerraformAWSFactory extends PolyconFactory {
   public resolve(
@@ -57,14 +54,16 @@ export class TFQueue extends Construct implements IQueue {
     // TODO
     throw new Error("Method not implemented.");
   }
-  addWorkerFunction(func: TFLambdaFunction): void {
-    new LambdaEventSourceMapping(this, `Worker${func.node.id}`, {
-      eventSourceArn: this.queue.arn,
-      enabled: true,
-      functionName: func.lambda.functionName,
-    });
+  addWorkerFunction(func: IFunction): void {
+    if (func instanceof TFLambdaFunction) {
+      new LambdaEventSourceMapping(this, `Worker${func.node.id}`, {
+        eventSourceArn: this.queue.arn,
+        enabled: true,
+        functionName: func.lambda.functionName,
+      });
+    }
   }
-  bindCapture(obj: IConstruct): void {
+  bindCapture(obj: any): void {
     const queuePolicy = {
       Version: "2012-10-17",
       Statement: [
@@ -82,51 +81,6 @@ export class TFQueue extends Construct implements IQueue {
       obj.lambdaRole.putInlinePolicy([
         {
           policy: JSON.stringify(queuePolicy),
-        },
-      ]);
-    }
-  }
-}
-
-export class TFBucket extends Construct implements IBucket {
-  public public: boolean;
-  public bucket: S3Bucket;
-
-  /**
-   *
-   */
-  constructor(scope: IConstruct, id: string, props?: BucketProps) {
-    super(scope, id);
-
-    this.public = props?.public ?? false;
-
-    this.bucket = new S3Bucket(this, "Bucket");
-
-    new S3BucketPublicAccessBlock(this, "BlockPublicAccess", {
-      bucket: this.bucket.bucket,
-      blockPublicAcls: !this.public,
-      blockPublicPolicy: !this.public,
-      ignorePublicAcls: !this.public,
-      restrictPublicBuckets: !this.public,
-    });
-  }
-
-  bindCapture(obj: IConstruct): void {
-    const bucketPolicy = {
-      Version: "2012-10-17",
-      Statement: [
-        {
-          // TODO terrible policy
-          Action: "s3:*",
-          Effect: "Allow",
-          Resource: this.bucket.arn,
-        },
-      ],
-    };
-    if (obj instanceof TFLambdaFunction) {
-      obj.lambdaRole.putInlinePolicy([
-        {
-          policy: JSON.stringify(bucketPolicy),
         },
       ]);
     }
@@ -188,10 +142,6 @@ export class TFLambdaFunction extends Construct implements IFunction {
       handler: "exports." + props.process.entryName,
       runtime: "nodejs14.x",
       role: this.lambdaRole.arn,
-    });
-
-    props.process.captures.forEach((capture) => {
-      capture.bindCapture(this);
     });
   }
 

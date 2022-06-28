@@ -1,49 +1,72 @@
 import chalk from "chalk";
 import { std } from "../src";
-import { NodeProcess } from "../src/process-construction";
+import { directCapture } from "../src/process/capture";
+import { NodeProcessBuilder } from "../src/process/node-process";
 import { CDKTerraformApp } from "../src/providers/cdktf-aws/cdkts-app";
 // import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
 
-const clientProcess = new NodeProcess({
-  entryFile: __dirname + "/src/providers/cdktf-aws/bucket-client.ts",
-});
+// const clientProcess = new NodeProcess({
+//   entryFile: __dirname + "/src/providers/cdktf-aws/bucket-client.ts",
+// });
 
 const app = new CDKTerraformApp();
 
 const queue = new std.Queue(app, "Queue");
 const storage = new std.Bucket(app, "Storage");
 
-queue.qualifier;
+const process = new NodeProcessBuilder()
+  .addEntryModule("coolEntry", {
+    name: "fun",
+    path: __dirname + "/test-lambda.ts",
+  })
+  .addCapture({
+    target: storage,
+    symbol: "bucket",
+    methods: ["get"],
+  })
+  .addCapture({
+    target: queue,
+    symbol: "queue",
+    methods: ["enqueue", "dequeue"],
+  })
+  .addCapture(
+    directCapture("config", {
+      apiUrl: "https://api.example.com",
+    })
+  )
+  .build("test");
 
-const process = new NodeProcess({
-  id: "1",
-  entryFile: __dirname + "/test-lambda.ts",
-  entryName: "coolEntry",
-  captures: [
-    {
-      target: storage,
-      symbol: "bucket",
-      methods: ["get"],
-      client: {
-        renderCapture(obj: any) {
-          return `require('${clientProcess.outputDir}/bucket-client.js')(process.env.BUCKET)`;
-          // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
-        },
-      },
-    },
-    {
-      target: queue,
-      symbol: "queue",
-      methods: ["enqueue", "dequeue"],
-      client: {
-        renderCapture(obj: any) {
-          return "''";
-          // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
-        },
-      },
-    },
-  ],
-});
+// const process = new NodeProcess({
+//   id: "1",
+//   entryFile: __dirname + "/test-lambda.ts",
+//   entryName: "coolEntry",
+//   captures: [
+//     {
+//       target: storage,
+//       symbol: "bucket",
+//       methods: ["get"],
+//       // client: {
+//       //   renderCapture(obj: IConstruct) {
+//       //     return `require('${clientProcess.outputDir}/bucket-client.js')(process.env._${obj.node.addr}_ARN)`;
+//       //   },
+//       // },
+//     },
+//     {
+//       target: queue,
+//       symbol: "queue",
+//       methods: ["enqueue", "dequeue"],
+//       // client: {
+//       //   renderCapture(obj: any) {
+//       //     return "''";
+//       //     // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
+//       //   },
+//       // },
+//     },
+//     directCapture("config", {
+//       apiUrl: "https://api.example.com",
+//     }),
+//   ],
+// });
 
 const func = new std.Function(app, "AdderLambda", {
   env: {
@@ -51,8 +74,6 @@ const func = new std.Function(app, "AdderLambda", {
   },
   process,
 });
-
-queue.bind(func);
 
 // queue.enqueue("blah1");
 // queue.enqueue("blah2");
