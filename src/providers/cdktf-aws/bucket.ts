@@ -2,12 +2,11 @@ import {
   S3Bucket,
   S3BucketPublicAccessBlock,
 } from "@cdktf/provider-aws/lib/s3";
-import { Capture } from "aws-cdk-lib/assertions";
-import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
-import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Construct, IConstruct } from "constructs";
 import { BucketProps, IBucket } from "../../pocix";
-import { ICaptureClient, NodeProcess } from "../../process-construction";
+import { Capture, CaptureClient } from "../../process/capture";
+import { Module } from "../../process/module";
+import { IProcessConsumer } from "../../process/process-consumer";
 import { TFLambdaFunction } from "./cdktf-aws-factory";
 
 export class TFBucket extends Construct implements IBucket {
@@ -55,5 +54,37 @@ export class TFBucket extends Construct implements IBucket {
         },
       ]);
     }
+  }
+}
+
+export class BucketCaptureClient implements CaptureClient {
+  bindToModule(capture: Capture, module: Module): void {
+    // TODO add aws-sdk?
+    throw new Error("Method not implemented.");
+  }
+  bindToProcessConsumer(capture: Capture, consumer: IProcessConsumer): void {
+    // TODO only supports lambda
+    if (consumer instanceof TFLambdaFunction) {
+      consumer.lambdaRole.putInlinePolicy([
+        {
+          policy: JSON.stringify({
+            Version: "2012-10-17",
+            Statement: [
+              {
+                // TODO terrible policy
+                Action: "s3:*",
+                Effect: "Allow",
+                Resource: (capture.target as TFBucket).bucket.arn,
+              },
+            ],
+          }),
+        },
+      ]);
+    }
+    throw new Error("Method not implemented.");
+  }
+  renderCapture(capture: Capture): string {
+    // TODO a require statement to import the client code
+    throw new Error("Method not implemented.");
   }
 }

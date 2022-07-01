@@ -1,6 +1,6 @@
 import { IConstruct } from "constructs";
 import { Polycon } from "../../polycons";
-import { IProcess } from "../../process-construction";
+import { Process } from "../../process";
 
 export const FUNCTION_QUALIFIER = "pocix.cloud.Function";
 
@@ -10,7 +10,7 @@ export interface IFunction extends IConstruct {
 
 export interface FunctionProps {
   readonly env?: { [name: string]: any };
-  readonly process: IProcess;
+  readonly process: Process;
 }
 
 export class Function extends Polycon implements IFunction {

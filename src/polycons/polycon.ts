@@ -25,7 +25,7 @@ export abstract class Polycon implements IConstruct {
       throw `No factory defined within scope of "${id}"`;
     }
 
-    const innie = factory.resolve(qualifier, scope, id, props);
+    const innie = factory.resolveConstruct(qualifier, scope, id, props);
     if (innie === undefined) {
       throw `Factory does not support "${qualifier}"`;
     }

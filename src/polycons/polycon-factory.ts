@@ -38,9 +38,9 @@ export abstract class PolyconFactory {
     });
   }
 
-  private static FACTORY_SYMBOL = Symbol.for("_Factory");
+  private static FACTORY_SYMBOL = Symbol.for("_PolyconFactory");
 
-  public abstract resolve(
+  public abstract resolveConstruct(
     qualifier: string,
     scope: IConstruct,
     id: string,

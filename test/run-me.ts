@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import { std } from "../src";
-import { directCapture } from "../src/process/capture";
+import { CaptureHelper } from "../src/process/capture";
+import { FileModule } from "../src/process/module";
 import { NodeProcessBuilder } from "../src/process/node-process";
 import { CDKTerraformApp } from "../src/providers/cdktf-aws/cdkts-app";
 // import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
@@ -17,21 +18,28 @@ const storage = new std.Bucket(app, "Storage");
 const process = new NodeProcessBuilder()
   .addEntryModule("coolEntry", {
     name: "fun",
-    path: __dirname + "/test-lambda.ts",
-  })
-  .addCapture({
-    target: storage,
-    symbol: "bucket",
-    methods: ["get"],
-  })
-  .addCapture({
-    target: queue,
-    symbol: "queue",
-    methods: ["enqueue", "dequeue"],
-  })
+    filePath: __dirname + "/test-lambda.ts",
+  } as FileModule)
   .addCapture(
-    directCapture("config", {
-      apiUrl: "https://api.example.com",
+    CaptureHelper.client({
+      target: storage,
+      symbol: "bucket",
+      methods: ["get"],
+    })
+  )
+  .addCapture(
+    CaptureHelper.client({
+      target: queue,
+      symbol: "queue",
+      methods: ["enqueue", "dequeue"],
+    })
+  )
+  .addCapture(
+    CaptureHelper.direct({
+      symbol: "config",
+      target: {
+        apiUrl: "https://api.example.com",
+      },
     })
   )
   .build("test");

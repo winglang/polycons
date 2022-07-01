@@ -3,7 +3,7 @@ import { posix } from "path";
 import { cwd } from "process";
 import { buildSync } from "esbuild";
 import { Capture } from "./capture";
-import { Module } from "./module";
+import { FileModule, Module } from "./module";
 import { Process } from "./process";
 
 // TODO we need an Asset system
@@ -41,10 +41,17 @@ export class NodeProcessBuilder {
     const entryModuleName = this.entrypoint.split(".")[0];
     const entryExportName = this.entrypoint.split(".")[1];
 
-    const entryModule = this.modules.find((m) => m.name === entryModuleName);
+    const entryModule = this.modules.find(
+      (m) => m.name === entryModuleName
+    ) as FileModule;
 
     if (entryModule == null) {
       throw new Error(`Entry module ${entryModuleName} not found`);
+    }
+
+    if (entryModule.filePath == null) {
+      // TODO only supports single files for now
+      throw new Error(`Module ${entryModule.name} is not a file`);
     }
 
     const mainOutdir = posix.join(cwd(), GLOBAL_OUTPUT, outpath);
@@ -53,13 +60,13 @@ export class NodeProcessBuilder {
     // TODO probs don't need this
 
     const originalOutfile = posix.join(mainOutdir, ORIGINAL_ENTRY_FILE);
-    const originalDirectory = posix.dirname(entryModule.path);
+    const originalDirectory = posix.dirname(entryModule.filePath);
 
     buildSync({
       bundle: true,
       platform: "node",
       keepNames: true,
-      entryPoints: [entryModule.path],
+      entryPoints: [entryModule.filePath],
       format: "cjs",
       outfile: originalOutfile,
       allowOverwrite: true,
@@ -98,10 +105,10 @@ module.exports['${entryExportName}'] = function(originalEvent) {
 
     return {
       name: entryModuleName + "Process",
-      path: entryFile,
+      filePath: entryFile,
       entrypoint: this.entrypoint,
       captures: this.captures,
       imports: this.modules,
-    };
+    } as Process;
   }
 }
