@@ -1,17 +1,6 @@
 import { IConstruct } from "constructs";
 
 /**
- * Map of a polycon qualifier to an existing constructor
- */
-export interface IPolyconFactoryConstructors {
-  readonly [qualifier: string]: new (
-    scope: IConstruct,
-    id: string,
-    props?: any
-  ) => IConstruct;
-}
-
-/**
  *
  */
 export abstract class PolyconFactory {

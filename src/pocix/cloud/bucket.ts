@@ -11,11 +11,6 @@ export interface BucketProps {
   readonly public?: boolean;
 }
 
-export interface IBucketClient {
-  download(path: string): Promise<any>;
-  upload(path: string, value: any): Promise<any>;
-}
-
 export class Bucket extends Polycon implements IBucket {
   public get public(): boolean {
     throw this.proxyError("public");
@@ -24,4 +19,11 @@ export class Bucket extends Polycon implements IBucket {
   constructor(scope: IConstruct, id: string, props?: BucketProps) {
     super(BUCKET_QUALIFIER, scope, id, props);
   }
+}
+
+///
+
+export interface IBucketClient {
+  download(path: string): Promise<any>;
+  upload(path: string, value: any): Promise<any>;
 }

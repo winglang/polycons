@@ -9,11 +9,6 @@ export interface IQueue extends IConstruct {
   addWorkerFunction(func: IFunction): void;
 }
 
-export interface IQueueClient {
-  dequeue(): Promise<any>;
-  enqueue(value: any): Promise<any>;
-}
-
 export interface QueueProps {}
 
 export class Queue extends Polycon implements IQueue {
@@ -28,4 +23,11 @@ export class Queue extends Polycon implements IQueue {
   addWorkerFunction(func: IFunction): void {
     throw this.proxyError("addWorkerFunction", func);
   }
+}
+
+///
+
+export interface IQueueClient {
+  dequeue(): Promise<any>;
+  enqueue(value: any): Promise<any>;
 }
