@@ -2,9 +2,9 @@ import { writeFileSync } from "fs";
 import { posix } from "path";
 import { cwd } from "process";
 import { buildSync } from "esbuild";
-import { Capture } from "./capture";
-import { FileModule, Module } from "./module";
-import { Process } from "./process";
+import { FileModule } from "./module";
+import { Process, ProcessBuilder } from "./process";
+import { IProcessConsumer } from "./process-consumer";
 
 // TODO we need an Asset system
 const GLOBAL_OUTPUT = "polycons.out/process";
@@ -12,31 +12,14 @@ const ORIGINAL_ENTRY_FILE = "__original_entry_bundle.js";
 const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
-export class NodeProcessBuilder {
-  private modules: Module[];
-  private captures: Capture[];
-  private entrypoint: string;
-
-  addEntryModule(exportName: string, module: Module) {
-    this.modules.push(module);
-    this.entrypoint = `${module.name}.${exportName}`;
-    return this;
-  }
-
-  addModule(module: Module) {
-    this.modules.push(module);
-    return this;
-  }
-
-  addCapture(capture: Capture) {
-    this.captures.push(capture);
-    return this;
-  }
-
-  build(outpath: string): Process {
+export class NodeProcessBuilder extends ProcessBuilder {
+  build(consumer: IProcessConsumer): Process {
     if (this.entrypoint == null) {
       throw new Error("Entrypoint not set");
     }
+
+    // TODO idk
+    const outpath = "";
 
     const entryModuleName = this.entrypoint.split(".")[0];
     const entryExportName = this.entrypoint.split(".")[1];
@@ -62,6 +45,8 @@ export class NodeProcessBuilder {
     const originalOutfile = posix.join(mainOutdir, ORIGINAL_ENTRY_FILE);
     const originalDirectory = posix.dirname(entryModule.filePath);
 
+    // TODO add all modules to the bundle
+
     buildSync({
       bundle: true,
       platform: "node",
@@ -72,6 +57,8 @@ export class NodeProcessBuilder {
       allowOverwrite: true,
       absWorkingDir: originalDirectory,
     });
+
+    this.captures.forEach((c) => c.client.bindToProcessConsumer(c, consumer));
 
     // create new entry facade that invokes true entrypoint with two args
     const newEntrypoint = `\
@@ -109,6 +96,6 @@ module.exports['${entryExportName}'] = function(originalEvent) {
       entrypoint: this.entrypoint,
       captures: this.captures,
       imports: this.modules,
-    } as Process;
+    };
   }
 }

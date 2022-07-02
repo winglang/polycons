@@ -1,28 +1,20 @@
 import { resolve } from "path";
 import { IamRole, IamRolePolicyAttachment } from "@cdktf/provider-aws/lib/iam";
 import {
-  LambdaEventSourceMapping,
   LambdaFunction,
   LambdaInvocation,
 } from "@cdktf/provider-aws/lib/lambdafunction";
 import { S3Bucket, S3Object } from "@cdktf/provider-aws/lib/s3";
-import { SqsQueue } from "@cdktf/provider-aws/lib/sqs";
 import { AssetType, TerraformAsset } from "cdktf";
 import { Construct, IConstruct } from "constructs";
 import { std } from "../..";
-import {
-  BucketProps,
-  FunctionProps,
-  IBucket,
-  IFunction,
-  IQueue,
-  QueueProps,
-} from "../../pocix";
+import { FunctionProps, IFunction } from "../../pocix";
 import { PolyconFactory } from "../../polycons";
 import { TFBucket } from "./bucket";
+import { TFQueue } from "./queue";
 
 export class CDKTerraformAWSFactory extends PolyconFactory {
-  public resolve(
+  public resolveConstruct(
     qualifier: string,
     scope: IConstruct,
     id: string,
@@ -41,52 +33,6 @@ export class CDKTerraformAWSFactory extends PolyconFactory {
   }
 }
 
-export class TFQueue extends Construct implements IQueue {
-  public queue: SqsQueue;
-
-  constructor(scope: IConstruct, id: string, _props: QueueProps) {
-    super(scope, id);
-
-    this.queue = new SqsQueue(this, "Queue");
-  }
-
-  enqueue(_stuff: any): void {
-    // TODO
-    throw new Error("Method not implemented.");
-  }
-  addWorkerFunction(func: IFunction): void {
-    if (func instanceof TFLambdaFunction) {
-      new LambdaEventSourceMapping(this, `Worker${func.node.id}`, {
-        eventSourceArn: this.queue.arn,
-        enabled: true,
-        functionName: func.lambda.functionName,
-      });
-    }
-  }
-  bindCapture(obj: any): void {
-    const queuePolicy = {
-      Version: "2012-10-17",
-      Statement: [
-        {
-          // TODO terrible policy
-          Action: "sqs:*",
-          Effect: "Allow",
-          Resource: this.queue.arn,
-        },
-      ],
-    };
-    if (obj instanceof TFLambdaFunction) {
-      obj.lambda.environment.variables[`_${this.node.addr}_ARN`] =
-        this.queue.arn;
-      obj.lambdaRole.putInlinePolicy([
-        {
-          policy: JSON.stringify(queuePolicy),
-        },
-      ]);
-    }
-  }
-}
-
 export class TFLambdaFunction extends Construct implements IFunction {
   public readonly lambda: LambdaFunction;
   public readonly lambdaRole: IamRole;
@@ -94,8 +40,11 @@ export class TFLambdaFunction extends Construct implements IFunction {
   constructor(scope: IConstruct, id: string, props: FunctionProps) {
     super(scope, id);
 
+    const process = props.processBuilder.build(this);
+
     const asset = new TerraformAsset(this, "Asset", {
-      path: resolve(__dirname, props.process.entryFile),
+      // TODO HMM
+      path: process.filePath,
       type: AssetType.FILE,
     });
 
@@ -139,12 +88,15 @@ export class TFLambdaFunction extends Construct implements IFunction {
       functionName: id,
       s3Bucket: bucket.bucket,
       s3Key: lambdaArchive.key,
-      handler: "exports." + props.process.entryName,
+      handler: "exports." + process.entrypoint,
       runtime: "nodejs14.x",
       role: this.lambdaRole.arn,
     });
   }
 
+  setEnvironment(name: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
   invoke(args?: any) {
     new LambdaInvocation(this, "Invoke", {
       functionName: this.lambda.functionName,

@@ -22,10 +22,12 @@ export abstract class CaptureClient {
   private static CLIENT_SYMBOL = Symbol.for("_CaptureClient");
 
   /**
-   * Bind to module that intends to consume this client.
-   * Example use: May add dependencies to the attached module (e.g. node packages)
+   * Optional module to expose to consuming processes
    * */
-  abstract bindToModule(capture: Capture, module: Module): void;
+  public abstract get clientModule(): Module | undefined;
+
+  // Don't need it probably. Modules should be immutable and declare their own deps anyways
+  // abstract bindToModule(capture: Capture, module: Module): void;
 
   /**
    *
@@ -102,15 +104,8 @@ export abstract class CaptureHelper {
 }
 
 export class DirectCaptureClient extends CaptureClient {
-  /**
-   *
-   */
-  constructor() {
-    super();
-  }
-
-  public bindToModule(_capture: Capture, _module: Module) {
-    // no-op
+  public get clientModule(): Module | undefined {
+    return;
   }
 
   public bindToProcessConsumer(_capture: Capture, _consumer: IProcessConsumer) {

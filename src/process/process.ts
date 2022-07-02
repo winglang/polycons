@@ -1,17 +1,13 @@
 import { Capture } from "./capture";
-import { Module } from "./module";
+import { FileModule, Module } from "./module";
 import { IProcessConsumer } from "./process-consumer";
 
-export interface Process extends Module {
+export interface Process extends FileModule {
   /** Format: {module name}.{export} */
   readonly entrypoint: string;
 
   readonly captures: Capture[];
 }
-
-// export interface IProcessBuilderPlugin {
-//   injectPrefix?(builder: ProcessBuilder): void;
-// }
 
 export abstract class ProcessBuilder {
   protected modules: Module[];

@@ -1,9 +1,10 @@
 export interface Module {
   readonly name: string;
 
-  // Will we need an actual module graph? Do we need to reinvent that wheel?
+  // TODO Will we need an actual module graph? Do we need to reinvent that wheel?
   readonly imports?: Module[];
-  readonly exports?: Module[];
+
+  // readonly exports?: Module[];
 }
 
 export interface TextModule extends Module {
@@ -16,4 +17,8 @@ export interface FileModule extends Module {
 
 export interface DirectoryModule extends Module {
   readonly directoryPath: string;
+}
+
+export interface NodeModule extends Module {
+  readonly spec: string;
 }

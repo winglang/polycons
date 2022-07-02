@@ -15,22 +15,22 @@ const app = new CDKTerraformApp();
 const queue = new std.Queue(app, "Queue");
 const storage = new std.Bucket(app, "Storage");
 
-const process = new NodeProcessBuilder()
+const processBuilder = new NodeProcessBuilder()
   .addEntryModule("coolEntry", {
     name: "fun",
     filePath: __dirname + "/test-lambda.ts",
   } as FileModule)
   .addCapture(
     CaptureHelper.client({
-      target: storage,
       symbol: "bucket",
+      target: storage,
       methods: ["get"],
     })
   )
   .addCapture(
     CaptureHelper.client({
-      target: queue,
       symbol: "queue",
+      target: queue,
       methods: ["enqueue", "dequeue"],
     })
   )
@@ -41,8 +41,7 @@ const process = new NodeProcessBuilder()
         apiUrl: "https://api.example.com",
       },
     })
-  )
-  .build("test");
+  );
 
 // const process = new NodeProcess({
 //   id: "1",
@@ -80,7 +79,7 @@ const func = new std.Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
   },
-  process,
+  processBuilder,
 });
 
 // queue.enqueue("blah1");

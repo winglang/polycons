@@ -4,18 +4,15 @@ import {
 } from "@cdktf/provider-aws/lib/s3";
 import { Construct, IConstruct } from "constructs";
 import { BucketProps, IBucket } from "../../pocix";
-import { Capture, CaptureClient } from "../../process/capture";
-import { Module } from "../../process/module";
+import { Capture } from "../../process/capture";
 import { IProcessConsumer } from "../../process/process-consumer";
+import { AWSSDKCaptureClient, AWS_SDK_MODULE } from "./base-client";
 import { TFLambdaFunction } from "./cdktf-aws-factory";
 
 export class TFBucket extends Construct implements IBucket {
   public public: boolean;
   public bucket: S3Bucket;
 
-  /**
-   *
-   */
   constructor(scope: IConstruct, id: string, props?: BucketProps) {
     super(scope, id);
 
@@ -31,39 +28,22 @@ export class TFBucket extends Construct implements IBucket {
       restrictPublicBuckets: !this.public,
     });
   }
-  bind(other: any): void {
-    throw new Error("Method not implemented.");
-  }
-
-  bindCapture(obj: IConstruct): void {
-    const bucketPolicy = {
-      Version: "2012-10-17",
-      Statement: [
-        {
-          // TODO terrible policy
-          Action: "s3:*",
-          Effect: "Allow",
-          Resource: this.bucket.arn,
-        },
-      ],
-    };
-    if (obj instanceof TFLambdaFunction) {
-      obj.lambdaRole.putInlinePolicy([
-        {
-          policy: JSON.stringify(bucketPolicy),
-        },
-      ]);
-    }
-  }
 }
 
-export class BucketCaptureClient implements CaptureClient {
-  bindToModule(capture: Capture, module: Module): void {
-    // TODO add aws-sdk?
-    throw new Error("Method not implemented.");
+export class BucketCaptureClient extends AWSSDKCaptureClient {
+  constructor() {
+    super({
+      name: "aws-sdk-bucket-client",
+      filePath: `${__dirname}/runtime/bucket-client.ts`,
+      imports: [AWS_SDK_MODULE],
+    });
   }
+
   bindToProcessConsumer(capture: Capture, consumer: IProcessConsumer): void {
-    // TODO only supports lambda
+    const target = capture.target as TFBucket;
+    consumer.setEnvironment(this.getEnvName(capture), target.bucket.arn);
+
+    // TODO only supports lambda for now
     if (consumer instanceof TFLambdaFunction) {
       consumer.lambdaRole.putInlinePolicy([
         {
@@ -71,20 +51,16 @@ export class BucketCaptureClient implements CaptureClient {
             Version: "2012-10-17",
             Statement: [
               {
-                // TODO terrible policy
+                // TODO this policy sucks
                 Action: "s3:*",
                 Effect: "Allow",
-                Resource: (capture.target as TFBucket).bucket.arn,
+                Resource: target.bucket.arn,
               },
             ],
           }),
         },
       ]);
     }
-    throw new Error("Method not implemented.");
-  }
-  renderCapture(capture: Capture): string {
-    // TODO a require statement to import the client code
     throw new Error("Method not implemented.");
   }
 }
