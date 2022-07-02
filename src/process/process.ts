@@ -10,8 +10,8 @@ export interface Process extends FileModule {
 }
 
 export abstract class ProcessBuilder {
-  protected modules: Module[];
-  protected captures: Capture[];
+  protected modules: Module[] = [];
+  protected captures: Capture[] = [];
   protected entrypoint: string;
 
   addEntryModule(exportName: string, module: Module) {

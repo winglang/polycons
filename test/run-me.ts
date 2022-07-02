@@ -4,11 +4,6 @@ import { CaptureHelper } from "../src/process/capture";
 import { FileModule } from "../src/process/module";
 import { NodeProcessBuilder } from "../src/process/node-process";
 import { CDKTerraformApp } from "../src/providers/cdktf-aws/cdkts-app";
-// import { LocalNodeJSApp } from "../src/providers/local-nodejs/nodejs-app";
-
-// const clientProcess = new NodeProcess({
-//   entryFile: __dirname + "/src/providers/cdktf-aws/bucket-client.ts",
-// });
 
 const app = new CDKTerraformApp();
 

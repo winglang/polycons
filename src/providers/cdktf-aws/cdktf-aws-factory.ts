@@ -10,8 +10,9 @@ import { Construct, IConstruct } from "constructs";
 import { std } from "../..";
 import { FunctionProps, IFunction } from "../../pocix";
 import { PolyconFactory } from "../../polycons";
-import { TFBucket } from "./bucket";
-import { TFQueue } from "./queue";
+import { CaptureClient } from "../../process";
+import { BucketCaptureClient, TFBucket } from "./bucket";
+import { QueueCaptureClient, TFQueue } from "./queue";
 
 export class CDKTerraformAWSFactory extends PolyconFactory {
   public resolveConstruct(
@@ -22,9 +23,13 @@ export class CDKTerraformAWSFactory extends PolyconFactory {
   ) {
     switch (qualifier) {
       case std.BUCKET_QUALIFIER:
-        return new TFBucket(scope, id, props);
+        const bucket = new TFBucket(scope, id, props);
+        CaptureClient.register(bucket, new BucketCaptureClient());
+        return bucket;
       case std.QUEUE_QUALIFIER:
-        return new TFQueue(scope, id, props);
+        const queue = new TFQueue(scope, id, props);
+        CaptureClient.register(queue, new QueueCaptureClient());
+        return queue;
       case std.FUNCTION_QUALIFIER:
         return new TFLambdaFunction(scope, id, props);
       default:
@@ -92,11 +97,17 @@ export class TFLambdaFunction extends Construct implements IFunction {
       runtime: "nodejs14.x",
       role: this.lambdaRole.arn,
     });
+
+    process.captures.forEach((c) => c.client.bindToProcessConsumer(c, this));
   }
 
   setEnvironment(name: string, value: string): void {
-    throw new Error("Method not implemented.");
+    // this.lambda.environment.variables[name] = value;
+    this.lambda.addOverride(`environment.variables.${name}`, value);
+    // console.log(name, value);
+    // console.log(this.lambda.environment.variables);
   }
+
   invoke(args?: any) {
     new LambdaInvocation(this, "Invoke", {
       functionName: this.lambda.functionName,

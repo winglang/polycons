@@ -61,6 +61,5 @@ export class BucketCaptureClient extends AWSSDKCaptureClient {
         },
       ]);
     }
-    throw new Error("Method not implemented.");
   }
 }

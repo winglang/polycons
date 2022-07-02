@@ -13,7 +13,7 @@ const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
 export class NodeProcessBuilder extends ProcessBuilder {
-  build(consumer: IProcessConsumer): Process {
+  build(_consumer: IProcessConsumer): Process {
     if (this.entrypoint == null) {
       throw new Error("Entrypoint not set");
     }
@@ -57,8 +57,6 @@ export class NodeProcessBuilder extends ProcessBuilder {
       allowOverwrite: true,
       absWorkingDir: originalDirectory,
     });
-
-    this.captures.forEach((c) => c.client.bindToProcessConsumer(c, consumer));
 
     // create new entry facade that invokes true entrypoint with two args
     const newEntrypoint = `\

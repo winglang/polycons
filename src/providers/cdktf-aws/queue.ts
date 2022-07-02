@@ -63,6 +63,5 @@ export class QueueCaptureClient extends AWSSDKCaptureClient {
         },
       ]);
     }
-    throw new Error("Method not implemented.");
   }
 }
