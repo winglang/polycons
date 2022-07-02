@@ -13,7 +13,7 @@ const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
 export class NodeProcessBuilder extends ProcessBuilder {
-  build(_consumer: IProcessConsumer): Process {
+  createProcess(_consumer: IProcessConsumer): Process {
     if (this.entrypoint == null) {
       throw new Error("Entrypoint not set");
     }

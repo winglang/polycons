@@ -12,7 +12,7 @@ export interface Process extends FileModule {
 export abstract class ProcessBuilder {
   protected modules: Module[] = [];
   protected captures: Capture[] = [];
-  protected entrypoint: string;
+  protected entrypoint: string = "";
 
   addEntryModule(exportName: string, module: Module) {
     this.modules.push(module);
@@ -30,5 +30,5 @@ export abstract class ProcessBuilder {
     return this;
   }
 
-  abstract build(consumer: IProcessConsumer): Process;
+  abstract createProcess(consumer: IProcessConsumer): Process;
 }

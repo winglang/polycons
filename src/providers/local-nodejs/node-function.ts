@@ -10,11 +10,12 @@ export class NodeFunction extends Construct implements std.IFunction {
 
   constructor(scope: IConstruct, id: string, props: std.FunctionProps) {
     super(scope, id);
-    this.entrypoint = props.process.entryName;
+    const process = props.processBuilder.createProcess(this);
 
-    props.process.entryFile;
+    this.entrypoint = process.entrypoint;
+
     this.module = new JavascriptFileModule(this, "File", {
-      path: props.process.entryFile,
+      path: process.filePath,
       entrypoint: this.entrypoint,
     });
 
@@ -30,17 +31,8 @@ export class NodeFunction extends Construct implements std.IFunction {
       );
     }
   }
-
-  addEnvironment(env: { [name: string]: string }): void {
-    this.module.prefix +=
-      Object.entries(env)
-        .map(
-          (entry) => `process.env.${entry[0]} = ${JSON.stringify(entry[1])};`
-        )
-        .join("\n") + "\n";
-  }
-  grantable(): IConstruct {
-    return this;
+  setEnvironment(name: string, value: string): void {
+    this.module.prefix += `process.env.${name} = ${value};\n`;
   }
 
   invoke(args?: any) {

@@ -2,13 +2,13 @@ import { Module } from "./module";
 import { IProcessConsumer } from "./process-consumer";
 
 export abstract class CaptureClient {
-  public static of(target: any): CaptureClient | null {
+  public static of(target: any): CaptureClient | undefined {
     // If it has a client, use that
     const client = target[CaptureClient.CLIENT_SYMBOL] as CaptureClient;
     if (client) {
       return client;
     } else {
-      return null;
+      return undefined;
     }
   }
 

@@ -19,7 +19,7 @@ export class Function extends Polycon implements IFunction {
   setEnvironment(name: string, value: string): void {
     throw this.proxyError("setEnvironment", name, value);
   }
-  invoke(args?: any) {
+  invoke(args?: any): any {
     throw this.proxyError("invoke", args);
   }
 }

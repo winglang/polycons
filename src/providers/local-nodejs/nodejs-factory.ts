@@ -4,9 +4,9 @@ import { NodeBucket } from "./node-bucket";
 import { NodeFunction } from "./node-function";
 import { NodeQueue } from "./node-queue";
 
-// Sythesized to single nodejs file
+// Synthesized to single nodejs file
 export class LocalNodeJSFactory extends polycons.PolyconFactory {
-  public resolve(
+  public resolveConstruct(
     qualifier: string,
     scope: IConstruct,
     id: string,

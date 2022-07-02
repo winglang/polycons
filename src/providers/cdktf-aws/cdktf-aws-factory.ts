@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { IamRole, IamRolePolicyAttachment } from "@cdktf/provider-aws/lib/iam";
 import {
   LambdaFunction,
@@ -10,7 +9,7 @@ import { Construct, IConstruct } from "constructs";
 import { std } from "../..";
 import { FunctionProps, IFunction } from "../../pocix";
 import { PolyconFactory } from "../../polycons";
-import { CaptureClient } from "../../process";
+import { Capture, CaptureClient } from "../../process";
 import { BucketCaptureClient, TFBucket } from "./bucket";
 import { QueueCaptureClient, TFQueue } from "./queue";
 
@@ -45,7 +44,7 @@ export class TFLambdaFunction extends Construct implements IFunction {
   constructor(scope: IConstruct, id: string, props: FunctionProps) {
     super(scope, id);
 
-    const process = props.processBuilder.build(this);
+    const process = props.processBuilder.createProcess(this);
 
     const asset = new TerraformAsset(this, "Asset", {
       // TODO HMM
@@ -98,14 +97,13 @@ export class TFLambdaFunction extends Construct implements IFunction {
       role: this.lambdaRole.arn,
     });
 
-    process.captures.forEach((c) => c.client.bindToProcessConsumer(c, this));
+    process.captures.forEach((c: Capture) =>
+      c.client.bindToProcessConsumer(c, this)
+    );
   }
 
   setEnvironment(name: string, value: string): void {
-    // this.lambda.environment.variables[name] = value;
     this.lambda.addOverride(`environment.variables.${name}`, value);
-    // console.log(name, value);
-    // console.log(this.lambda.environment.variables);
   }
 
   invoke(args?: any) {

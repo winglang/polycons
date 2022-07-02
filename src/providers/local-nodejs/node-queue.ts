@@ -1,16 +1,12 @@
 import { IConstruct } from "constructs";
 import { std } from "../..";
 import { IQueueClient } from "../../pocix";
-import { Capture, ICapturable, ICapture } from "../../process-construction";
 import { JavascriptFunctionModule } from "./javascript-function-module";
 import { NodeFunction } from "./node-function";
 import { RawJavascriptModule } from "./raw-module";
 
 // The worst "fifo queue" implementation you've ever seen lol
-export class NodeQueue
-  extends JavascriptFunctionModule
-  implements std.IQueue, ICapturable
-{
+export class NodeQueue extends JavascriptFunctionModule implements std.IQueue {
   constructor(scope: IConstruct, id: string) {
     const clientFunction: () => IQueueClient = () => {
       const _data: any[] = [];
@@ -48,10 +44,6 @@ export class NodeQueue
     this.subAccess = ".default";
   }
 
-  capture(options: ICapture): Capture {
-    throw new Error("Method not implemented.");
-  }
-
   enqueue(stuff: any): void {
     new RawJavascriptModule(
       this,
@@ -61,6 +53,7 @@ export class NodeQueue
       )}\`))`
     );
   }
+
   addWorkerFunction(func: NodeFunction): void {
     const construct = new RawJavascriptModule(
       func,
