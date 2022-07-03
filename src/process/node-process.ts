@@ -4,7 +4,6 @@ import { cwd } from "process";
 import { buildSync } from "esbuild";
 import { FileModule } from "./module";
 import { Process, ProcessBuilder } from "./process";
-import { IProcessConsumer } from "./process-consumer";
 
 // TODO we need an Asset system
 const GLOBAL_OUTPUT = "polycons.out/process";
@@ -13,7 +12,7 @@ const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
 export class NodeProcessBuilder extends ProcessBuilder {
-  createProcess(_consumer: IProcessConsumer): Process {
+  createProcess(): Process {
     if (this.entrypoint == null) {
       throw new Error("Entrypoint not set");
     }

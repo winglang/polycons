@@ -1,6 +1,5 @@
 import { Capture } from "./capture";
 import { FileModule, Module } from "./module";
-import { IProcessConsumer } from "./process-consumer";
 
 export interface Process extends FileModule {
   /** Format: {module name}.{export} */
@@ -30,5 +29,5 @@ export abstract class ProcessBuilder {
     return this;
   }
 
-  abstract createProcess(consumer: IProcessConsumer): Process;
+  abstract createProcess(): Process;
 }
