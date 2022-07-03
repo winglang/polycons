@@ -10,7 +10,7 @@ export class NodeFunction extends Construct implements std.IFunction {
 
   constructor(scope: IConstruct, id: string, props: std.FunctionProps) {
     super(scope, id);
-    const process = props.processBuilder.createProcess(this);
+    const process = props.process;
 
     this.entrypoint = process.entrypoint;
 

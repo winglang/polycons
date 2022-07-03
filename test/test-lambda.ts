@@ -1,3 +1,11 @@
+/**
+ * Things I have to worry about when writing this:
+ * - Choosing the correct client type
+ *
+ * Things I don't have to worry about when writing this: (framework takes care of it)
+ * - Instantiating a client
+ */
+
 import chalk from "chalk";
 import { IBucketClient, IQueueClient } from "../src/pocix";
 
@@ -5,6 +13,7 @@ interface MyCaptures {
   bucket: IBucketClient;
   queue: IQueueClient;
 }
+
 // Hack
 export async function coolEntry(_event, captures: MyCaptures) {
   console.group(chalk.yellow(`process.env.TEST_ENV="${process.env.TEST_ENV}"`));

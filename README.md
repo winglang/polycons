@@ -1,19 +1,17 @@
 # Polycons
 
-Polycons ("polymorphic constructs").
-
-Consider this the L4 Construct
+Polycons ("polymorphic constructs") framework.
 
 ## Current Repo Organization
 
 This branch is currently muddling together multiple concepts that do not normally belong together:
 
-polycons (/src root)
-standard library (/src/std)
-factory implementations (local nodejs currently) (/src/providers) 
+- polycons base `(/src root)`
+- example standard library `(/src/pocix)`
+- "process" handling `(/src/process)` *(real name TBD)*
+- target implementations `(/src/providers)` *(local nodejs and cdktf currently)*
 
-This is done currently to be able to do some e2e experiments.  
-This repo should end up only being very abstract, with some interfaces and base abstract classes
+This structure easily allows e2e experiments and does not reflect the final package/repo structure.
 
 ## Mark's Notes
 
@@ -32,13 +30,6 @@ Should you be able to use "raw"/"concrete" constructs without going through the 
 ## Polycon
 
 A construct whose underlying implementation is determined at runtime.
-
-## Capture
-
-
-## Resolver
-
-Responsible for determination where to concretize polycons.
 
 ## Factory
 
@@ -116,8 +107,8 @@ CRON system
 Easy output system for display/data/automation purposes
 
 ### Secret
-? How to provision secrets securely
-? Consume secrets in other resources in a provider-specific way (per-factory value Resolvers?)
+? How to provision secrets securely? 
+Consume secrets in other resources in a provider-specific way (per-factory value Resolvers?)
 
 ### Document
 Key/value object storage
@@ -126,7 +117,12 @@ Name is kinda stolen from Nitric
 ### StateMachine
 
 ## Diagrams
+![processes](./docs/process.drawio.svg)
+
+---
 
 ![polycons](./docs/polycons.drawio.svg)
+
+---
 
 ![stdlib](./docs/stdlib.drawio.svg)

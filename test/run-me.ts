@@ -38,43 +38,11 @@ const processBuilder = new NodeProcessBuilder()
     })
   );
 
-// const process = new NodeProcess({
-//   id: "1",
-//   entryFile: __dirname + "/test-lambda.ts",
-//   entryName: "coolEntry",
-//   captures: [
-//     {
-//       target: storage,
-//       symbol: "bucket",
-//       methods: ["get"],
-//       // client: {
-//       //   renderCapture(obj: IConstruct) {
-//       //     return `require('${clientProcess.outputDir}/bucket-client.js')(process.env._${obj.node.addr}_ARN)`;
-//       //   },
-//       // },
-//     },
-//     {
-//       target: queue,
-//       symbol: "queue",
-//       methods: ["enqueue", "dequeue"],
-//       // client: {
-//       //   renderCapture(obj: any) {
-//       //     return "''";
-//       //     // return `require('../../local-nodejs/prebundle/${obj.node.addr}.js').default`;
-//       //   },
-//       // },
-//     },
-//     directCapture("config", {
-//       apiUrl: "https://api.example.com",
-//     }),
-//   ],
-// });
-
 const func = new std.Function(app, "AdderLambda", {
   env: {
     TEST_ENV: "cool value",
   },
-  processBuilder,
+  process: processBuilder.createProcess(),
 });
 
 // queue.enqueue("blah1");

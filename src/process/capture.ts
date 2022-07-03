@@ -1,6 +1,9 @@
 import { Module } from "./module";
 import { IProcessConsumer } from "./process-consumer";
 
+/**
+ * Client to interact with preflight objects while inflight
+ */
 export abstract class CaptureClient {
   public static of(target: any): CaptureClient | undefined {
     // If it has a client, use that
@@ -12,6 +15,9 @@ export abstract class CaptureClient {
     }
   }
 
+  /**
+   * Allows you to attach a client to a given object to provide a default/expected client
+   */
   public static register(target: any, client: CaptureClient) {
     Object.defineProperty(target, CaptureClient.CLIENT_SYMBOL, {
       value: client,
@@ -30,8 +36,9 @@ export abstract class CaptureClient {
   // abstract bindToModule(capture: Capture, module: Module): void;
 
   /**
-   *
    * May add system dependencies (e.g. environment variables)
+   *
+   * Note: The responsibility of invoking this method is typically done the IProcessConsumer
    * */
   abstract bindToProcessConsumer(
     capture: Capture,
@@ -76,6 +83,11 @@ export interface Capture {
 }
 
 export abstract class CaptureHelper {
+  /**
+   * Creates a Capture to interact with the target object through an ICaptureClient
+   *
+   * The client is fetched from the target itself with `CaptureClient.of(target)`
+   */
   public static client(options: ClientCaptureOptions): Capture {
     const client = CaptureClient.of(options.target);
     if (!client) {
@@ -88,6 +100,9 @@ export abstract class CaptureHelper {
     };
   }
 
+  /**
+   * Creates a Capture represented via a client that serializes the target
+   */
   public static direct(options: BaseCaptureOptions): Capture {
     return {
       ...options,
@@ -96,6 +111,9 @@ export abstract class CaptureHelper {
     };
   }
 
+  /**
+   * Creates a Capture to interact with the target object through the provided ICaptureClient
+   */
   public static custom(options: CaptureOptions): Capture {
     return options;
   }
@@ -108,9 +126,13 @@ export class DirectCaptureClient extends CaptureClient {
     return;
   }
 
-  public bindToProcessConsumer(_capture: Capture, _consumer: IProcessConsumer) {
-    // no-op
-  }
+  /**
+   * No binding required
+   */
+  public bindToProcessConsumer(
+    _capture: Capture,
+    _consumer: IProcessConsumer
+  ) {}
 
   public renderCapture(capture: Capture): string {
     return JSON.stringify(capture.target);

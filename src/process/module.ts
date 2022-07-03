@@ -1,3 +1,9 @@
+/**
+ * Purpose: Immutable description of code "module"
+ * "module" in this sense should be very similar in concept to an ESM, WASM, or other module.
+ *
+ * TODO Not really sure about a model for this yet
+ */
 export interface Module {
   readonly name: string;
 
@@ -7,6 +13,9 @@ export interface Module {
   // readonly exports?: Module[];
 }
 
+/**
+ * Raw/in-memory module data
+ */
 export interface TextModule extends Module {
   readonly text: string;
 }

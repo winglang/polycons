@@ -44,7 +44,7 @@ export class TFLambdaFunction extends Construct implements IFunction {
   constructor(scope: IConstruct, id: string, props: FunctionProps) {
     super(scope, id);
 
-    const process = props.processBuilder.createProcess();
+    const process = props.process;
 
     const asset = new TerraformAsset(this, "Asset", {
       // TODO HMM

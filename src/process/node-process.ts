@@ -11,6 +11,9 @@ const ORIGINAL_ENTRY_FILE = "__original_entry_bundle.js";
 const NEW_ENTRY_FILE = "__new_entry_bundle.js";
 const FINAL_BUNDLE = "final_bundle.js";
 
+/**
+ * Create a single-file bundle to be run in a NodeJS process.
+ */
 export class NodeProcessBuilder extends ProcessBuilder {
   createProcess(): Process {
     if (this.entrypoint == null) {
@@ -18,7 +21,7 @@ export class NodeProcessBuilder extends ProcessBuilder {
     }
 
     // TODO idk
-    const outpath = "";
+    const outpath = this.entrypoint;
 
     const entryModuleName = this.entrypoint.split(".")[0];
     const entryExportName = this.entrypoint.split(".")[1];
@@ -59,17 +62,19 @@ export class NodeProcessBuilder extends ProcessBuilder {
 
     // create new entry facade that invokes true entrypoint with two args
     const newEntrypoint = `\
+const CAPTURES = {
+${this.captures
+  .map(
+    (entry) =>
+      `  ${entry.symbol}: ${(
+        entry.client ?? entry.target.client
+      )?.renderCapture(entry)},`
+  )
+  .join("\n")}
+}
+
 module.exports['${entryExportName}'] = function(originalEvent) {
-    return require('${originalOutfile}')['${entryExportName}'](originalEvent, {
-        ${this.captures
-          .map(
-            (entry) =>
-              `        ${entry.symbol}: ${(
-                entry.client ?? entry.target.client
-              )?.renderCapture(entry)},`
-          )
-          .join("\n")}
-          });
+    return require('${originalOutfile}')['${entryExportName}'](originalEvent, CAPTURES);
 }`;
     const newEntryPath = posix.join(mainOutdir, NEW_ENTRY_FILE);
     writeFileSync(newEntryPath, newEntrypoint);
