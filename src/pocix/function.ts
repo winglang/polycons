@@ -3,9 +3,8 @@ import { Polycon, Process } from "../polycons";
 
 export const FUNCTION_QUALIFIER = "pocix.Function";
 
-// TODO: implement IProcessConsumer?
 export interface IFunction extends IConstruct {
-  invoke(event: any): any;
+  setEnvironment(name: string, value: string): void;
 }
 
 export interface FunctionProps {
@@ -21,8 +20,8 @@ export class Function extends Polycon implements IFunction {
   public setEnvironment(name: string, value: string): void {
     throw this.proxyError("setEnvironment", name, value);
   }
+}
 
-  public invoke(args?: any): any {
-    throw this.proxyError("invoke", args);
-  }
+export interface IFunctionClient {
+  invoke(event: any): Promise<any>;
 }
