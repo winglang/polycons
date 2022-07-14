@@ -33,5 +33,5 @@ export class Bucket extends Polycon implements IBucket {
 
 export interface IBucketClient {
   download(path: string): Promise<any>;
-  upload(path: string, value: any): Promise<void>;
+  upload(path: string, value: any): Promise<any>;
 }
