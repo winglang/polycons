@@ -4,7 +4,7 @@ import { Code } from "./process";
 
 export interface IClientRecipe {
   code: Code;
-  bindToCompute(name: string, target: any, compute: IConstruct): void;
+  bindToCompute(name: string, compute: IConstruct): void;
 }
 
 export class Capture {
@@ -15,19 +15,16 @@ export class Capture {
 
     const recipe = {
       code: Code.fromInline(value.toString()),
-      bindToCompute(_name: string, _target: any, _compute: IConstruct) {
+      bindToCompute(_name: string, _compute: IConstruct) {
         return;
       },
     };
-    return new Capture(value, recipe);
+    return new Capture(recipe);
   }
 
   public static polycon(polycon: Polycon) {
-    return new Capture(polycon, polycon.capture());
+    return new Capture(polycon.capture());
   }
 
-  private constructor(
-    public readonly value: any,
-    public readonly recipe: IClientRecipe
-  ) {}
+  private constructor(public readonly recipe: IClientRecipe) {}
 }

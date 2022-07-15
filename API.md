@@ -308,7 +308,6 @@ Capture.primitive(value: any)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#polycons.Capture.property.recipe">recipe</a></code> | <code><a href="#polycons.IClientRecipe">IClientRecipe</a></code> | *No description.* |
-| <code><a href="#polycons.Capture.property.value">value</a></code> | <code>any</code> | *No description.* |
 
 ---
 
@@ -319,16 +318,6 @@ public readonly recipe: IClientRecipe;
 ```
 
 - *Type:* <a href="#polycons.IClientRecipe">IClientRecipe</a>
-
----
-
-##### `value`<sup>Required</sup> <a name="value" id="polycons.Capture.property.value"></a>
-
-```typescript
-public readonly value: any;
-```
-
-- *Type:* any
 
 ---
 
@@ -1074,18 +1063,12 @@ public upload(path: string, value: any): any
 ##### `bindToCompute` <a name="bindToCompute" id="polycons.IClientRecipe.bindToCompute"></a>
 
 ```typescript
-public bindToCompute(name: string, target: any, compute: IConstruct): void
+public bindToCompute(name: string, compute: IConstruct): void
 ```
 
 ###### `name`<sup>Required</sup> <a name="name" id="polycons.IClientRecipe.bindToCompute.parameter.name"></a>
 
 - *Type:* string
-
----
-
-###### `target`<sup>Required</sup> <a name="target" id="polycons.IClientRecipe.bindToCompute.parameter.target"></a>
-
-- *Type:* any
 
 ---
 

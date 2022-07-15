@@ -34,10 +34,10 @@ export class CdktfAwsBucket extends Construct implements IBucket {
   }
 
   public capture(): IClientRecipe {
+    const bucket = this.bucket;
     return {
       code: Code.fromFile(join(__dirname, "bucket-client.ts")),
-      bindToCompute(name: string, target: any, consumer: IConstruct): void {
-        const bucket = (target as CdktfAwsBucket).bucket;
+      bindToCompute(name: string, consumer: IConstruct): void {
         if (consumer instanceof CdktfAwsFunction) {
           consumer.lambda.putEnvironment({
             variables: {
@@ -53,7 +53,7 @@ export class CdktfAwsBucket extends Construct implements IBucket {
                     // TODO this policy sucks
                     Action: "s3:*",
                     Effect: "Allow",
-                    Resource: target.bucket.arn,
+                    Resource: bucket.arn,
                   },
                 ],
               }),

@@ -76,7 +76,7 @@ export class CdktfAwsFunction extends Construct implements IFunction {
     });
 
     for (const [name, capture] of Object.entries(process.captures)) {
-      capture.recipe.bindToCompute(name, capture.value, this);
+      capture.recipe.bindToCompute(name, this);
     }
   }
 
