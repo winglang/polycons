@@ -4,7 +4,7 @@ import { App as CdktfApp, TerraformStack } from "cdktf";
 import { Construct } from "constructs";
 import { Bucket, Function } from "../src/pocix";
 import { CdktfAwsFactory } from "../src/pocix-cdktf";
-import { Capture, Code, PolyconFactory } from "../src/polycons";
+import { Capture, Code, PolyconFactory, Process } from "../src/polycons";
 
 // test("cdktf bucket with function", () => {
 //   const snapshot = Testing.synthScope((scope) => {
@@ -30,14 +30,13 @@ test("output cdktf bucket with function", () => {
 
 function addBucketAndFunction(scope: Construct) {
   const bucket = new Bucket(scope, "MyBucket");
-  new Function(scope, "MyFunction", {
-    process: {
-      code: Code.fromFile(join(__dirname, "some-code.js")),
-      entrypoint: "handler",
-      captures: {
-        foo: Capture.primitive(123),
-        bucket: Capture.polycon(bucket),
-      },
+  const process = new Process({
+    code: Code.fromFile(join(__dirname, "some-code.js")),
+    entrypoint: "handler",
+    captures: {
+      foo: Capture.primitive(123),
+      bucket: Capture.polycon(bucket),
     },
   });
+  new Function(scope, "MyFunction", { process });
 }
