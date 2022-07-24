@@ -1,4 +1,4 @@
-const { cdk } = require("projen");
+const { cdk, SampleDir } = require("projen");
 
 const project = new cdk.JsiiProject({
   name: "polycons",
@@ -23,5 +23,7 @@ const project = new cdk.JsiiProject({
 // just for testing
 project.addGitIgnore("polycons.out/");
 project.addGitIgnore("*.tfstate");
+
+new SampleDir(project, "polycons.out/cdktf.out", { files: { ".gitkeep": "" } }); // for testing
 
 project.synth();

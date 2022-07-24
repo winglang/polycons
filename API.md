@@ -70,27 +70,27 @@ public readonly env: {[ key: string ]: any};
 
 ---
 
-### Process <a name="Process" id="polycons.Process"></a>
+### ProcessProps <a name="ProcessProps" id="polycons.ProcessProps"></a>
 
-#### Initializer <a name="Initializer" id="polycons.Process.Initializer"></a>
+#### Initializer <a name="Initializer" id="polycons.ProcessProps.Initializer"></a>
 
 ```typescript
-import { Process } from 'polycons'
+import { ProcessProps } from 'polycons'
 
-const process: Process = { ... }
+const processProps: ProcessProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#polycons.Capture">Capture</a>}</code> | *No description.* |
-| <code><a href="#polycons.Process.property.code">code</a></code> | <code><a href="#polycons.Code">Code</a></code> | *No description.* |
-| <code><a href="#polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#polycons.ProcessProps.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#polycons.Capture">Capture</a>}</code> | *No description.* |
+| <code><a href="#polycons.ProcessProps.property.code">code</a></code> | <code><a href="#polycons.Code">Code</a></code> | *No description.* |
+| <code><a href="#polycons.ProcessProps.property.entrypoint">entrypoint</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `captures`<sup>Required</sup> <a name="captures" id="polycons.Process.property.captures"></a>
+##### `captures`<sup>Required</sup> <a name="captures" id="polycons.ProcessProps.property.captures"></a>
 
 ```typescript
 public readonly captures: {[ key: string ]: Capture};
@@ -100,7 +100,7 @@ public readonly captures: {[ key: string ]: Capture};
 
 ---
 
-##### `code`<sup>Required</sup> <a name="code" id="polycons.Process.property.code"></a>
+##### `code`<sup>Required</sup> <a name="code" id="polycons.ProcessProps.property.code"></a>
 
 ```typescript
 public readonly code: Code;
@@ -110,7 +110,7 @@ public readonly code: Code;
 
 ---
 
-##### `entrypoint`<sup>Required</sup> <a name="entrypoint" id="polycons.Process.property.entrypoint"></a>
+##### `entrypoint`<sup>Required</sup> <a name="entrypoint" id="polycons.ProcessProps.property.entrypoint"></a>
 
 ```typescript
 public readonly entrypoint: string;
@@ -824,6 +824,71 @@ PolyconFactory.register(scope: IConstruct, factory: PolyconFactory)
 
 ---
 
+
+
+### Process <a name="Process" id="polycons.Process"></a>
+
+#### Initializers <a name="Initializers" id="polycons.Process.Initializer"></a>
+
+```typescript
+import { Process } from 'polycons'
+
+new Process(props: ProcessProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#polycons.Process.Initializer.parameter.props">props</a></code> | <code><a href="#polycons.ProcessProps">ProcessProps</a></code> | *No description.* |
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="polycons.Process.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#polycons.ProcessProps">ProcessProps</a>
+
+---
+
+
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#polycons.Capture">Capture</a>}</code> | *No description.* |
+| <code><a href="#polycons.Process.property.code">code</a></code> | <code><a href="#polycons.Code">Code</a></code> | *No description.* |
+| <code><a href="#polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `captures`<sup>Required</sup> <a name="captures" id="polycons.Process.property.captures"></a>
+
+```typescript
+public readonly captures: {[ key: string ]: Capture};
+```
+
+- *Type:* {[ key: string ]: <a href="#polycons.Capture">Capture</a>}
+
+---
+
+##### `code`<sup>Required</sup> <a name="code" id="polycons.Process.property.code"></a>
+
+```typescript
+public readonly code: Code;
+```
+
+- *Type:* <a href="#polycons.Code">Code</a>
+
+---
+
+##### `entrypoint`<sup>Required</sup> <a name="entrypoint" id="polycons.Process.property.entrypoint"></a>
+
+```typescript
+public readonly entrypoint: string;
+```
+
+- *Type:* string
+
+---
 
 
 ### Queue <a name="Queue" id="polycons.Queue"></a>

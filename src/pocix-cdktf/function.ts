@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import { IamRole, IamRolePolicyAttachment } from "@cdktf/provider-aws/lib/iam";
 import {
   LambdaFunction,
@@ -6,7 +8,9 @@ import {
 import { S3Bucket, S3Object } from "@cdktf/provider-aws/lib/s3";
 import { AssetType, TerraformAsset } from "cdktf";
 import { Construct } from "constructs";
+import { buildSync } from "esbuild";
 import { FunctionProps, IFunction } from "../pocix";
+import { Capture, Process } from "../polycons";
 
 export class CdktfAwsFunction extends Construct implements IFunction {
   public readonly lambda: LambdaFunction;
@@ -16,6 +20,8 @@ export class CdktfAwsFunction extends Construct implements IFunction {
     super(scope, id);
 
     const process = props.process;
+
+    this.rewriteHandler(process);
 
     const lambdaRolePolicy = {
       Version: "2012-10-17",
@@ -80,14 +86,61 @@ export class CdktfAwsFunction extends Construct implements IFunction {
     }
   }
 
-  setEnvironment(name: string, value: string): void {
+  private rewriteHandler(process: Process) {
+    // TODO: handle inline text case
+    const targetPath = process.code.path!;
+    const targetDir = path.dirname(targetPath);
+    const targetFile = path.basename(targetPath);
+
+    // index.handler -> handler
+    const entryExportName = process.entrypoint.split(".")[1];
+
+    const newEntrypoint = path.join(targetDir, targetFile + ".new.js");
+    fs.writeFileSync(
+      newEntrypoint,
+      `\
+const CAPTURES = {
+${Object.entries(process.captures)
+  .map(([name, capture]) => `  ${name}: ${renderCapture(name, capture)},`)
+  .join("\n")}
+};
+
+module.exports['${entryExportName}'] = function(originalEvent) {
+    return require('${targetPath}')['${entryExportName}'](originalEvent, CAPTURES);
+};`
+    );
+
+    buildSync({
+      bundle: true,
+      target: "node16",
+      platform: "node",
+      format: "cjs",
+      entryPoints: [newEntrypoint],
+      absWorkingDir: targetDir,
+      outfile: targetPath,
+      external: ["aws-sdk"],
+      allowOverwrite: true,
+    });
+  }
+
+  public setEnvironment(name: string, value: string): void {
     this.lambda.addOverride(`environment.variables.${name}`, value);
   }
 
-  invoke(args?: any) {
+  public invoke(args?: any) {
     new LambdaInvocation(this, "Invoke", {
       functionName: this.lambda.functionName,
       input: args ? JSON.stringify(args) : "",
     });
+  }
+}
+
+function renderCapture(name: string, capture: Capture): string {
+  if (capture.recipe.code.path) {
+    return `require("${capture.recipe.code.path}")(process.env["__CAPTURE_SYM_${name}}"])`;
+  } else if (capture.recipe.code.text) {
+    return capture.recipe.code.text;
+  } else {
+    throw new Error("No code found in capture.");
   }
 }
