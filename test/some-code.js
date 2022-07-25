@@ -173,6 +173,9 @@ var require_some_code = __commonJS({
             var __esm222 = (fn, res) => function __init() {
               return fn && (res = (0, fn[__getOwnPropNames222(fn)[0]])(fn = 0)), res;
             };
+            var __commonJS222 = (cb, mod) => function __require() {
+              return mod || (0, cb[__getOwnPropNames222(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+            };
             var __export222 = (target, all) => {
               for (var name in all)
                 __defProp222(target, name, { get: all[name], enumerable: true });
@@ -216,17 +219,78 @@ var require_some_code = __commonJS({
                 };
               }
             });
-            var some_code_exports = {};
-            __export222(some_code_exports, {
-              handler: () => handler
-            });
-            async function handler(captures) {
-              const bucket = captures.bucket;
-              await bucket.download("counter");
-              console.log("hello world!");
-            }
-            var init_some_code = __esm222({
-              "some-code.js"() {
+            var require_some_code222 = __commonJS222({
+              "some-code.js"(exports2222, module2222) {
+                var __defProp2222 = Object.defineProperty;
+                var __getOwnPropDesc2222 = Object.getOwnPropertyDescriptor;
+                var __getOwnPropNames2222 = Object.getOwnPropertyNames;
+                var __hasOwnProp2222 = Object.prototype.hasOwnProperty;
+                var __esm2222 = (fn, res) => function __init() {
+                  return fn && (res = (0, fn[__getOwnPropNames2222(fn)[0]])(fn = 0)), res;
+                };
+                var __export2222 = (target, all) => {
+                  for (var name in all)
+                    __defProp2222(target, name, { get: all[name], enumerable: true });
+                };
+                var __copyProps2222 = (to, from, except, desc) => {
+                  if (from && typeof from === "object" || typeof from === "function") {
+                    for (let key of __getOwnPropNames2222(from))
+                      if (!__hasOwnProp2222.call(to, key) && key !== except)
+                        __defProp2222(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2222(from, key)) || desc.enumerable });
+                  }
+                  return to;
+                };
+                var __toCommonJS2222 = (mod) => __copyProps2222(__defProp2222({}, "__esModule", { value: true }), mod);
+                var bucket_client_exports2222 = {};
+                __export2222(bucket_client_exports2222, {
+                  LocalAWSBucketClient: () => LocalAWSBucketClient2222
+                });
+                var import_aws_sdk2222;
+                var LocalAWSBucketClient2222;
+                var init_bucket_client2222 = __esm2222({
+                  "../src/pocix-cdktf/bucket-client.ts"() {
+                    import_aws_sdk2222 = require("aws-sdk");
+                    LocalAWSBucketClient2222 = class {
+                      constructor(bucketArn) {
+                        this.bucketArn = bucketArn;
+                        this.client = new import_aws_sdk2222.S3({ apiVersion: "2006-03-01" });
+                      }
+                      async download(path) {
+                        return this.client.getObject({
+                          Bucket: this.bucketArn,
+                          Key: path
+                        }).promise();
+                      }
+                      async upload(path, value) {
+                        return this.client.upload({
+                          Bucket: this.bucketArn,
+                          Key: path,
+                          Body: value
+                        }).promise();
+                      }
+                    };
+                  }
+                });
+                var some_code_exports = {};
+                __export2222(some_code_exports, {
+                  handler: () => handler
+                });
+                async function handler(captures) {
+                  const bucket = captures.bucket;
+                  await bucket.download("counter");
+                  console.log("hello world!");
+                }
+                var init_some_code = __esm2222({
+                  "some-code.js"() {
+                  }
+                });
+                var CAPTURES2222 = {
+                  foo: 123,
+                  bucket: (init_bucket_client2222(), __toCommonJS2222(bucket_client_exports2222))(process.env["__CAPTURE_SYM_bucket}"])
+                };
+                module2222.exports["handler"] = function(originalEvent) {
+                  return (init_some_code(), __toCommonJS2222(some_code_exports))["handler"](originalEvent, CAPTURES2222);
+                };
               }
             });
             var CAPTURES222 = {
@@ -234,7 +298,7 @@ var require_some_code = __commonJS({
               bucket: (init_bucket_client222(), __toCommonJS222(bucket_client_exports222))(process.env["__CAPTURE_SYM_bucket}"])
             };
             module222.exports["handler"] = function(originalEvent) {
-              return (init_some_code(), __toCommonJS222(some_code_exports))["handler"](originalEvent, CAPTURES222);
+              return require_some_code222()["handler"](originalEvent, CAPTURES222);
             };
           }
         });
