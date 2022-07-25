@@ -1,5 +1,3 @@
-export class Hello {
-  public sayHello() {
-    return "hello, world!";
-  }
-}
+export * from "./process";
+export * from "./polycon";
+export * from "./polycon-factory";
