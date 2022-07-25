@@ -54,3 +54,4 @@ tsconfig.json
 !/API.md
 polycons.out/
 *.tfstate
+test/*.js

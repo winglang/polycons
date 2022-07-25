@@ -25,6 +25,7 @@ const project = new cdk.JsiiProject({
 // just for testing
 project.addGitIgnore("polycons.out/");
 project.addGitIgnore("*.tfstate");
+project.addGitIgnore("test/*.js");
 
 new SampleDir(project, "polycons.out/cdktf.out", { files: { ".gitkeep": "" } }); // for testing
 
