@@ -32,7 +32,7 @@
   "author": {
     "name": "Monada, Inc.",
     "email": "ping@monada.co",
-    "organization": false
+    "organization": true
   },
   "devDependencies": {
     "@types/jest": "^27",

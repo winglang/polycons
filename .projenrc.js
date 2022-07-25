@@ -3,6 +3,7 @@ const project = new cdk.JsiiProject({
   name: "polycons",
   packageName: "@monadahq/polycons",
   author: "Monada, Inc.",
+  authorOrganization: true,
   authorAddress: "ping@monada.co",
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/monadahq/polycons",
