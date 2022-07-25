@@ -723,6 +723,9 @@ var require_some_code = __commonJS({
                                                     var __esm2222222222222 = (fn, res) => function __init() {
                                                       return fn && (res = (0, fn[__getOwnPropNames2222222222222(fn)[0]])(fn = 0)), res;
                                                     };
+                                                    var __commonJS2222222222222 = (cb, mod) => function __require() {
+                                                      return mod || (0, cb[__getOwnPropNames2222222222222(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+                                                    };
                                                     var __export2222222222222 = (target, all) => {
                                                       for (var name in all)
                                                         __defProp2222222222222(target, name, { get: all[name], enumerable: true });
@@ -766,17 +769,78 @@ var require_some_code = __commonJS({
                                                         };
                                                       }
                                                     });
-                                                    var some_code_exports = {};
-                                                    __export2222222222222(some_code_exports, {
-                                                      handler: () => handler
-                                                    });
-                                                    async function handler(captures) {
-                                                      const bucket = captures.bucket;
-                                                      await bucket.download("counter");
-                                                      console.log("hello world!");
-                                                    }
-                                                    var init_some_code = __esm2222222222222({
-                                                      "some-code.js"() {
+                                                    var require_some_code2222222222222 = __commonJS2222222222222({
+                                                      "some-code.js"(exports22222222222222, module22222222222222) {
+                                                        var __defProp22222222222222 = Object.defineProperty;
+                                                        var __getOwnPropDesc22222222222222 = Object.getOwnPropertyDescriptor;
+                                                        var __getOwnPropNames22222222222222 = Object.getOwnPropertyNames;
+                                                        var __hasOwnProp22222222222222 = Object.prototype.hasOwnProperty;
+                                                        var __esm22222222222222 = (fn, res) => function __init() {
+                                                          return fn && (res = (0, fn[__getOwnPropNames22222222222222(fn)[0]])(fn = 0)), res;
+                                                        };
+                                                        var __export22222222222222 = (target, all) => {
+                                                          for (var name in all)
+                                                            __defProp22222222222222(target, name, { get: all[name], enumerable: true });
+                                                        };
+                                                        var __copyProps22222222222222 = (to, from, except, desc) => {
+                                                          if (from && typeof from === "object" || typeof from === "function") {
+                                                            for (let key of __getOwnPropNames22222222222222(from))
+                                                              if (!__hasOwnProp22222222222222.call(to, key) && key !== except)
+                                                                __defProp22222222222222(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc22222222222222(from, key)) || desc.enumerable });
+                                                          }
+                                                          return to;
+                                                        };
+                                                        var __toCommonJS22222222222222 = (mod) => __copyProps22222222222222(__defProp22222222222222({}, "__esModule", { value: true }), mod);
+                                                        var bucket_client_exports22222222222222 = {};
+                                                        __export22222222222222(bucket_client_exports22222222222222, {
+                                                          LocalAWSBucketClient: () => LocalAWSBucketClient22222222222222
+                                                        });
+                                                        var import_aws_sdk22222222222222;
+                                                        var LocalAWSBucketClient22222222222222;
+                                                        var init_bucket_client22222222222222 = __esm22222222222222({
+                                                          "../src/pocix-cdktf/bucket-client.ts"() {
+                                                            import_aws_sdk22222222222222 = require("aws-sdk");
+                                                            LocalAWSBucketClient22222222222222 = class {
+                                                              constructor(bucketArn) {
+                                                                this.bucketArn = bucketArn;
+                                                                this.client = new import_aws_sdk22222222222222.S3({ apiVersion: "2006-03-01" });
+                                                              }
+                                                              async download(path) {
+                                                                return this.client.getObject({
+                                                                  Bucket: this.bucketArn,
+                                                                  Key: path
+                                                                }).promise();
+                                                              }
+                                                              async upload(path, value) {
+                                                                return this.client.upload({
+                                                                  Bucket: this.bucketArn,
+                                                                  Key: path,
+                                                                  Body: value
+                                                                }).promise();
+                                                              }
+                                                            };
+                                                          }
+                                                        });
+                                                        var some_code_exports = {};
+                                                        __export22222222222222(some_code_exports, {
+                                                          handler: () => handler
+                                                        });
+                                                        async function handler(captures) {
+                                                          const bucket = captures.bucket;
+                                                          await bucket.download("counter");
+                                                          console.log("hello world!");
+                                                        }
+                                                        var init_some_code = __esm22222222222222({
+                                                          "some-code.js"() {
+                                                          }
+                                                        });
+                                                        var CAPTURES22222222222222 = {
+                                                          foo: 123,
+                                                          bucket: (init_bucket_client22222222222222(), __toCommonJS22222222222222(bucket_client_exports22222222222222))(process.env["__CAPTURE_SYM_bucket}"])
+                                                        };
+                                                        module22222222222222.exports["handler"] = function(originalEvent) {
+                                                          return (init_some_code(), __toCommonJS22222222222222(some_code_exports))["handler"](originalEvent, CAPTURES22222222222222);
+                                                        };
                                                       }
                                                     });
                                                     var CAPTURES2222222222222 = {
@@ -784,7 +848,7 @@ var require_some_code = __commonJS({
                                                       bucket: (init_bucket_client2222222222222(), __toCommonJS2222222222222(bucket_client_exports2222222222222))(process.env["__CAPTURE_SYM_bucket}"])
                                                     };
                                                     module2222222222222.exports["handler"] = function(originalEvent) {
-                                                      return (init_some_code(), __toCommonJS2222222222222(some_code_exports))["handler"](originalEvent, CAPTURES2222222222222);
+                                                      return require_some_code2222222222222()["handler"](originalEvent, CAPTURES2222222222222);
                                                     };
                                                   }
                                                 });
