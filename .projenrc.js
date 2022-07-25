@@ -18,6 +18,8 @@ const project = new cdk.JsiiProject({
   peerDeps: ["constructs@^10"],
   devDeps: ["chalk"],
   prettier: true,
+  codeCov: true,
+  codeCovTokenSecret: "CODECOV_TOKEN",
 });
 
 // just for testing
