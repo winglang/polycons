@@ -120,43 +120,103 @@ Each key here will be the key for the final value in the map.
 
 Reference to a piece of code.
 
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@monadahq/polycons.Code.fromFile">fromFile</a></code> | Reference code from a file path. |
-| <code><a href="#@monadahq/polycons.Code.fromInline">fromInline</a></code> | Reference code directly from a string. |
-
----
-
-##### `fromFile` <a name="fromFile" id="@monadahq/polycons.Code.fromFile"></a>
+#### Initializers <a name="Initializers" id="@monadahq/polycons.Code.Initializer"></a>
 
 ```typescript
 import { Code } from '@monadahq/polycons'
 
-Code.fromFile(path: string)
+new Code()
 ```
 
-Reference code from a file path.
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
 
-###### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.Code.fromFile.parameter.path"></a>
+---
+
+
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@monadahq/polycons.Code.property.language">language</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `language`<sup>Required</sup> <a name="language" id="@monadahq/polycons.Code.property.language"></a>
+
+```typescript
+public readonly language: string;
+```
 
 - *Type:* string
 
 ---
 
-##### `fromInline` <a name="fromInline" id="@monadahq/polycons.Code.fromInline"></a>
+##### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.Code.property.path"></a>
 
 ```typescript
-import { Code } from '@monadahq/polycons'
+public readonly path: string;
+```
 
-Code.fromInline(text: string)
+- *Type:* string
+
+---
+
+##### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.Code.property.text"></a>
+
+```typescript
+public readonly text: string;
+```
+
+- *Type:* string
+
+---
+
+
+### JSCode <a name="JSCode" id="@monadahq/polycons.JSCode"></a>
+
+Reference to a piece of JavaScript code.
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@monadahq/polycons.JSCode.fromFile">fromFile</a></code> | Reference code from a file path. |
+| <code><a href="#@monadahq/polycons.JSCode.fromInline">fromInline</a></code> | Reference code directly from a string. |
+
+---
+
+##### `fromFile` <a name="fromFile" id="@monadahq/polycons.JSCode.fromFile"></a>
+
+```typescript
+import { JSCode } from '@monadahq/polycons'
+
+JSCode.fromFile(path: string)
+```
+
+Reference code from a file path.
+
+###### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.JSCode.fromFile.parameter.path"></a>
+
+- *Type:* string
+
+---
+
+##### `fromInline` <a name="fromInline" id="@monadahq/polycons.JSCode.fromInline"></a>
+
+```typescript
+import { JSCode } from '@monadahq/polycons'
+
+JSCode.fromInline(text: string)
 ```
 
 Reference code directly from a string.
 
-###### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.Code.fromInline.parameter.text"></a>
+###### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.JSCode.fromInline.parameter.text"></a>
 
 - *Type:* string
 
@@ -166,12 +226,23 @@ Reference code directly from a string.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | Path to a file. |
-| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | Text of a file. |
+| <code><a href="#@monadahq/polycons.JSCode.property.language">language</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.JSCode.property.path">path</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.JSCode.property.text">text</a></code> | <code>string</code> | Returns the text contents. |
 
 ---
 
-##### `path`<sup>Optional</sup> <a name="path" id="@monadahq/polycons.Code.property.path"></a>
+##### `language`<sup>Required</sup> <a name="language" id="@monadahq/polycons.JSCode.property.language"></a>
+
+```typescript
+public readonly language: string;
+```
+
+- *Type:* string
+
+---
+
+##### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.JSCode.property.path"></a>
 
 ```typescript
 public readonly path: string;
@@ -179,11 +250,9 @@ public readonly path: string;
 
 - *Type:* string
 
-Path to a file.
-
 ---
 
-##### `text`<sup>Optional</sup> <a name="text" id="@monadahq/polycons.Code.property.text"></a>
+##### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.JSCode.property.text"></a>
 
 ```typescript
 public readonly text: string;
@@ -191,7 +260,7 @@ public readonly text: string;
 
 - *Type:* string
 
-Text of a file.
+Returns the text contents.
 
 ---
 
