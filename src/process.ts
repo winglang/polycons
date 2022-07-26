@@ -1,3 +1,7 @@
+import { mkdtempSync, readFileSync, writeFileSync } from "fs";
+import { tmpdir } from "os";
+import { join } from "path";
+
 /**
  * Capture information. A capture is a reference from a Process to a
  * construction-time object or value.
@@ -24,29 +28,47 @@ export interface ICapturable {
 /**
  * Reference to a piece of code.
  */
-export class Code {
+export abstract class Code {
+  public abstract readonly language: string;
+  public abstract readonly text: string;
+  public abstract readonly path: string;
+}
+
+/**
+ * Reference to a piece of JavaScript code.
+ */
+export class JSCode extends Code {
+  public readonly language = "javascript";
+
   /**
    * Reference code from a file path.
    */
   public static fromFile(path: string) {
-    return new Code(path, undefined);
+    return new JSCode(path);
   }
+
   /**
    * Reference code directly from a string.
    */
   public static fromInline(text: string) {
-    return new Code(undefined, text);
+    const tempdir = mkdtempSync(join(tmpdir(), "polycons-"));
+    const file = join(tempdir, "index.js");
+    writeFileSync(file, text);
+    return new JSCode(file);
   }
+
   private constructor(
-    /**
-     * Path to a file.
-     */
-    public readonly path: string | undefined,
-    /**
-     * Text of a file.
-     */
-    public readonly text: string | undefined
-  ) {}
+    public readonly path: string,
+  ) {
+    super()
+  }
+
+  /**
+   * Returns the text contents.
+   */
+  public get text(): string {
+    return readFileSync(this.path, "utf-8");
+  }
 }
 
 /**

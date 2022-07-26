@@ -37,6 +37,7 @@ export abstract class PolyconFactory {
     Object.defineProperty(scope.node.root, FACTORY_SYMBOL, {
       value: factory,
       enumerable: false,
+      writable: false,
     });
   }
 

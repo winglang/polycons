@@ -8,7 +8,7 @@ const project = new cdk.JsiiProject({
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/monadahq/polycons",
 
-  peerDeps: ["constructs@^10"],
+  peerDeps: ["constructs@^10.0.25"],
   prettier: true,
 
   npmRegistryUrl: "https://npm.pkg.github.com",
