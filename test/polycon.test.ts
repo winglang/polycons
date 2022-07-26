@@ -6,8 +6,8 @@ test("Polycon.isPolycon returns true for polycons", () => {
   PolyconFactory.register(app, new PoodleFactory());
   const dog = new Dog(app, "dog", { treats: 5 });
 
-  expect(Polycon.isPolycon(dog)).toEqual(true);
-  expect(Polycon.isPolycon(app)).not.toEqual(true);
+  expect(Polycon.isPolycon(dog)).toBeTruthy();
+  expect(Polycon.isPolycon(app)).toBeFalsy();
 });
 
 test("a polycon factory can be registered", () => {

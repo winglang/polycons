@@ -38,8 +38,6 @@ export abstract class Code {
  * Reference to a piece of JavaScript code.
  */
 export class JSCode extends Code {
-  public readonly language = "javascript";
-
   /**
    * Reference code from a file path.
    */
@@ -57,10 +55,10 @@ export class JSCode extends Code {
     return new JSCode(file);
   }
 
-  private constructor(
-    public readonly path: string,
-  ) {
-    super()
+  public readonly language = "javascript";
+
+  private constructor(public readonly path: string) {
+    super();
   }
 
   /**
