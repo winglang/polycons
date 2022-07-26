@@ -7,6 +7,9 @@
 
 Capture information.
 
+A capture is a reference from a Process to a
+construction-time object or value.
+
 #### Initializer <a name="Initializer" id="@monadahq/polycons.Capture.Initializer"></a>
 
 ```typescript
@@ -396,7 +399,10 @@ This factory will be used for resolving all polycons into constructs.
 
 ### Process <a name="Process" id="@monadahq/polycons.Process"></a>
 
-Runtime code with a single entrypoint.
+Runtime code with a named entrypoint.
+
+Typically this represents code
+that exists to be run outside of the scope of a `constructs` application.
 
 #### Initializers <a name="Initializers" id="@monadahq/polycons.Process.Initializer"></a>
 

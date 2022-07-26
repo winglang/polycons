@@ -1,5 +1,6 @@
 /**
- * Capture information.
+ * Capture information. A capture is a reference from a Process to a
+ * construction-time object or value.
  */
 export interface Capture {
   /**
@@ -70,7 +71,8 @@ export interface ProcessProps {
 }
 
 /**
- * Runtime code with a single entrypoint.
+ * Runtime code with a named entrypoint. Typically this represents code
+ * that exists to be run outside of the scope of a `constructs` application.
  */
 export class Process {
   public readonly code: Code;
