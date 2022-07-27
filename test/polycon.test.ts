@@ -81,6 +81,14 @@ test("polycons can access properties and methods from their parent classes", () 
   expect(piffle.species).toEqual("Canis familiaris");
 });
 
+test("node.findChild() returns the polycon that was constructed", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
+
+  expect(app.node.findChild("piffle")).toBe(piffle);
+});
+
 class App extends Construct {
   constructor() {
     super(undefined as any, "root");

@@ -1,4 +1,4 @@
-import { Construct, IConstruct, Node } from "constructs";
+import { IConstruct, Node } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
@@ -75,14 +75,11 @@ export abstract class Polycon implements IConstruct {
     const path = calculatePath(scope, id);
 
     if (CURRENTLY_IN_CONSTRUCTION.has(path)) {
-      const thing = CURRENTLY_IN_CONSTRUCTION.get(path)!;
-      const construct = new Construct(scope, id);
-      Object.setPrototypeOf(thing, construct);
-      this.node = thing.node;
+      this.node = new Node(this, scope, id);
       return this;
     }
 
-    CURRENTLY_IN_CONSTRUCTION.set(path, this);
+    CURRENTLY_IN_CONSTRUCTION.add(path);
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
 
@@ -101,11 +98,11 @@ export abstract class Polycon implements IConstruct {
     return resolved as Polycon;
   }
 
-  private getConstructionLookup(scope: IConstruct): Map<string, any> {
+  private getConstructionLookup(scope: IConstruct): Set<string> {
     const root = scope.node.root;
     let lookup = (root as any)[POLYCON_CONSTRUCTION_LOOKUP];
     if (!lookup) {
-      lookup = new Map();
+      lookup = new Set();
       Object.defineProperty(root, POLYCON_CONSTRUCTION_LOOKUP, {
         value: lookup,
         enumerable: false,
