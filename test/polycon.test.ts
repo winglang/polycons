@@ -90,7 +90,7 @@ class App extends Construct {
   }
 }
 
-// dog
+// == dog data structures ==
 
 const DOG_QUALIFIER = "test.dog";
 
@@ -123,7 +123,7 @@ class Poodle extends Dog {
   }
 }
 
-// cat
+// == cat data structures ==
 
 const CAT_QUALIFIER = "test.cat";
 
@@ -140,10 +140,10 @@ class Cat extends Polycon {
   }
 }
 
-class Shorthair extends Construct {
+class Shorthair extends Cat {
   public readonly scritches: number;
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(scope, id);
+    super(scope, id, props);
     this.scritches = props.scritches;
   }
   public toString() {
@@ -151,7 +151,7 @@ class Shorthair extends Construct {
   }
 }
 
-// factories
+// == factories ==
 
 class PoodleFactory extends PolyconFactory {
   public resolveConstruct(

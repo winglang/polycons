@@ -70,22 +70,21 @@ export abstract class Polycon implements IConstruct {
     // will run the constructors for MyPolycon and Polycon again, which would
     // continue looping until a stack overflow.
     //
-    // To avoid this, the first time we create `MyPolycon` we also create a
-    // Construct, set it as this instance's prototype (so that `Polycon` behaves
-    // exactly like a regular Construct), and register it in a global key-value
-    // store. When we detect this constructor is being run a second time, we
-    // simply return that value and skip invoking the factory.
+    // To avoid this, the first time we create `MyPolycon` we register it in a
+    // global key-value store. When we detect this constructor is being run a
+    // second time, we simply return that value and skip invoking the factory.
 
     const CURRENTLY_IN_CONSTRUCTION = this.getConstructionLookup(scope);
     const path = calculatePath(scope, id);
+
     if (CURRENTLY_IN_CONSTRUCTION.has(path)) {
-      const thing = CURRENTLY_IN_CONSTRUCTION.get(path);
+      const thing = CURRENTLY_IN_CONSTRUCTION.get(path)!;
+      const construct = new Construct(scope, id);
+      Object.setPrototypeOf(thing, construct);
       this.node = thing.node;
       return this;
     }
 
-    const construct = new Construct(scope, id);
-    Object.setPrototypeOf(this, construct);
     CURRENTLY_IN_CONSTRUCTION.set(path, this);
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
