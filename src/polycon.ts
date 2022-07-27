@@ -1,8 +1,8 @@
 import { Construct, IConstruct, Node } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
-export const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
-export const POLYCON_CONSTRUCTION_LOOKUP = Symbol.for(
+const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
+const POLYCON_CONSTRUCTION_LOOKUP = Symbol.for(
   "polycons.PolyconConstructionLookup"
 );
 
@@ -12,17 +12,14 @@ export const POLYCON_CONSTRUCTION_LOOKUP = Symbol.for(
  */
 export abstract class Polycon implements IConstruct {
   /**
-   * Checks if `x` is a construct.
-   * @returns true if `x` is an object created from a class which extends `Construct`.
+   * Checks if `x` is a polycon.
+   * @returns true if `x` is an object created from a class which extends `Polycon`.
    * @param x Any object
    */
   public static isPolycon(x: any): x is Polycon {
     return x && typeof x === "object" && x[POLYCON_SYMBOL];
   }
 
-  /**
-   * The tree node.
-   */
   public readonly node: Node;
 
   protected constructor(

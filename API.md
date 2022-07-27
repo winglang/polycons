@@ -317,7 +317,7 @@ new Polycon(qualifier: string, scope: IConstruct, id: string, props?: any)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a polycon. |
 
 ---
 
@@ -329,7 +329,7 @@ import { Polycon } from '@monadahq/polycons'
 Polycon.isPolycon(x: any)
 ```
 
-Checks if `x` is a construct.
+Checks if `x` is a polycon.
 
 ###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isPolycon.parameter.x"></a>
 
