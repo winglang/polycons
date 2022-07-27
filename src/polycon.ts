@@ -39,7 +39,7 @@ export abstract class Polycon implements IConstruct {
     // infinite looping.
     //
     // Suppose we have an inheritance tree as follows:
-    // 
+    //
     //  ┌───────────────┐
     //  │               │
     //  │    Polycon    │
@@ -63,7 +63,7 @@ export abstract class Polycon implements IConstruct {
     // When someone constructs MyPolycon, this constructor will try to find a
     // Polycon factory and request a MyPolyconImpl instance from it -- this is
     // the core of how the polycon dependency injection system works.
-    // 
+    //
     // However, in order to inherit properties and methods, MyPolyconImpl must
     // have MyPolycon as its superclass. This means constructing MyPolyconImpl
     // will run the constructors for MyPolycon and Polycon again, which would
@@ -113,12 +113,13 @@ Object.defineProperty(Polycon.prototype, POLYCON_SYMBOL, {
 });
 
 // copied from aws/constructs
-const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
+const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, "g");
 
 function calculatePath(scope: IConstruct, id: string) {
-  const components = scope.node.scopes.filter(c => c.node.id).map(c => c.node.id);
-  const sanitized = id.replace(PATH_SEP_REGEX, '--');
+  const components = scope.node.scopes
+    .filter((c) => c.node.id)
+    .map((c) => c.node.id);
+  const sanitized = id.replace(PATH_SEP_REGEX, "--");
   components.push(sanitized);
   return components.join(Node.PATH_SEP);
 }
-

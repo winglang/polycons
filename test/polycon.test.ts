@@ -79,7 +79,7 @@ test("polycons can access properties and methods from their parent classes", () 
   expect(piffle.toStringUppercase()).toEqual("POODLE WITH 5 TREATS.");
   // property is defined on Dog but available to Poodle via inheritance
   expect(piffle.species).toEqual("Canis familiaris");
-})
+});
 
 class App extends Construct {
   constructor() {
