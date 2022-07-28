@@ -123,6 +123,7 @@ test("factory is able to change props passed into the polycon", () => {
 
   // factory lets labradors get twice the number of treats
   expect(special.treats).toEqual(6);
+  expect(special.toString()).toEqual("Labrador with 6 treats.");
 });
 
 class App extends Construct {
@@ -175,7 +176,7 @@ class Labrador extends Dog {
     super(scope, id, props);
   }
   public toString() {
-    return `Poodle with ${this.treats} treats.`;
+    return `Labrador with ${this.treats} treats.`;
   }
 }
 
