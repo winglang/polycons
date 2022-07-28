@@ -1,3 +1,4 @@
+import * as util from "util";
 import { Construct, IConstruct } from "constructs";
 import { Polycon, PolyconFactory } from "../src";
 
@@ -111,8 +112,18 @@ test("factory is able to make decisions based on the id of the polycon", () => {
   PolyconFactory.register(app, new PoodleFactory());
   const notSpecial = new Dog(app, "not-special", { name: "jo", treats: 1 });
   const special = new Dog(app, "labrador", { name: "shmo", treats: 1 });
+
   expect(notSpecial instanceof Poodle).toBeTruthy();
   expect(special instanceof Labrador).toBeTruthy();
+});
+
+test("factory is able to change props passed into the polycon", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const special = new Dog(app, "labrador", { name: "shmo", treats: 3 });
+
+  // factory lets labradors get twice the number of treats
+  expect(special.treats).toEqual(6);
 });
 
 class App extends Construct {
@@ -135,11 +146,19 @@ interface DogProps {
 
 class Dog extends Polycon {
   public readonly species = "Canis familiaris";
-  public readonly treats: number;
+  public readonly treats!: number;
   constructor(scope: Construct, id: string, props: DogProps) {
+    console.log(`Constructing dog with ${props.treats} treats`);
     super(DOG_QUALIFIER, scope, id, props);
 
-    this.treats = props.treats;
+    console.log(`After polycon resolution, this is ${util.inspect(this)}`);
+
+    console.log(`Initializing?: ${this.initializing}`);
+    if (this.initializing) {
+      console.log(`Setting this.treats to ${props.treats}`);
+      this.treats = props.treats;
+    }
+    console.log(`Done constructing dog with ${this.treats} treats`);
   }
   public toStringUppercase() {
     return this.toString().toUpperCase();
@@ -150,17 +169,24 @@ class Dog extends Polycon {
 }
 
 class Poodle extends Dog {
-  public readonly treats: number;
   constructor(scope: Construct, id: string, props: DogProps) {
     super(scope, id, props);
-    this.treats = props.treats;
   }
   public toString() {
     return `Poodle with ${this.treats} treats.`;
   }
 }
 
-class Labrador extends Dog {}
+class Labrador extends Dog {
+  constructor(scope: Construct, id: string, props: DogProps) {
+    console.log(`Constructing labrador with ${props.treats} treats`);
+    super(scope, id, props);
+    console.log(`Done constructing labrador with ${this.treats} treats`);
+  }
+  public toString() {
+    return `Poodle with ${this.treats} treats.`;
+  }
+}
 
 // == cat data structures ==
 
@@ -202,7 +228,10 @@ class PoodleFactory extends PolyconFactory {
     switch (qualifier) {
       case DOG_QUALIFIER:
         if (id === "labrador") {
-          return new Labrador(scope, id, props);
+          return new Labrador(scope, id, {
+            ...props,
+            treats: props.treats * 2,
+          });
         }
         return new Poodle(scope, id, props);
       default:
