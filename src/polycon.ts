@@ -78,7 +78,7 @@ export abstract class Polycon extends Construct {
    * If this value is false, then the polycon is just being used to invoke a
    * polycon factory, so no initialization should be performed.
    */
-  public get safeToInitialize(): true {
+  public get safeToInitialize(): boolean {
     if (!this.node.scope) {
       throw new Error("Polycon must be created in a scope.");
     }
