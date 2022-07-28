@@ -1,4 +1,3 @@
-import * as util from "util";
 import { Construct, IConstruct } from "constructs";
 import { Polycon, PolyconFactory } from "../src";
 
@@ -146,19 +145,13 @@ interface DogProps {
 
 class Dog extends Polycon {
   public readonly species = "Canis familiaris";
-  public readonly treats!: number;
+  public readonly treats!: number; // :(
   constructor(scope: Construct, id: string, props: DogProps) {
-    console.log(`Constructing dog with ${props.treats} treats`);
     super(DOG_QUALIFIER, scope, id, props);
 
-    console.log(`After polycon resolution, this is ${util.inspect(this)}`);
-
-    console.log(`Initializing?: ${this.initializing}`);
-    if (this.initializing) {
-      console.log(`Setting this.treats to ${props.treats}`);
+    if (this.safeToInitialize) {
       this.treats = props.treats;
     }
-    console.log(`Done constructing dog with ${this.treats} treats`);
   }
   public toStringUppercase() {
     return this.toString().toUpperCase();
@@ -179,9 +172,7 @@ class Poodle extends Dog {
 
 class Labrador extends Dog {
   constructor(scope: Construct, id: string, props: DogProps) {
-    console.log(`Constructing labrador with ${props.treats} treats`);
     super(scope, id, props);
-    console.log(`Done constructing labrador with ${this.treats} treats`);
   }
   public toString() {
     return `Poodle with ${this.treats} treats.`;

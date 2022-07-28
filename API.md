@@ -113,6 +113,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycon.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@monadahq/polycons.Polycon.property.safeToInitialize">safeToInitialize</a></code> | <code>boolean</code> | Whether it's safe to initialize the polycon. |
 
 ---
 
@@ -125,6 +126,26 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `safeToInitialize`<sup>Required</sup> <a name="safeToInitialize" id="@monadahq/polycons.Polycon.property.safeToInitialize"></a>
+
+```typescript
+public readonly safeToInitialize: boolean;
+```
+
+- *Type:* boolean
+
+Whether it's safe to initialize the polycon.
+
+If this value is true, then we're in the process of being constructed as
+part of the super() call made by a specific polycon implementation, and
+it's OK to initialize private variables and private members and call
+other initialization methods.
+
+If this value is false, then the polycon is just being used to invoke a
+polycon factory, so no initialization should be performed.
 
 ---
 

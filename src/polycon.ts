@@ -1,4 +1,3 @@
-import * as util from "util";
 import { Construct, IConstruct, Node } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
@@ -24,21 +23,14 @@ export abstract class Polycon extends Construct {
     id: string,
     props?: any
   ) {
-    console.log(`Constructing polycon with ${props.treats} treats`);
-
     // check if we are being called from a polycon resolution code path
     // this is done by checking if a marker for this polycon is present in the
-    // scope. if so, we will initialize this as an empty construct and delete
-    // the marker
+    // scope. if so, we will initialize this as an empty construct. after
+    // construction is finished, the marker will be deleted
     const path = calculatePath(scope, id);
     const marker = Symbol.for(`polycons.init[${path}]`);
     if (marker in scope) {
       super(scope, id);
-      // console.log(
-      //   `Removing marker ${String(marker)} from scope: ${util.inspect(scope)}`
-      // );
-      // delete (scope as any)[marker]; // delete the marker
-      console.log(`Done constructing polycon early`);
       return this;
     }
 
@@ -60,17 +52,8 @@ export abstract class Polycon extends Construct {
       configurable: true, // we are deleting the marker after construction
     });
 
-    console.log(
-      `Added marker ${String(marker)} to scope: ${util.inspect(scope)}`
-    );
-
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
 
-    console.log(`Resolved polycon treats: ${(resolved as any).treats}`);
-
-    console.log(
-      `Removing marker ${String(marker)} from scope: ${util.inspect(scope)}`
-    );
     delete (scope as any)[marker]; // delete the marker
 
     // annotate the particular instance returned by this constructor as being
@@ -81,35 +64,28 @@ export abstract class Polycon extends Construct {
       writable: false,
     });
 
-    console.log(`Done constructing polycon`);
-
     return resolved as Polycon;
   }
 
-  public get initializing(): true {
+  /**
+   * Whether it's safe to initialize the polycon.
+   *
+   * If this value is true, then we're in the process of being constructed as
+   * part of the super() call made by a specific polycon implementation, and
+   * it's OK to initialize private variables and private members and call
+   * other initialization methods.
+   *
+   * If this value is false, then the polycon is just being used to invoke a
+   * polycon factory, so no initialization should be performed.
+   */
+  public get safeToInitialize(): true {
     if (!this.node.scope) {
       throw new Error("Polycon must be created in a scope.");
     }
     const path = calculatePath(this.node.scope, this.node.id);
     const marker = Symbol.for(`polycons.init[${path}]`);
-    console.log(
-      `Checking for marker ${String(marker)} in scope: ${util.inspect(
-        this.node.scope
-      )}`
-    );
     return (marker in this.node.scope) as true;
   }
-
-  // public magic(qualifier: string) {
-  //   const marker = Symbol.for(`polycons.init[${qualifier}]#${this.node.id}`);
-  // if (!this.node.scope) {
-  //   throw new Error("Polycon must be created in a scope.");
-  // }
-  // if (marker in this.node.scope) {
-
-  // }
-  //   console.log("ok");
-  // }
 }
 
 // copied from aws/constructs
