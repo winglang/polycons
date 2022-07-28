@@ -1,4 +1,4 @@
-import { Construct } from "constructs";
+import { Construct, IConstruct, Node } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
@@ -17,34 +17,19 @@ export abstract class Polycon extends Construct {
     return x && typeof x === "object" && x[POLYCON_SYMBOL];
   }
 
-  protected constructor(
+  public static resolve(
     qualifier: string,
     scope: Construct,
     id: string,
     props?: any
   ) {
-    // check if we are being called from a polycon resolution code path
-    // this is done by checking if a marker for this polycon is present in the
-    // scope. if so, we will initialize this as an empty construct and delete
-    // the marker
-    const marker = Symbol.for(`polycons.init[${qualifier}]#${id}`);
-    if (marker in scope) {
-      super(scope, id);
-      delete (scope as any)[marker]; // delete the marker
-      return this;
-    }
-
-    // since we eventually return the resolved polycon, we can just initialize
-    // the base class as an empty root construct (it won't be used)
-    super(null as any, "");
-
     const factory = PolyconFactory.of(scope);
     if (!factory) {
       throw new Error(`No factory defined within scope of "${id}"`);
     }
 
-    // add the initialization marker to avoid re-entering this path
-    // when the resolved polycon is initialized.
+    const path = calculatePath(scope, id);
+    const marker = Symbol.for(`polycons.init[${path}]`);
     Object.defineProperty(scope, marker, {
       value: true,
       enumerable: false,
@@ -54,14 +39,38 @@ export abstract class Polycon extends Construct {
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
 
-    // annotate the particular instance returned by this constructor as being
-    // a polycon
-    Object.defineProperty(resolved, POLYCON_SYMBOL, {
-      value: true,
-      enumerable: false,
-      writable: false,
-    });
-
     return resolved as Polycon;
   }
+
+  protected constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    // use a marker to ensure polycons are only instantiated through the
+    // resolve method
+    const path = calculatePath(scope, id);
+    const marker = Symbol.for(`polycons.init[${path}]`);
+    if (!(marker in scope)) {
+      throw new Error(
+        `Polycons cannot be directly instantiated through their constructors -- use a static factory instead.`
+      );
+    }
+  }
+}
+
+Object.defineProperty(Polycon.prototype, POLYCON_SYMBOL, {
+  value: true,
+  enumerable: false,
+  writable: false,
+});
+
+// copied from aws/constructs
+const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, "g");
+
+function calculatePath(scope: IConstruct, id: string) {
+  const components = scope.node.scopes
+    .filter((c) => c.node.id)
+    .map((c) => c.node.id);
+  const sanitized = id.replace(PATH_SEP_REGEX, "--");
+  components.push(sanitized);
+  return components.join(Node.PATH_SEP);
 }
