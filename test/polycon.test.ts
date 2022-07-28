@@ -10,6 +10,15 @@ test("Polycon.isPolycon returns true for polycons", () => {
   expect(Polycon.isPolycon(app)).toBeFalsy();
 });
 
+test("polycon creation marker is deleted from the scope", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  new Dog(app, "dog", { name: "piffle", treats: 5 });
+
+  const marker = Symbol.for("polycons.init[test.dog]#dog");
+  expect(marker in app).toBeFalsy();
+});
+
 // this is important for languages that use nominal typing (like Java)
 test("polycon instanceof Construct", () => {
   const app = new App();
