@@ -106,6 +106,15 @@ test("node.findChild() returns the polycon that was constructed", () => {
   expect(app.node.findChild("piffle")).toBe(piffle);
 });
 
+test("factory is able to make decisions based on the id of the polycon", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const notSpecial = new Dog(app, "not-special", { name: "jo", treats: 1 });
+  const special = new Dog(app, "labrador", { name: "shmo", treats: 1 });
+  expect(notSpecial instanceof Poodle).toBeTruthy();
+  expect(special instanceof Labrador).toBeTruthy();
+});
+
 class App extends Construct {
   constructor() {
     super(undefined as any, "root");
@@ -126,8 +135,11 @@ interface DogProps {
 
 class Dog extends Polycon {
   public readonly species = "Canis familiaris";
+  public readonly treats: number;
   constructor(scope: Construct, id: string, props: DogProps) {
     super(DOG_QUALIFIER, scope, id, props);
+
+    this.treats = props.treats;
   }
   public toStringUppercase() {
     return this.toString().toUpperCase();
@@ -147,6 +159,8 @@ class Poodle extends Dog {
     return `Poodle with ${this.treats} treats.`;
   }
 }
+
+class Labrador extends Dog {}
 
 // == cat data structures ==
 
@@ -187,6 +201,9 @@ class PoodleFactory extends PolyconFactory {
   ): IConstruct {
     switch (qualifier) {
       case DOG_QUALIFIER:
+        if (id === "labrador") {
+          return new Labrador(scope, id, props);
+        }
         return new Poodle(scope, id, props);
       default:
         throw new Error(`Qualifier ${qualifier} not implemented.`);
