@@ -54,6 +54,7 @@ export abstract class Polycon extends Construct {
         `Polycons cannot be directly instantiated through their constructors -- use a static factory instead.`
       );
     }
+    delete (scope as any)[marker]; // delete the marker
   }
 }
 
