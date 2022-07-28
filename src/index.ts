@@ -1,3 +1,3 @@
 export * from "./process";
-export * from "./polycon";
+export * from "./polycons";
 export * from "./polycon-factory";
