@@ -115,6 +115,16 @@ test("factory is able to make decisions based on the id of the polycon", () => {
   expect(special instanceof Labrador).toBeTruthy();
 });
 
+test("factory is not able to change props passed into the polycon", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  expect(
+    () => new Dog(app, "double-treats", { name: "duncan", treats: 3 })
+  ).toThrowError(
+    /PolyconFactory is not allowed to modify the props passed into polycons/
+  );
+});
+
 class App extends Construct {
   constructor() {
     super(undefined as any, "root");
@@ -203,6 +213,12 @@ class PoodleFactory extends PolyconFactory {
       case DOG_QUALIFIER:
         if (id === "labrador") {
           return new Labrador(scope, id, props);
+        }
+        if (id === "double-treats") {
+          return new Poodle(scope, id, {
+            ...props,
+            treats: props.treats * 2,
+          });
         }
         return new Poodle(scope, id, props);
       default:

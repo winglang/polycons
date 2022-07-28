@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
+import { isDeepEqual } from "./util";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
 
@@ -30,6 +31,12 @@ export abstract class Polycon extends Construct {
     const marker = Symbol.for(`polycons.init[${qualifier}]#${id}`);
     if (marker in scope) {
       super(scope, id);
+      const originalProps = (scope as any)[marker].originalProps;
+      if (!isDeepEqual(originalProps, props)) {
+        throw new Error(
+          "PolyconFactory is not allowed to modify the props passed into polycons"
+        );
+      }
       delete (scope as any)[marker]; // delete the marker
       return this;
     }
@@ -46,7 +53,7 @@ export abstract class Polycon extends Construct {
     // add the initialization marker to avoid re-entering this path
     // when the resolved polycon is initialized.
     Object.defineProperty(scope, marker, {
-      value: true,
+      value: { originalProps: props },
       enumerable: false,
       writable: false,
       configurable: true, // we are deleting the marker after construction
