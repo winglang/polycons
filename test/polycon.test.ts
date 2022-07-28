@@ -117,6 +117,16 @@ test("factory is able to make decisions based on the id of the polycon", () => {
   expect(special instanceof Labrador).toBeTruthy();
 });
 
+test("factory is able to change props passed into the polycon", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const special = Dog.create(app, "labrador", { name: "shmo", treats: 3 });
+
+  // factory lets labradors get twice the number of treats
+  expect(special.treats).toEqual(6);
+  expect(special.toString()).toEqual("Labrador with 6 treats.");
+});
+
 test("polycon constructor does not get called more than once", () => {
   const app = new App();
   PolyconFactory.register(app, new PoodleFactory());
@@ -197,7 +207,14 @@ class Poodle extends Dog {
   }
 }
 
-class Labrador extends Dog {}
+class Labrador extends Dog {
+  constructor(scope: Construct, id: string, props: DogProps) {
+    super(scope, id, props);
+  }
+  public toString() {
+    return `Labrador with ${this.treats} treats.`;
+  }
+}
 
 // == cat data structures ==
 
@@ -242,7 +259,10 @@ class PoodleFactory extends PolyconFactory {
     switch (qualifier) {
       case DOG_QUALIFIER:
         if (id === "labrador") {
-          return new Labrador(scope, id, props);
+          return new Labrador(scope, id, {
+            ...props,
+            treats: props.treats * 2,
+          });
         }
         return new Poodle(scope, id, props);
       default:
