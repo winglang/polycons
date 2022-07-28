@@ -1,4 +1,4 @@
-import { IConstruct, Node } from "constructs";
+import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
@@ -8,7 +8,7 @@ const POLYCON_ID_SUFFIX = "$B91BC3FD-4D3D-4820-88A7-0D38770ED2EB";
  * A polymorphic construct that can be resolved at construction time into a more
  * specific construct.
  */
-export abstract class Polycon implements IConstruct {
+export abstract class Polycon extends Construct {
   /**
    * Checks if `x` is a polycon.
    * @returns true if `x` is an object created from a class which extends `Polycon`.
@@ -18,22 +18,20 @@ export abstract class Polycon implements IConstruct {
     return x && typeof x === "object" && x[POLYCON_SYMBOL];
   }
 
-  public readonly node: Node;
-
   protected constructor(
     qualifier: string,
-    scope: IConstruct,
+    scope: Construct,
     id: string,
     props?: any
   ) {
+    // const key = Symbol.for(`polycons.${qualifier}.${id}`);
+
     if (id.endsWith(POLYCON_ID_SUFFIX)) {
-      this.node = new Node(
-        this,
-        scope,
-        id.substring(0, id.length - POLYCON_ID_SUFFIX.length)
-      );
+      super(scope, id.substring(0, id.length - POLYCON_ID_SUFFIX.length));
       return this;
     }
+
+    super(undefined as any, id + ".dummy");
 
     const factory = PolyconFactory.of(scope);
     if (!factory) {
@@ -55,16 +53,6 @@ export abstract class Polycon implements IConstruct {
       writable: false,
     });
 
-    this.node = resolved.node;
-
     return resolved as Polycon;
   }
 }
-
-// not strictly needed, but future proofing in case there is another way to
-// construct Polycons in the future
-Object.defineProperty(Polycon.prototype, POLYCON_SYMBOL, {
-  value: true,
-  enumerable: false,
-  writable: false,
-});

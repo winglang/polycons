@@ -10,6 +10,14 @@ test("Polycon.isPolycon returns true for polycons", () => {
   expect(Polycon.isPolycon(app)).toBeFalsy();
 });
 
+// this is important for languages that use nominal typing (like Java)
+test("polycon instanceof Construct", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
+  expect(piffle instanceof Construct).toBeTruthy();
+});
+
 test("a polycon factory can be registered", () => {
   const app = new App();
   const factory = new PoodleFactory();
