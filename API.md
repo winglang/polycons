@@ -11,21 +11,13 @@ A polymorphic construct that can be resolved at construction time into a more sp
 ```typescript
 import { Polycon } from '@monadahq/polycons'
 
-new Polycon(qualifier: string, scope: Construct, id: string, props?: any)
+new Polycon(scope: Construct, id: string)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.qualifier">qualifier</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
 | <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.props">props</a></code> | <code>any</code> | *No description.* |
-
----
-
-##### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycon.Initializer.parameter.qualifier"></a>
-
-- *Type:* string
 
 ---
 
@@ -38,12 +30,6 @@ new Polycon(qualifier: string, scope: Construct, id: string, props?: any)
 ##### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycon.Initializer.parameter.id"></a>
 
 - *Type:* string
-
----
-
-##### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycon.Initializer.parameter.props"></a>
-
-- *Type:* any
 
 ---
 
@@ -69,6 +55,7 @@ Returns a string representation of this construct.
 | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycon.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 | <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a polycon. |
+| <code><a href="#@monadahq/polycons.Polycon.resolve">resolve</a></code> | *No description.* |
 
 ---
 
@@ -105,6 +92,38 @@ Checks if `x` is a polycon.
 - *Type:* any
 
 Any object.
+
+---
+
+##### `resolve` <a name="resolve" id="@monadahq/polycons.Polycon.resolve"></a>
+
+```typescript
+import { Polycon } from '@monadahq/polycons'
+
+Polycon.resolve(qualifier: string, scope: Construct, id: string, props?: any)
+```
+
+###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycon.resolve.parameter.qualifier"></a>
+
+- *Type:* string
+
+---
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycon.resolve.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycon.resolve.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycon.resolve.parameter.props"></a>
+
+- *Type:* any
 
 ---
 
