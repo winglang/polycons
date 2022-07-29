@@ -1,152 +1,5 @@
 # API Reference <a name="API Reference" id="api-reference"></a>
 
-## Constructs <a name="Constructs" id="Constructs"></a>
-
-### Polycon <a name="Polycon" id="@monadahq/polycons.Polycon"></a>
-
-A polymorphic construct that can be resolved at construction time into a more specific construct.
-
-#### Initializers <a name="Initializers" id="@monadahq/polycons.Polycon.Initializer"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-new Polycon(scope: Construct, id: string)
-```
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Polycon.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycon.Initializer.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-##### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycon.Initializer.parameter.id"></a>
-
-- *Type:* string
-
----
-
-#### Methods <a name="Methods" id="Methods"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.toString">toString</a></code> | Returns a string representation of this construct. |
-
----
-
-##### `toString` <a name="toString" id="@monadahq/polycons.Polycon.toString"></a>
-
-```typescript
-public toString(): string
-```
-
-Returns a string representation of this construct.
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a polycon. |
-| <code><a href="#@monadahq/polycons.Polycon.resolve">resolve</a></code> | *No description.* |
-
----
-
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@monadahq/polycons.Polycon.isConstruct"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.isConstruct(x: any)
-```
-
-Checks if `x` is a construct.
-
-###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isConstruct.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
-
-##### `isPolycon` <a name="isPolycon" id="@monadahq/polycons.Polycon.isPolycon"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.isPolycon(x: any)
-```
-
-Checks if `x` is a polycon.
-
-###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isPolycon.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
-
-##### `resolve` <a name="resolve" id="@monadahq/polycons.Polycon.resolve"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.resolve(qualifier: string, scope: Construct, id: string, props?: any)
-```
-
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycon.resolve.parameter.qualifier"></a>
-
-- *Type:* string
-
----
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycon.resolve.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycon.resolve.parameter.id"></a>
-
-- *Type:* string
-
----
-
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycon.resolve.parameter.props"></a>
-
-- *Type:* any
-
----
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Polycon.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-
----
-
-##### `node`<sup>Required</sup> <a name="node" id="@monadahq/polycons.Polycon.property.node"></a>
-
-```typescript
-public readonly node: Node;
-```
-
-- *Type:* constructs.Node
-
-The tree node.
-
----
-
 
 ## Structs <a name="Structs" id="Structs"></a>
 
@@ -286,9 +139,9 @@ new Code()
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Code.property.language">language</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Code.property.language">language</a></code> | <code>string</code> | The language of the code. |
+| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | A path to the code in the user's file system that can be referenced for bundling purposes. |
+| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | The raw code contents. |
 
 ---
 
@@ -300,6 +153,10 @@ public readonly language: string;
 
 - *Type:* string
 
+The language of the code.
+
+Currently recognized values: "javascript"
+
 ---
 
 ##### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.Code.property.path"></a>
@@ -310,6 +167,8 @@ public readonly path: string;
 
 - *Type:* string
 
+A path to the code in the user's file system that can be referenced for bundling purposes.
+
 ---
 
 ##### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.Code.property.text"></a>
@@ -319,6 +178,8 @@ public readonly text: string;
 ```
 
 - *Type:* string
+
+The raw code contents.
 
 ---
 
@@ -373,7 +234,7 @@ Reference code directly from a string.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.JSCode.property.language">language</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.JSCode.property.language">language</a></code> | <code>string</code> | The language of the code. |
 | <code><a href="#@monadahq/polycons.JSCode.property.path">path</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@monadahq/polycons.JSCode.property.text">text</a></code> | <code>string</code> | Returns the text contents. |
 
@@ -386,6 +247,10 @@ public readonly language: string;
 ```
 
 - *Type:* string
+
+The language of the code.
+
+Currently recognized values: "javascript"
 
 ---
 
@@ -518,6 +383,66 @@ This factory will be used for resolving all polycons into constructs.
 
 
 
+### Polycons <a name="Polycons" id="@monadahq/polycons.Polycons"></a>
+
+A polymorphic construct that can be resolved at construction time into a more specific construct.
+
+#### Initializers <a name="Initializers" id="@monadahq/polycons.Polycons.Initializer"></a>
+
+```typescript
+import { Polycons } from '@monadahq/polycons'
+
+new Polycons()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@monadahq/polycons.Polycons.resolve">resolve</a></code> | *No description.* |
+
+---
+
+##### `resolve` <a name="resolve" id="@monadahq/polycons.Polycons.resolve"></a>
+
+```typescript
+import { Polycons } from '@monadahq/polycons'
+
+Polycons.resolve(qualifier: string, scope: Construct, id: string, props?: any)
+```
+
+###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycons.resolve.parameter.qualifier"></a>
+
+- *Type:* string
+
+---
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycons.resolve.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycons.resolve.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycons.resolve.parameter.props"></a>
+
+- *Type:* any
+
+---
+
+
+
 ### Process <a name="Process" id="@monadahq/polycons.Process"></a>
 
 Runtime code with a named entrypoint.
@@ -551,9 +476,9 @@ new Process(props: ProcessProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Process.property.code">code</a></code> | <code><a href="#@monadahq/polycons.Code">Code</a></code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}</code> | Capture information. |
+| <code><a href="#@monadahq/polycons.Process.property.code">code</a></code> | <code><a href="#@monadahq/polycons.Code">Code</a></code> | Reference to code containing the entrypoint function. |
+| <code><a href="#@monadahq/polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | Name of the exported function which will be run. |
 
 ---
 
@@ -565,6 +490,13 @@ public readonly captures: {[ key: string ]: Capture};
 
 - *Type:* {[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}
 
+Capture information.
+
+During runtime, a map containing all captured values
+will be passed as the first argument of the entrypoint function.
+
+Each key here will be the key for the final value in the map.
+
 ---
 
 ##### `code`<sup>Required</sup> <a name="code" id="@monadahq/polycons.Process.property.code"></a>
@@ -575,6 +507,8 @@ public readonly code: Code;
 
 - *Type:* <a href="#@monadahq/polycons.Code">Code</a>
 
+Reference to code containing the entrypoint function.
+
 ---
 
 ##### `entrypoint`<sup>Required</sup> <a name="entrypoint" id="@monadahq/polycons.Process.property.entrypoint"></a>
@@ -584,6 +518,8 @@ public readonly entrypoint: string;
 ```
 
 - *Type:* string
+
+Name of the exported function which will be run.
 
 ---
 
