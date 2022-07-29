@@ -68,8 +68,6 @@ Returns a string representation of this construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycon.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@monadahq/polycons.Polycon.concretize">concretize</a></code> | Invoke this method on the class you wish to use as an implementation of a polycon. |
-| <code><a href="#@monadahq/polycons.Polycon.isPolyconClass">isPolyconClass</a></code> | Checks if `x` is a polycon-based class that should be considered abstract. |
 
 ---
 
@@ -88,36 +86,6 @@ Checks if `x` is a construct.
 - *Type:* any
 
 Any object.
-
----
-
-##### `concretize` <a name="concretize" id="@monadahq/polycons.Polycon.concretize"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.concretize()
-```
-
-Invoke this method on the class you wish to use as an implementation of a polycon.
-
-Note: Do not call this with `Polycon`, use a subclass of `Polycon` instead.
-
-##### `isPolyconClass` <a name="isPolyconClass" id="@monadahq/polycons.Polycon.isPolyconClass"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.isPolyconClass(x: any)
-```
-
-Checks if `x` is a polycon-based class that should be considered abstract.
-
-###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isPolyconClass.parameter.x"></a>
-
-- *Type:* any
-
-Any class (function).
 
 ---
 

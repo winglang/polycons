@@ -6,7 +6,6 @@ test("a concrete polycon can be constructed directly", () => {
   const dog = new Poodle(app, "dog", { name: "piffle", treats: 5 });
 
   expect(dog instanceof Construct).toBeTruthy();
-  expect(Polycon.isPolyconClass(Poodle)).toBeFalsy();
 });
 
 // this is important for languages that use nominal typing (like Java)
@@ -127,7 +126,7 @@ class Dog extends Polycon {
   public readonly species = "Canis familiaris";
   public readonly treats: number;
   constructor(scope: Construct, id: string, props: DogProps) {
-    super(DOG_QUALIFIER, scope, id, props);
+    super(new.target === Dog ? DOG_QUALIFIER : "", scope, id, props);
 
     this.treats = props.treats;
   }
@@ -149,10 +148,8 @@ class Poodle extends Dog {
     return `Poodle with ${this.treats} treats.`;
   }
 }
-Poodle.concretize();
 
 class Labrador extends Dog {}
-Labrador.concretize();
 
 // == cat data structures ==
 
@@ -164,7 +161,7 @@ interface CatProps {
 
 class Cat extends Polycon {
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(CAT_QUALIFIER, scope, id, props);
+    super(new.target === Cat ? CAT_QUALIFIER : "", scope, id, props);
   }
   public toString(): string {
     throw new Error("unimplemented");
@@ -181,7 +178,6 @@ class Shorthair extends Cat {
     return `Shorthair cat with ${this.scritches} scritches.`;
   }
 }
-Shorthair.concretize();
 
 // == factories ==
 
