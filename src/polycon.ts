@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
-const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
 const POLYCON_CLASS_SYMBOL = Symbol.for("polycons.PolyconClass");
 
 /**
@@ -9,15 +8,6 @@ const POLYCON_CLASS_SYMBOL = Symbol.for("polycons.PolyconClass");
  * specific construct.
  */
 export abstract class Polycon extends Construct {
-  /**
-   * Checks if `x` is a polycon.
-   * @returns true if `x` is an object created from a class which extends `Polycon`.
-   * @param x Any object
-   */
-  public static isPolycon(x: any): x is Polycon {
-    return x && typeof x === "object" && x[POLYCON_SYMBOL];
-  }
-
   /**
    * Checks if `x` is a polycon-based class that should be considered abstract.
    * @returns true if `x` is a class that extends `Polycon` and is not allowed to be constructed directly.

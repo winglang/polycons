@@ -1,22 +1,12 @@
 import { Construct, IConstruct } from "constructs";
 import { Polycon, PolyconFactory } from "../src";
 
-test("can construct concrete polycons directly", () => {
+test("a concrete polycon can be constructed directly", () => {
   const app = new App();
   const dog = new Poodle(app, "dog", { name: "piffle", treats: 5 });
 
-  expect(Polycon.isPolycon(dog)).toBeFalsy();
+  expect(dog instanceof Construct).toBeTruthy();
   expect(Polycon.isPolyconClass(Poodle)).toBeFalsy();
-});
-
-test("Polycon.isPolycon returns true for polycons", () => {
-  const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  const dog = new Dog(app, "dog", { name: "piffle", treats: 5 });
-
-  expect(Polycon.isPolycon(dog)).toBeTruthy();
-  expect(Polycon.isPolycon(app)).toBeFalsy();
-  expect(Polycon.isPolyconClass(Dog)).toBeTruthy();
 });
 
 // this is important for languages that use nominal typing (like Java)
