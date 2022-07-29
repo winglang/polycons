@@ -299,9 +299,9 @@ new Code()
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Code.property.language">language</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Code.property.language">language</a></code> | <code>string</code> | The language of the code. |
+| <code><a href="#@monadahq/polycons.Code.property.path">path</a></code> | <code>string</code> | A path to the code in the user's file system that can be referenced for bundling purposes. |
+| <code><a href="#@monadahq/polycons.Code.property.text">text</a></code> | <code>string</code> | The raw code contents. |
 
 ---
 
@@ -313,6 +313,10 @@ public readonly language: string;
 
 - *Type:* string
 
+The language of the code.
+
+Currently recognized values: "javascript"
+
 ---
 
 ##### `path`<sup>Required</sup> <a name="path" id="@monadahq/polycons.Code.property.path"></a>
@@ -323,6 +327,8 @@ public readonly path: string;
 
 - *Type:* string
 
+A path to the code in the user's file system that can be referenced for bundling purposes.
+
 ---
 
 ##### `text`<sup>Required</sup> <a name="text" id="@monadahq/polycons.Code.property.text"></a>
@@ -332,6 +338,8 @@ public readonly text: string;
 ```
 
 - *Type:* string
+
+The raw code contents.
 
 ---
 
@@ -386,7 +394,7 @@ Reference code directly from a string.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.JSCode.property.language">language</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.JSCode.property.language">language</a></code> | <code>string</code> | The language of the code. |
 | <code><a href="#@monadahq/polycons.JSCode.property.path">path</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@monadahq/polycons.JSCode.property.text">text</a></code> | <code>string</code> | Returns the text contents. |
 
@@ -399,6 +407,10 @@ public readonly language: string;
 ```
 
 - *Type:* string
+
+The language of the code.
+
+Currently recognized values: "javascript"
 
 ---
 
@@ -564,9 +576,9 @@ new Process(props: ProcessProps)
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@monadahq/polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}</code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Process.property.code">code</a></code> | <code><a href="#@monadahq/polycons.Code">Code</a></code> | *No description.* |
-| <code><a href="#@monadahq/polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@monadahq/polycons.Process.property.captures">captures</a></code> | <code>{[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}</code> | Capture information. |
+| <code><a href="#@monadahq/polycons.Process.property.code">code</a></code> | <code><a href="#@monadahq/polycons.Code">Code</a></code> | Reference to code containing the entrypoint function. |
+| <code><a href="#@monadahq/polycons.Process.property.entrypoint">entrypoint</a></code> | <code>string</code> | Name of the exported function which will be run. |
 
 ---
 
@@ -578,6 +590,13 @@ public readonly captures: {[ key: string ]: Capture};
 
 - *Type:* {[ key: string ]: <a href="#@monadahq/polycons.Capture">Capture</a>}
 
+Capture information.
+
+During runtime, a map containing all captured values
+will be passed as the first argument of the entrypoint function.
+
+Each key here will be the key for the final value in the map.
+
 ---
 
 ##### `code`<sup>Required</sup> <a name="code" id="@monadahq/polycons.Process.property.code"></a>
@@ -588,6 +607,8 @@ public readonly code: Code;
 
 - *Type:* <a href="#@monadahq/polycons.Code">Code</a>
 
+Reference to code containing the entrypoint function.
+
 ---
 
 ##### `entrypoint`<sup>Required</sup> <a name="entrypoint" id="@monadahq/polycons.Process.property.entrypoint"></a>
@@ -597,6 +618,8 @@ public readonly entrypoint: string;
 ```
 
 - *Type:* string
+
+Name of the exported function which will be run.
 
 ---
 

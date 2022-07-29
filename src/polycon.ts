@@ -61,14 +61,6 @@ export abstract class Polycon extends Construct {
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
 
-    // annotate the particular instance returned by this constructor as being
-    // a polycon
-    Object.defineProperty(resolved, POLYCON_SYMBOL, {
-      value: true,
-      enumerable: false,
-      writable: false,
-    });
-
     return resolved as Polycon;
   }
 }

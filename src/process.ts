@@ -29,8 +29,22 @@ export interface ICapturable {
  * Reference to a piece of code.
  */
 export abstract class Code {
+  /**
+   * The language of the code.
+   *
+   * Currently recognized values: "javascript"
+   */
   public abstract readonly language: string;
+
+  /**
+   * The raw code contents.
+   */
   public abstract readonly text: string;
+
+  /**
+   * A path to the code in the user's file system that can be referenced
+   * for bundling purposes.
+   */
   public abstract readonly path: string;
 }
 
@@ -95,8 +109,20 @@ export interface ProcessProps {
  * that exists to be run outside of the scope of a `constructs` application.
  */
 export class Process {
+  /**
+   * Reference to code containing the entrypoint function.
+   */
   public readonly code: Code;
+  /**
+   * Name of the exported function which will be run.
+   */
   public readonly entrypoint: string;
+  /**
+   * Capture information. During runtime, a map containing all captured values
+   * will be passed as the first argument of the entrypoint function.
+   *
+   * Each key here will be the key for the final value in the map.
+   */
   public readonly captures: { [name: string]: Capture };
 
   constructor(props: ProcessProps) {
