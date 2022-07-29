@@ -336,8 +336,51 @@ public resolveConstruct(qualifier: string, scope: IConstruct, id: string, props?
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@monadahq/polycons.PolyconFactory.newInstance">newInstance</a></code> | Creates a new instance of a polycons by resolving it through the registered factory. |
 | <code><a href="#@monadahq/polycons.PolyconFactory.of">of</a></code> | Returns the polycon factory registered in a given scope. |
 | <code><a href="#@monadahq/polycons.PolyconFactory.register">register</a></code> | Adds a factory at the root of the construct tree. |
+
+---
+
+##### `newInstance` <a name="newInstance" id="@monadahq/polycons.PolyconFactory.newInstance"></a>
+
+```typescript
+import { PolyconFactory } from '@monadahq/polycons'
+
+PolyconFactory.newInstance(qualifier: string, scope: IConstruct, id: string, props?: any)
+```
+
+Creates a new instance of a polycons by resolving it through the registered factory.
+
+###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.qualifier"></a>
+
+- *Type:* string
+
+The type qualifier.
+
+---
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.scope"></a>
+
+- *Type:* constructs.IConstruct
+
+The construct scope.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.id"></a>
+
+- *Type:* string
+
+The construct identifier.
+
+---
+
+###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.props"></a>
+
+- *Type:* any
+
+The construct props.
 
 ---
 
@@ -378,53 +421,6 @@ This factory will be used for resolving all polycons into constructs.
 ###### `factory`<sup>Required</sup> <a name="factory" id="@monadahq/polycons.PolyconFactory.register.parameter.factory"></a>
 
 - *Type:* <a href="#@monadahq/polycons.PolyconFactory">PolyconFactory</a>
-
----
-
-
-
-### Polycons <a name="Polycons" id="@monadahq/polycons.Polycons"></a>
-
-A class used to create polycons.
-
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@monadahq/polycons.Polycons.create">create</a></code> | *No description.* |
-
----
-
-##### `create` <a name="create" id="@monadahq/polycons.Polycons.create"></a>
-
-```typescript
-import { Polycons } from '@monadahq/polycons'
-
-Polycons.create(qualifier: string, scope: Construct, id: string, props?: any)
-```
-
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycons.create.parameter.qualifier"></a>
-
-- *Type:* string
-
----
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycons.create.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.Polycons.create.parameter.id"></a>
-
-- *Type:* string
-
----
-
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycons.create.parameter.props"></a>
-
-- *Type:* any
 
 ---
 

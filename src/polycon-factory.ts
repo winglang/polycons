@@ -41,6 +41,26 @@ export abstract class PolyconFactory {
     });
   }
 
+  /**
+   * Creates a new instance of a polycons by resolving it through the registered
+   * factory.
+   *
+   * @param qualifier The type qualifier
+   * @param scope The construct scope
+   * @param id The construct identifier
+   * @param props The construct props
+   * @returns The resolved construct
+   */
+  public static newInstance(
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props?: any
+  ) {
+    const factory = PolyconFactory.of(scope);
+    return factory.resolveConstruct(qualifier, scope, id, props);
+  }
+
   public abstract resolveConstruct(
     qualifier: string,
     scope: IConstruct,

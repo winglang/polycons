@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { Polycons, PolyconFactory } from "../src";
+import { PolyconFactory } from "../src";
 
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
@@ -22,8 +22,6 @@ test("a polycon factory can be registered", () => {
   const app = new App();
   const factory = new PoodleFactory();
   PolyconFactory.register(app, factory);
-
-  expect(PolyconFactory.of(app)).toEqual(factory);
 });
 
 test("a polycon factory is always registered to the root", () => {
@@ -191,8 +189,8 @@ abstract class DogBase extends Construct {
 
 class Dog extends DogBase {
   constructor(scope: Construct, id: string, props: DogProps) {
-    super(undefined as any, id, props);
-    return Polycons.create(DOG_QUALIFIER, scope, id, props) as Dog;
+    super(null as any, id, props);
+    return PolyconFactory.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
   }
 
   public toString(): string {
@@ -229,14 +227,18 @@ interface CatProps {
 class CatBase extends Construct {
   constructor(scope: Construct, id: string, props: CatProps) {
     super(scope, id);
+    if (!scope) {
+      return;
+    }
+
     props;
   }
 }
 
 class Cat extends CatBase {
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(scope, id, props);
-    return Polycons.create(CAT_QUALIFIER, scope, id, props) as Cat;
+    super(null as any, id, props);
+    return PolyconFactory.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
   }
   public toString(): string {
     throw new Error("unimplemented");
