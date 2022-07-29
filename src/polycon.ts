@@ -2,6 +2,7 @@ import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
+const POLYCON_CLASS_SYMBOL = Symbol.for("polycons.Polycon_ABSTRACT");
 
 /**
  * A polymorphic construct that can be resolved at construction time into a more
@@ -17,9 +18,18 @@ export abstract class Polycon extends Construct {
     return x && typeof x === "object" && x[POLYCON_SYMBOL];
   }
 
+  /**
+   * Checks if `x` is a polycon-based class that should be considered abstract.
+   * @returns true if `x` is a class that extends `Polycon` and is not allowed to be constructed directly.
+   * @param x Any object
+   */
+  public static isPolyconClass(x: any): x is Polycon {
+    return x && typeof x === "function" && x[POLYCON_CLASS_SYMBOL];
+  }
+
   /** Allow the given class to be constructed directly, even when it inherits from Polycon */
   public static allowConcrete(clazz: Object) {
-    Object.defineProperty(clazz, POLYCON_SYMBOL, {
+    Object.defineProperty(clazz, POLYCON_CLASS_SYMBOL, {
       value: false,
     });
   }
@@ -30,8 +40,8 @@ export abstract class Polycon extends Construct {
     id: string,
     props?: any
   ) {
-    if (!(new.target as any)[POLYCON_SYMBOL]) {
-      // The target class is being constructed directly, skip polycon logic
+    if (!Polycon.isPolyconClass(new.target)) {
+      // The target class is being constructed directly, skip factory logic
       super(scope, id);
       return;
     }
@@ -60,7 +70,7 @@ export abstract class Polycon extends Construct {
 }
 
 // This property gets inherited by all subclasses
-Object.defineProperty(Polycon, POLYCON_SYMBOL, {
+Object.defineProperty(Polycon, POLYCON_CLASS_SYMBOL, {
   value: true,
   enumerable: false,
   configurable: false,
