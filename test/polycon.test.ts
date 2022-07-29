@@ -22,6 +22,8 @@ test("a polycon factory can be registered", () => {
   const app = new App();
   const factory = new PoodleFactory();
   PolyconFactory.register(app, factory);
+
+  expect(PolyconFactory.of(app)).toEqual(factory);
 });
 
 test("a polycon factory is always registered to the root", () => {
