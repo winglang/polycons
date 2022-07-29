@@ -68,7 +68,7 @@ Returns a string representation of this construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycon.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@monadahq/polycons.Polycon.allowConcrete">allowConcrete</a></code> | Allow the given class to be constructed directly, even when it inherits from Polycon. |
+| <code><a href="#@monadahq/polycons.Polycon.concretize">concretize</a></code> | Invoke this method on the class you wish to use as an implementation of a polycon. |
 | <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a polycon. |
 | <code><a href="#@monadahq/polycons.Polycon.isPolyconClass">isPolyconClass</a></code> | Checks if `x` is a polycon-based class that should be considered abstract. |
 
@@ -92,21 +92,17 @@ Any object.
 
 ---
 
-##### `allowConcrete` <a name="allowConcrete" id="@monadahq/polycons.Polycon.allowConcrete"></a>
+##### `concretize` <a name="concretize" id="@monadahq/polycons.Polycon.concretize"></a>
 
 ```typescript
 import { Polycon } from '@monadahq/polycons'
 
-Polycon.allowConcrete(clazz: any)
+Polycon.concretize()
 ```
 
-Allow the given class to be constructed directly, even when it inherits from Polycon.
+Invoke this method on the class you wish to use as an implementation of a polycon.
 
-###### `clazz`<sup>Required</sup> <a name="clazz" id="@monadahq/polycons.Polycon.allowConcrete.parameter.clazz"></a>
-
-- *Type:* any
-
----
+Note: Do not call this with `Polycon`, use a subclass of `Polycon` instead.
 
 ##### `isPolycon` <a name="isPolycon" id="@monadahq/polycons.Polycon.isPolycon"></a>
 

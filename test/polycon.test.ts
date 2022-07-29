@@ -159,10 +159,10 @@ class Poodle extends Dog {
     return `Poodle with ${this.treats} treats.`;
   }
 }
-Polycon.allowConcrete(Poodle);
+Poodle.concretize();
 
 class Labrador extends Dog {}
-Polycon.allowConcrete(Labrador);
+Labrador.concretize();
 
 // == cat data structures ==
 
@@ -191,7 +191,7 @@ class Shorthair extends Cat {
     return `Shorthair cat with ${this.scritches} scritches.`;
   }
 }
-Polycon.allowConcrete(Shorthair);
+Shorthair.concretize();
 
 // == factories ==
 

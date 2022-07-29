@@ -27,9 +27,17 @@ export abstract class Polycon extends Construct {
     return x && typeof x === "function" && x[POLYCON_CLASS_SYMBOL];
   }
 
-  /** Allow the given class to be constructed directly, even when it inherits from Polycon */
-  public static allowConcrete(clazz: any) {
-    Object.defineProperty(clazz, POLYCON_CLASS_SYMBOL, {
+  /**
+   * Invoke this method on the class you wish to use as an implementation of a polycon.
+   * Note: Do not call this with `Polycon`, use a subclass of `Polycon` instead.
+   * */
+  public static concretize() {
+    if (this === Polycon) {
+      throw new Error(
+        "Cannot call concretize() on `Polycon`, use a subclass of `Polycon` instead."
+      );
+    }
+    Object.defineProperty(this, POLYCON_CLASS_SYMBOL, {
       value: false,
     });
   }
