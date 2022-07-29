@@ -1,22 +1,11 @@
 import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
-const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
-
 /**
  * A polymorphic construct that can be resolved at construction time into a more
  * specific construct.
  */
 export abstract class Polycon extends Construct {
-  /**
-   * Checks if `x` is a polycon.
-   * @returns true if `x` is an object created from a class which extends `Polycon`.
-   * @param x Any object
-   */
-  public static isPolycon(x: any): x is Polycon {
-    return x && typeof x === "object" && x[POLYCON_SYMBOL];
-  }
-
   protected constructor(
     qualifier: string,
     scope: Construct,
@@ -53,14 +42,6 @@ export abstract class Polycon extends Construct {
     });
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
-
-    // annotate the particular instance returned by this constructor as being
-    // a polycon
-    Object.defineProperty(resolved, POLYCON_SYMBOL, {
-      value: true,
-      enumerable: false,
-      writable: false,
-    });
 
     return resolved as Polycon;
   }

@@ -68,7 +68,6 @@ Returns a string representation of this construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycon.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@monadahq/polycons.Polycon.isPolycon">isPolycon</a></code> | Checks if `x` is a polycon. |
 
 ---
 
@@ -83,24 +82,6 @@ Polycon.isConstruct(x: any)
 Checks if `x` is a construct.
 
 ###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isConstruct.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
-
-##### `isPolycon` <a name="isPolycon" id="@monadahq/polycons.Polycon.isPolycon"></a>
-
-```typescript
-import { Polycon } from '@monadahq/polycons'
-
-Polycon.isPolycon(x: any)
-```
-
-Checks if `x` is a polycon.
-
-###### `x`<sup>Required</sup> <a name="x" id="@monadahq/polycons.Polycon.isPolycon.parameter.x"></a>
 
 - *Type:* any
 

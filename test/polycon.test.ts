@@ -1,15 +1,6 @@
 import { Construct, IConstruct } from "constructs";
 import { Polycon, PolyconFactory } from "../src";
 
-test("Polycon.isPolycon returns true for polycons", () => {
-  const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  const dog = new Dog(app, "dog", { name: "piffle", treats: 5 });
-
-  expect(Polycon.isPolycon(dog)).toBeTruthy();
-  expect(Polycon.isPolycon(app)).toBeFalsy();
-});
-
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
   PolyconFactory.register(app, new PoodleFactory());
