@@ -1,6 +1,13 @@
 import { Construct, IConstruct } from "constructs";
 import { Polycon, PolyconFactory } from "../src";
 
+test("can construct concrete polycons directly", () => {
+  const app = new App();
+  const dog = new Poodle(app, "dog", { name: "piffle", treats: 5 });
+
+  expect(!Polycon.isPolycon(dog)).toBeTruthy();
+});
+
 test("Polycon.isPolycon returns true for polycons", () => {
   const app = new App();
   PolyconFactory.register(app, new PoodleFactory());
@@ -159,8 +166,10 @@ class Poodle extends Dog {
     return `Poodle with ${this.treats} treats.`;
   }
 }
+Polycon.allowConcrete(Poodle);
 
 class Labrador extends Dog {}
+Polycon.allowConcrete(Labrador);
 
 // == cat data structures ==
 
@@ -189,6 +198,7 @@ class Shorthair extends Cat {
     return `Shorthair cat with ${this.scritches} scritches.`;
   }
 }
+Polycon.allowConcrete(Shorthair);
 
 // == factories ==
 

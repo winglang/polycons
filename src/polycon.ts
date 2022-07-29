@@ -17,21 +17,23 @@ export abstract class Polycon extends Construct {
     return x && typeof x === "object" && x[POLYCON_SYMBOL];
   }
 
+  /** Allow the given class to be constructed directly, even when it inherits from Polycon */
+  public static allowConcrete(clazz: Object) {
+    Object.defineProperty(clazz, POLYCON_SYMBOL, {
+      value: false,
+    });
+  }
+
   protected constructor(
     qualifier: string,
     scope: Construct,
     id: string,
     props?: any
   ) {
-    // check if we are being called from a polycon resolution code path
-    // this is done by checking if a marker for this polycon is present in the
-    // scope. if so, we will initialize this as an empty construct and delete
-    // the marker
-    const marker = Symbol.for(`polycons.init[${qualifier}]#${id}`);
-    if (marker in scope) {
+    if (!(new.target as any)[POLYCON_SYMBOL]) {
+      // The target class is being constructed directly, skip polycon logic
       super(scope, id);
-      delete (scope as any)[marker]; // delete the marker
-      return this;
+      return;
     }
 
     // since we eventually return the resolved polycon, we can just initialize
@@ -42,15 +44,6 @@ export abstract class Polycon extends Construct {
     if (!factory) {
       throw new Error(`No factory defined within scope of "${id}"`);
     }
-
-    // add the initialization marker to avoid re-entering this path
-    // when the resolved polycon is initialized.
-    Object.defineProperty(scope, marker, {
-      value: true,
-      enumerable: false,
-      writable: false,
-      configurable: true, // we are deleting the marker after construction
-    });
 
     const resolved = factory.resolveConstruct(qualifier, scope, id, props);
 
@@ -65,3 +58,10 @@ export abstract class Polycon extends Construct {
     return resolved as Polycon;
   }
 }
+
+// This property gets inherited by all subclasses
+Object.defineProperty(Polycon, POLYCON_SYMBOL, {
+  value: true,
+  enumerable: false,
+  configurable: false,
+});
