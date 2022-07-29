@@ -28,7 +28,7 @@ export abstract class Polycon extends Construct {
   }
 
   /** Allow the given class to be constructed directly, even when it inherits from Polycon */
-  public static allowConcrete(clazz: Object) {
+  public static allowConcrete(clazz: any) {
     Object.defineProperty(clazz, POLYCON_CLASS_SYMBOL, {
       value: false,
     });
