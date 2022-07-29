@@ -1,23 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { Polycon, PolyconFactory } from "../src";
-
-test("Polycon.isPolycon returns true for polycons", () => {
-  const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  const dog = Dog.create(app, "dog", { name: "piffle", treats: 5 });
-
-  expect(Polycon.isPolycon(dog)).toBeTruthy();
-  expect(Polycon.isPolycon(app)).toBeFalsy();
-});
-
-test("polycon creation marker is deleted from the scope", () => {
-  const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  Dog.create(app, "dog", { name: "piffle", treats: 5 });
-
-  const marker = Symbol.for("polycons.init[test.dog]#dog");
-  expect(marker in app).toBeFalsy();
-});
+import { Polycons, PolyconFactory } from "../src";
 
 // this is important for languages that use nominal typing (like Java)
 test("polycon instanceof Construct", () => {
@@ -141,11 +123,12 @@ test("polycon constructor does not get called more than once", () => {
   expect(biffle.friendCount).toEqual(1);
 });
 
-test("a polycon cannot be instantiated through its regular constructor", () => {
+test("concretes can be defined explicitly", () => {
   const app = new App();
-  expect(() => new Dog(app, "dog", { name: "piffle", treats: 5 })).toThrowError(
-    /Polycons cannot be directly instantiated through their constructors/
-  );
+  PolyconFactory.register(app, new PoodleFactory());
+  const lab = new Labrador(app, "my_lab", { name: "lab", treats: 5 });
+  expect(lab.toString()).toEqual("Labrador with 5 treats.");
+  expect(app.synth()).toStrictEqual(["root", "root/my_lab"]);
 });
 
 class App extends Construct {
@@ -167,14 +150,14 @@ interface DogProps {
   readonly friends?: Dog[];
 }
 
-class Dog extends Polycon {
+class Dog extends Construct {
   public static create(scope: Construct, id: string, props: DogProps): Dog {
-    return Polycon.resolve(DOG_QUALIFIER, scope, id, props) as Dog;
+    return Polycons.resolve(DOG_QUALIFIER, scope, id, props) as Dog;
   }
   public readonly species = "Canis familiaris";
   public readonly treats: number;
   public friendCount: number;
-  constructor(scope: Construct, id: string, props: DogProps) {
+  protected constructor(scope: Construct, id: string, props: DogProps) {
     super(scope, id);
 
     this.treats = props.treats;
@@ -224,11 +207,11 @@ interface CatProps {
   readonly scritches: number;
 }
 
-class Cat extends Polycon {
+class Cat extends Construct {
   public static create(scope: Construct, id: string, props: CatProps): Cat {
-    return Polycon.resolve(CAT_QUALIFIER, scope, id, props) as Cat;
+    return Polycons.resolve(CAT_QUALIFIER, scope, id, props) as Cat;
   }
-  constructor(scope: Construct, id: string, _props: CatProps) {
+  protected constructor(scope: Construct, id: string, _props: CatProps) {
     super(scope, id);
   }
   public toString(): string {
