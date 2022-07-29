@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { PolyconFactory } from "./polycon-factory";
 
 const POLYCON_SYMBOL = Symbol.for("polycons.Polycon");
-const POLYCON_CLASS_SYMBOL = Symbol.for("polycons.Polycon_ABSTRACT");
+const POLYCON_CLASS_SYMBOL = Symbol.for("polycons.PolyconClass");
 
 /**
  * A polymorphic construct that can be resolved at construction time into a more
@@ -45,10 +45,6 @@ export abstract class Polycon extends Construct {
       super(scope, id);
       return;
     }
-
-    // since we eventually return the resolved polycon, we can just initialize
-    // the base class as an empty root construct (it won't be used)
-    super(null as any, "");
 
     const factory = PolyconFactory.of(scope);
     if (!factory) {

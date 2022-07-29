@@ -5,7 +5,8 @@ test("can construct concrete polycons directly", () => {
   const app = new App();
   const dog = new Poodle(app, "dog", { name: "piffle", treats: 5 });
 
-  expect(!Polycon.isPolycon(dog)).toBeTruthy();
+  expect(Polycon.isPolycon(dog)).toBeFalsy();
+  expect(Polycon.isPolyconClass(Poodle)).toBeFalsy();
 });
 
 test("Polycon.isPolycon returns true for polycons", () => {
@@ -15,15 +16,7 @@ test("Polycon.isPolycon returns true for polycons", () => {
 
   expect(Polycon.isPolycon(dog)).toBeTruthy();
   expect(Polycon.isPolycon(app)).toBeFalsy();
-});
-
-test("polycon creation marker is deleted from the scope", () => {
-  const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  new Dog(app, "dog", { name: "piffle", treats: 5 });
-
-  const marker = Symbol.for("polycons.init[test.dog]#dog");
-  expect(marker in app).toBeFalsy();
+  expect(Polycon.isPolyconClass(Dog)).toBeTruthy();
 });
 
 // this is important for languages that use nominal typing (like Java)
