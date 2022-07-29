@@ -21,7 +21,7 @@ export abstract class Polycon extends Construct {
   /**
    * Checks if `x` is a polycon-based class that should be considered abstract.
    * @returns true if `x` is a class that extends `Polycon` and is not allowed to be constructed directly.
-   * @param x Any object
+   * @param x Any class (function)
    */
   public static isPolyconClass(x: any): x is Polycon {
     return x && typeof x === "function" && x[POLYCON_CLASS_SYMBOL];
