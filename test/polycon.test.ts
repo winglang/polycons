@@ -196,7 +196,7 @@ class Dog extends DogBase {
   }
 
   public toString(): string {
-    throw new Error("Method not implemented.");
+    throw new Error("unimplemented");
   }
 }
 
