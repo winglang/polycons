@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { Polycon, PolyconFactory } from "../src";
+import { PolyconFactory } from "../src";
 
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
@@ -106,6 +106,38 @@ test("factory is able to make decisions based on the id of the polycon", () => {
   expect(special instanceof Labrador).toBeTruthy();
 });
 
+test("factory is able to change props passed into the polycon", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const special = new Dog(app, "labrador", { name: "shmo", treats: 3 });
+
+  // factory lets labradors get twice the number of treats
+  expect(special.treats).toEqual(6);
+  expect(special.toString()).toEqual("Labrador with 6 treats.");
+});
+
+test("polycon constructor does not get called more than once", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
+  const biffle = new Dog(app, "biffle", {
+    name: "biffle",
+    treats: 5,
+    friends: [piffle],
+  });
+
+  expect(biffle.friendCount).toEqual(1);
+  expect(piffle.friendCount).toEqual(1);
+});
+
+test("concretes can be defined explicitly", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const lab = new Labrador(app, "my_lab", { name: "lab", treats: 5 });
+  expect(lab.toString()).toEqual("Labrador with 5 treats.");
+  expect(app.synth()).toStrictEqual(["root", "root/my_lab"]);
+});
+
 class App extends Construct {
   constructor() {
     super(undefined as any, "root");
@@ -122,36 +154,69 @@ const DOG_QUALIFIER = "test.dog";
 interface DogProps {
   readonly name: string;
   readonly treats: number;
+  readonly friends?: Dog[];
 }
 
-class Dog extends Polycon {
+abstract class DogBase extends Construct {
   public readonly species = "Canis familiaris";
   public readonly treats: number;
+  public friendCount: number;
+
   constructor(scope: Construct, id: string, props: DogProps) {
-    super(DOG_QUALIFIER, scope, id, props);
+    super(scope, id);
+    if (!scope) {
+      // initialized through the polycon, just dummy values
+      this.friendCount = 0;
+      this.treats = 0;
+      return;
+    }
 
     this.treats = props.treats;
+    this.friendCount = 0;
+
+    for (const friend of props.friends ?? []) {
+      this.addFriend();
+      friend.addFriend();
+    }
+  }
+
+  public addFriend() {
+    this.friendCount += 1;
   }
   public toStringUppercase() {
     return this.toString().toUpperCase();
   }
+  public abstract toString(): string;
+}
+
+class Dog extends DogBase {
+  constructor(scope: Construct, id: string, props: DogProps) {
+    super(null as any, id, props);
+    return PolyconFactory.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
+  }
+
   public toString(): string {
     throw new Error("unimplemented");
   }
 }
 
-class Poodle extends Dog {
-  public readonly treats: number;
+class Poodle extends DogBase {
   constructor(scope: Construct, id: string, props: DogProps) {
     super(scope, id, props);
-    this.treats = props.treats;
   }
   public toString() {
     return `Poodle with ${this.treats} treats.`;
   }
 }
 
-class Labrador extends Dog {}
+class Labrador extends DogBase {
+  constructor(scope: Construct, id: string, props: DogProps) {
+    super(scope, id, props);
+  }
+  public toString() {
+    return `Labrador with ${this.treats} treats.`;
+  }
+}
 
 // == cat data structures ==
 
@@ -161,16 +226,28 @@ interface CatProps {
   readonly scritches: number;
 }
 
-class Cat extends Polycon {
+class CatBase extends Construct {
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(CAT_QUALIFIER, scope, id, props);
+    super(scope, id);
+    if (!scope) {
+      return;
+    }
+
+    props;
+  }
+}
+
+class Cat extends CatBase {
+  constructor(scope: Construct, id: string, props: CatProps) {
+    super(null as any, id, props);
+    return PolyconFactory.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
   }
   public toString(): string {
     throw new Error("unimplemented");
   }
 }
 
-class Shorthair extends Cat {
+class Shorthair extends CatBase {
   public readonly scritches: number;
   constructor(scope: Construct, id: string, props: CatProps) {
     super(scope, id, props);
@@ -193,7 +270,10 @@ class PoodleFactory extends PolyconFactory {
     switch (qualifier) {
       case DOG_QUALIFIER:
         if (id === "labrador") {
-          return new Labrador(scope, id, props);
+          return new Labrador(scope, id, {
+            ...props,
+            treats: props.treats * 2,
+          });
         }
         return new Poodle(scope, id, props);
       default:
