@@ -27,7 +27,6 @@ new PolyconFactory()
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@monadahq/polycons.PolyconFactory.newInstance">newInstance</a></code> | Creates a new instance of a polycons by resolving it through the registered factory. |
-| <code><a href="#@monadahq/polycons.PolyconFactory.of">of</a></code> | Returns the polycon factory registered in a given scope. |
 | <code><a href="#@monadahq/polycons.PolyconFactory.register">register</a></code> | Adds a factory at the root of the construct tree. |
 
 ---
@@ -71,22 +70,6 @@ The construct identifier.
 - *Type:* any
 
 The construct props.
-
----
-
-##### `of` <a name="of" id="@monadahq/polycons.PolyconFactory.of"></a>
-
-```typescript
-import { PolyconFactory } from '@monadahq/polycons'
-
-PolyconFactory.of(scope: IConstruct)
-```
-
-Returns the polycon factory registered in a given scope.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.PolyconFactory.of.parameter.scope"></a>
-
-- *Type:* constructs.IConstruct
 
 ---
 

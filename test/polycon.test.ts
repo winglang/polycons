@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { IPolyconResolver, PolyconFactory } from "../src";
+import { IPolyconResolver, PolyconFactory, polyconFactoryOf } from "../src";
 
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
@@ -23,7 +23,7 @@ test("a polycon factory can be registered", () => {
   const factory = new PoodleFactory();
   PolyconFactory.register(app, factory);
 
-  expect(PolyconFactory.of(app)).toEqual(factory);
+  expect(polyconFactoryOf(app)).toEqual(factory);
 });
 
 test("a polycon factory is always registered to the root", () => {
@@ -32,15 +32,7 @@ test("a polycon factory is always registered to the root", () => {
   const factory = new PoodleFactory();
   PolyconFactory.register(pets, factory);
 
-  expect(PolyconFactory.of(app)).toEqual(factory);
-});
-
-test("PolyconFactory.of throws if no factory is registered", () => {
-  const app = new App();
-
-  expect(() => PolyconFactory.of(app)).toThrowError(
-    /No polycon factory has been registered to the construct tree/
-  );
+  expect(polyconFactoryOf(app)).toEqual(factory);
 });
 
 test("you cannot register two polycon factories to a single tree", () => {

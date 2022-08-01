@@ -8,23 +8,6 @@ const FACTORY_SYMBOL = Symbol.for("polycons.PolyconFactory");
  */
 export class PolyconFactory {
   /**
-   * Returns the polycon factory registered in a given scope.
-   */
-  public static of(scope: IConstruct): IPolyconResolver {
-    const factory = (scope.node.root as any)[
-      FACTORY_SYMBOL
-    ] as IPolyconResolver;
-
-    if (!factory) {
-      throw new Error(
-        "No polycon factory has been registered to the construct tree."
-      );
-    }
-
-    return factory;
-  }
-
-  /**
    * Adds a factory at the root of the construct tree.
    * This factory will be used for resolving all polycons into constructs.
    */
@@ -59,9 +42,24 @@ export class PolyconFactory {
     id: string,
     props?: any
   ) {
-    const factory = PolyconFactory.of(scope);
+    const factory = polyconFactoryOf(scope);
     return factory.resolve(qualifier, scope, id, props);
   }
+}
+
+/**
+ * Returns the polycon factory registered in a given scope.
+ */
+export function polyconFactoryOf(scope: IConstruct): IPolyconResolver {
+  const factory = (scope.node.root as any)[FACTORY_SYMBOL] as IPolyconResolver;
+
+  if (!factory) {
+    throw new Error(
+      "No polycon factory has been registered to the construct tree."
+    );
+  }
+
+  return factory;
 }
 
 export interface IPolyconResolver {
