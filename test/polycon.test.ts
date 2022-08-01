@@ -1,9 +1,9 @@
 import { Construct, IConstruct } from "constructs";
-import { IPolyconResolver, PolyconFactory, polyconFactoryOf } from "../src";
+import { IPolyconFactory, Polycons, polyconFactoryOf } from "../src";
 
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   new Dog(app, "dog", { name: "piffle", treats: 5 });
 
   const marker = Symbol.for("polycons.init[test.dog]#dog");
@@ -13,7 +13,7 @@ test("polycon creation marker is deleted from the scope", () => {
 // this is important for languages that use nominal typing (like Java)
 test("polycon instanceof Construct", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
   expect(piffle instanceof Construct).toBeTruthy();
 });
@@ -21,7 +21,7 @@ test("polycon instanceof Construct", () => {
 test("a polycon factory can be registered", () => {
   const app = new App();
   const factory = new PoodleFactory();
-  PolyconFactory.register(app, factory);
+  Polycons.register(app, factory);
 
   expect(polyconFactoryOf(app)).toEqual(factory);
 });
@@ -30,17 +30,17 @@ test("a polycon factory is always registered to the root", () => {
   const app = new App();
   const pets = new Construct(app, "pets");
   const factory = new PoodleFactory();
-  PolyconFactory.register(pets, factory);
+  Polycons.register(pets, factory);
 
   expect(polyconFactoryOf(app)).toEqual(factory);
 });
 
 test("you cannot register two polycon factories to a single tree", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
-  expect(() =>
-    PolyconFactory.register(app, new ShorthairFactory())
-  ).toThrowError(/There is already a polycon factory registered in this scope/);
+  Polycons.register(app, new PoodleFactory());
+  expect(() => Polycons.register(app, new ShorthairFactory())).toThrowError(
+    /There is already a polycon factory registered in this scope/
+  );
 });
 
 test("a polycon cannot be instantiated without a factory", () => {
@@ -52,7 +52,7 @@ test("a polycon cannot be instantiated without a factory", () => {
 
 test("a polycon cannot be instantiated if the registered factory does not support it", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   expect(() => new Cat(app, "cat", { scritches: 5 })).toThrowError(
     /Qualifier test\.cat not implemented/
   );
@@ -60,7 +60,7 @@ test("a polycon cannot be instantiated if the registered factory does not suppor
 
 test("polycons can be resolved to constructs by a factory", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
   const biffle = new Dog(app, "biffle", { name: "biffle", treats: 7 });
 
@@ -72,7 +72,7 @@ test("polycons can be resolved to constructs by a factory", () => {
 
 test("polycons can access properties and methods from their parent classes", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
 
   // method is defined on Dog but available to Poodle via inheritance
@@ -83,7 +83,7 @@ test("polycons can access properties and methods from their parent classes", () 
 
 test("node.findChild() returns the polycon that was constructed", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
 
   expect(app.node.findChild("piffle")).toBe(piffle);
@@ -91,7 +91,7 @@ test("node.findChild() returns the polycon that was constructed", () => {
 
 test("factory is able to make decisions based on the id of the polycon", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const notSpecial = new Dog(app, "not-special", { name: "jo", treats: 1 });
   const special = new Dog(app, "labrador", { name: "shmo", treats: 1 });
   expect(notSpecial instanceof Poodle).toBeTruthy();
@@ -100,7 +100,7 @@ test("factory is able to make decisions based on the id of the polycon", () => {
 
 test("factory is able to change props passed into the polycon", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const special = new Dog(app, "labrador", { name: "shmo", treats: 3 });
 
   // factory lets labradors get twice the number of treats
@@ -110,7 +110,7 @@ test("factory is able to change props passed into the polycon", () => {
 
 test("polycon constructor does not get called more than once", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
   const biffle = new Dog(app, "biffle", {
     name: "biffle",
@@ -124,7 +124,7 @@ test("polycon constructor does not get called more than once", () => {
 
 test("concretes can be defined explicitly", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const lab = new Labrador(app, "my_lab", { name: "lab", treats: 5 });
 
   expect(lab.toString()).toEqual("Labrador with 5 treats.");
@@ -133,7 +133,7 @@ test("concretes can be defined explicitly", () => {
 
 test("polycons can be created without base classes", () => {
   const app = new App();
-  PolyconFactory.register(app, new ShorthairFactory());
+  Polycons.register(app, new ShorthairFactory());
   const cat = new Shorthair(app, "muffins", { scritches: 5 });
 
   expect(cat.toString()).toEqual("Shorthair cat with 5 scritches.");
@@ -142,7 +142,7 @@ test("polycons can be created without base classes", () => {
 
 test("constructs can be composed of polycons, and are still resolved", () => {
   const app = new App();
-  PolyconFactory.register(app, new PoodleFactory());
+  Polycons.register(app, new PoodleFactory());
   const family = new LabFamily(app, "family");
 
   const defaultChild = family.node.defaultChild as Dog;
@@ -209,8 +209,8 @@ abstract class DogBase extends Construct {
 
 class Dog extends DogBase {
   constructor(scope: Construct, id: string, props: DogProps) {
-    super(null as any, id, props);
-    return PolyconFactory.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
+    super(Polycons.scope(), id, props);
+    return Polycons.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
   }
 
   public toString(): string {
@@ -258,7 +258,7 @@ interface CatProps {
 
 class Cat {
   constructor(scope: Construct, id: string, props: CatProps) {
-    return PolyconFactory.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
+    return Polycons.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
   }
   public toString(): string {
     throw new Error("unimplemented");
@@ -278,7 +278,7 @@ class Shorthair extends Construct {
 
 // == factories ==
 
-class PoodleFactory implements IPolyconResolver {
+class PoodleFactory implements IPolyconFactory {
   public resolve(
     qualifier: string,
     scope: IConstruct,
@@ -300,7 +300,7 @@ class PoodleFactory implements IPolyconResolver {
   }
 }
 
-class ShorthairFactory implements IPolyconResolver {
+class ShorthairFactory implements IPolyconFactory {
   public resolve(
     qualifier: string,
     scope: IConstruct,
