@@ -105,11 +105,13 @@ This factory will be used for resolving all polycons into constructs.
 
 - *Implemented By:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
 
+A resolver that determines how to turn polycons into concrete constructs.
+
 #### Methods <a name="Methods" id="Methods"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@monadahq/polycons.IPolyconResolver.resolve">resolve</a></code> | *No description.* |
+| <code><a href="#@monadahq/polycons.IPolyconResolver.resolve">resolve</a></code> | Resolve the parameters needed for creating a specific polycon into a concrete construct. |
 
 ---
 
@@ -119,9 +121,17 @@ This factory will be used for resolving all polycons into constructs.
 public resolve(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
 ```
 
+Resolve the parameters needed for creating a specific polycon into a concrete construct.
+
+Depending on your use case, it's possible to
+resolve constructs differently based on the id, or to override the
+props of a created construct.
+
 ###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.qualifier"></a>
 
 - *Type:* string
+
+The type qualifier.
 
 ---
 
@@ -129,17 +139,23 @@ public resolve(qualifier: string, scope: IConstruct, id: string, props?: any): I
 
 - *Type:* constructs.IConstruct
 
+The construct scope.
+
 ---
 
 ###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.id"></a>
 
 - *Type:* string
 
+The construct identifier.
+
 ---
 
 ###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.props"></a>
 
 - *Type:* any
+
+The construct props.
 
 ---
 

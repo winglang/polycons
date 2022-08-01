@@ -62,7 +62,22 @@ export function polyconFactoryOf(scope: IConstruct): IPolyconResolver {
   return factory;
 }
 
+/**
+ * A resolver that determines how to turn polycons into concrete constructs.
+ */
 export interface IPolyconResolver {
+  /**
+   * Resolve the parameters needed for creating a specific polycon into a
+   * concrete construct. Depending on your use case, it's possible to
+   * resolve constructs differently based on the id, or to override the
+   * props of a created construct.
+   *
+   * @param qualifier The type qualifier
+   * @param scope The construct scope
+   * @param id The construct identifier
+   * @param props The construct props
+   * @returns The resolved construct
+   */
   resolve(
     qualifier: string,
     scope: IConstruct,
