@@ -134,8 +134,34 @@ test("concretes can be defined explicitly", () => {
   const app = new App();
   PolyconFactory.register(app, new PoodleFactory());
   const lab = new Labrador(app, "my_lab", { name: "lab", treats: 5 });
+
   expect(lab.toString()).toEqual("Labrador with 5 treats.");
   expect(app.synth()).toStrictEqual(["root", "root/my_lab"]);
+});
+
+test("polycons can be created without base classes", () => {
+  const app = new App();
+  PolyconFactory.register(app, new ShorthairFactory());
+  const cat = new Shorthair(app, "muffins", { scritches: 5 });
+
+  expect(cat.toString()).toEqual("Shorthair cat with 5 scritches.");
+  expect(app.synth()).toStrictEqual(["root", "root/muffins"]);
+});
+
+test("constructs can be composed of polycons, and are still resolved", () => {
+  const app = new App();
+  PolyconFactory.register(app, new PoodleFactory());
+  const family = new LabFamily(app, "family");
+
+  const defaultChild = family.node.defaultChild as Dog;
+  expect(defaultChild.toString()).toEqual("Poodle with 2 treats.");
+  expect(family.pupper.toString()).toEqual("Poodle with 6 treats.");
+  expect(app.synth()).toStrictEqual([
+    "root",
+    "root/family",
+    "root/family/Default",
+    "root/family/pupper",
+  ]);
 });
 
 class App extends Construct {
@@ -147,7 +173,7 @@ class App extends Construct {
   }
 }
 
-// == dog data structures ==
+// == dog fixtures ==
 
 const DOG_QUALIFIER = "test.dog";
 
@@ -218,7 +244,17 @@ class Labrador extends DogBase {
   }
 }
 
-// == cat data structures ==
+class LabFamily extends Construct {
+  public readonly pupper: Dog;
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    new Dog(this, "Default", { name: "cardie", treats: 2 });
+    this.pupper = new Dog(this, "pupper", { name: "duncan", treats: 6 });
+  }
+}
+
+// == cat fixtures ==
 
 const CAT_QUALIFIER = "test.cat";
 
@@ -226,20 +262,10 @@ interface CatProps {
   readonly scritches: number;
 }
 
-class CatBase extends Construct {
-  constructor(scope: Construct, id: string, props: CatProps) {
-    super(scope, id);
-    if (!scope) {
-      return;
-    }
+// example of a polycon with no base class
 
-    props;
-  }
-}
-
-class Cat extends CatBase {
+class Cat {
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(null as any, id, props);
     return PolyconFactory.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
   }
   public toString(): string {
@@ -247,10 +273,10 @@ class Cat extends CatBase {
   }
 }
 
-class Shorthair extends CatBase {
+class Shorthair extends Construct {
   public readonly scritches: number;
   constructor(scope: Construct, id: string, props: CatProps) {
-    super(scope, id, props);
+    super(scope, id);
     this.scritches = props.scritches;
   }
   public toString() {
