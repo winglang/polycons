@@ -8,19 +8,6 @@
 
 Functions for resolving polycons (polymorphic constructs) into specific constructs.
 
-#### Initializers <a name="Initializers" id="@monadahq/polycons.Polycons.Initializer"></a>
-
-```typescript
-import { Polycons } from '@monadahq/polycons'
-
-new Polycons()
-```
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-
----
-
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -28,7 +15,6 @@ new Polycons()
 | --- | --- |
 | <code><a href="#@monadahq/polycons.Polycons.newInstance">newInstance</a></code> | Creates a new instance of a polycon by resolving it through the registered factory. |
 | <code><a href="#@monadahq/polycons.Polycons.register">register</a></code> | Adds a factory at the root of the construct tree. |
-| <code><a href="#@monadahq/polycons.Polycons.scope">scope</a></code> | *No description.* |
 
 ---
 
@@ -97,14 +83,6 @@ This factory will be used for resolving all polycons into constructs.
 - *Type:* <a href="#@monadahq/polycons.IPolyconFactory">IPolyconFactory</a>
 
 ---
-
-##### `scope` <a name="scope" id="@monadahq/polycons.Polycons.scope"></a>
-
-```typescript
-import { Polycons } from '@monadahq/polycons'
-
-Polycons.scope()
-```
 
 
 

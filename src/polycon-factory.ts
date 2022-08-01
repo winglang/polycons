@@ -46,9 +46,7 @@ export class Polycons {
     return factory.resolve(qualifier, scope, id, props);
   }
 
-  public static scope(): any {
-    return null;
-  }
+  private constructor() {}
 }
 
 /**

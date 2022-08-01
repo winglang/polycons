@@ -209,7 +209,7 @@ abstract class DogBase extends Construct {
 
 class Dog extends DogBase {
   constructor(scope: Construct, id: string, props: DogProps) {
-    super(Polycons.scope(), id, props);
+    super(null as any, id, props);
     return Polycons.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
   }
 
