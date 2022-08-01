@@ -1,5 +1,5 @@
 import { Construct, IConstruct } from "constructs";
-import { PolyconFactory } from "../src";
+import { IPolyconResolver, PolyconFactory } from "../src";
 
 test("polycon creation marker is deleted from the scope", () => {
   const app = new App();
@@ -286,7 +286,7 @@ class Shorthair extends Construct {
 
 // == factories ==
 
-class PoodleFactory extends PolyconFactory {
+class PoodleFactory implements IPolyconResolver {
   public resolveConstruct(
     qualifier: string,
     scope: IConstruct,
@@ -308,7 +308,7 @@ class PoodleFactory extends PolyconFactory {
   }
 }
 
-class ShorthairFactory extends PolyconFactory {
+class ShorthairFactory implements IPolyconResolver {
   public resolveConstruct(
     qualifier: string,
     scope: IConstruct,

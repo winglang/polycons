@@ -21,43 +21,6 @@ new PolyconFactory()
 
 ---
 
-#### Methods <a name="Methods" id="Methods"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@monadahq/polycons.PolyconFactory.resolveConstruct">resolveConstruct</a></code> | *No description.* |
-
----
-
-##### `resolveConstruct` <a name="resolveConstruct" id="@monadahq/polycons.PolyconFactory.resolveConstruct"></a>
-
-```typescript
-public resolveConstruct(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
-```
-
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.PolyconFactory.resolveConstruct.parameter.qualifier"></a>
-
-- *Type:* string
-
----
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.PolyconFactory.resolveConstruct.parameter.scope"></a>
-
-- *Type:* constructs.IConstruct
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.PolyconFactory.resolveConstruct.parameter.id"></a>
-
-- *Type:* string
-
----
-
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.PolyconFactory.resolveConstruct.parameter.props"></a>
-
-- *Type:* any
-
----
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -132,7 +95,7 @@ Returns the polycon factory registered in a given scope.
 ```typescript
 import { PolyconFactory } from '@monadahq/polycons'
 
-PolyconFactory.register(scope: IConstruct, factory: PolyconFactory)
+PolyconFactory.register(scope: IConstruct, factory: IPolyconResolver)
 ```
 
 Adds a factory at the root of the construct tree.
@@ -147,10 +110,54 @@ This factory will be used for resolving all polycons into constructs.
 
 ###### `factory`<sup>Required</sup> <a name="factory" id="@monadahq/polycons.PolyconFactory.register.parameter.factory"></a>
 
-- *Type:* <a href="#@monadahq/polycons.PolyconFactory">PolyconFactory</a>
+- *Type:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
 
 ---
 
 
+
+## Protocols <a name="Protocols" id="Protocols"></a>
+
+### IPolyconResolver <a name="IPolyconResolver" id="@monadahq/polycons.IPolyconResolver"></a>
+
+- *Implemented By:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@monadahq/polycons.IPolyconResolver.resolveConstruct">resolveConstruct</a></code> | *No description.* |
+
+---
+
+##### `resolveConstruct` <a name="resolveConstruct" id="@monadahq/polycons.IPolyconResolver.resolveConstruct"></a>
+
+```typescript
+public resolveConstruct(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
+```
+
+###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.qualifier"></a>
+
+- *Type:* string
+
+---
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.scope"></a>
+
+- *Type:* constructs.IConstruct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.props"></a>
+
+- *Type:* any
+
+---
 
 

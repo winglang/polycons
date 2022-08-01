@@ -6,12 +6,14 @@ const FACTORY_SYMBOL = Symbol.for("polycons.PolyconFactory");
  * A factory that can be used to resolve polycons (polymorphic constructs) into
  * specific constructs.
  */
-export abstract class PolyconFactory {
+export class PolyconFactory {
   /**
    * Returns the polycon factory registered in a given scope.
    */
-  public static of(scope: IConstruct): PolyconFactory {
-    const factory = (scope.node.root as any)[FACTORY_SYMBOL] as PolyconFactory;
+  public static of(scope: IConstruct): IPolyconResolver {
+    const factory = (scope.node.root as any)[
+      FACTORY_SYMBOL
+    ] as IPolyconResolver;
 
     if (!factory) {
       throw new Error(
@@ -26,7 +28,7 @@ export abstract class PolyconFactory {
    * Adds a factory at the root of the construct tree.
    * This factory will be used for resolving all polycons into constructs.
    */
-  public static register(scope: IConstruct, factory: PolyconFactory) {
+  public static register(scope: IConstruct, factory: IPolyconResolver) {
     const existing = (scope.node.root as any)[FACTORY_SYMBOL];
     if (existing !== undefined) {
       throw new Error(
@@ -60,8 +62,10 @@ export abstract class PolyconFactory {
     const factory = PolyconFactory.of(scope);
     return factory.resolveConstruct(qualifier, scope, id, props);
   }
+}
 
-  public abstract resolveConstruct(
+export interface IPolyconResolver {
+  resolveConstruct(
     qualifier: string,
     scope: IConstruct,
     id: string,
