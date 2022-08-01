@@ -287,7 +287,7 @@ class Shorthair extends Construct {
 // == factories ==
 
 class PoodleFactory implements IPolyconResolver {
-  public resolveConstruct(
+  public resolve(
     qualifier: string,
     scope: IConstruct,
     id: string,
@@ -309,7 +309,7 @@ class PoodleFactory implements IPolyconResolver {
 }
 
 class ShorthairFactory implements IPolyconResolver {
-  public resolveConstruct(
+  public resolve(
     qualifier: string,
     scope: IConstruct,
     id: string,

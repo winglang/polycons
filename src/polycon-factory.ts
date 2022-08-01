@@ -60,12 +60,12 @@ export class PolyconFactory {
     props?: any
   ) {
     const factory = PolyconFactory.of(scope);
-    return factory.resolveConstruct(qualifier, scope, id, props);
+    return factory.resolve(qualifier, scope, id, props);
   }
 }
 
 export interface IPolyconResolver {
-  resolveConstruct(
+  resolve(
     qualifier: string,
     scope: IConstruct,
     id: string,

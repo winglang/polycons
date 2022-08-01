@@ -126,35 +126,35 @@ This factory will be used for resolving all polycons into constructs.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@monadahq/polycons.IPolyconResolver.resolveConstruct">resolveConstruct</a></code> | *No description.* |
+| <code><a href="#@monadahq/polycons.IPolyconResolver.resolve">resolve</a></code> | *No description.* |
 
 ---
 
-##### `resolveConstruct` <a name="resolveConstruct" id="@monadahq/polycons.IPolyconResolver.resolveConstruct"></a>
+##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconResolver.resolve"></a>
 
 ```typescript
-public resolveConstruct(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
+public resolve(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
 ```
 
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.qualifier"></a>
+###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.qualifier"></a>
 
 - *Type:* string
 
 ---
 
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.scope"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.IPolyconResolver.resolveConstruct.parameter.props"></a>
+###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.props"></a>
 
 - *Type:* any
 
