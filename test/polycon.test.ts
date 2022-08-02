@@ -1,15 +1,6 @@
 import { Construct, IConstruct } from "constructs";
 import { IPolyconFactory, Polycons, polyconFactoryOf } from "../src";
 
-test("polycon creation marker is deleted from the scope", () => {
-  const app = new App();
-  Polycons.register(app, new PoodleFactory());
-  new Dog(app, "dog", { name: "piffle", treats: 5 });
-
-  const marker = Symbol.for("polycons.init[test.dog]#dog");
-  expect(marker in app).toBeFalsy();
-});
-
 // this is important for languages that use nominal typing (like Java)
 test("polycon instanceof Construct", () => {
   const app = new App();
@@ -18,7 +9,7 @@ test("polycon instanceof Construct", () => {
   expect(piffle instanceof Construct).toBeTruthy();
 });
 
-test("a polycon factory can be registered", () => {
+test("a polycon factory can be registered to the root", () => {
   const app = new App();
   const factory = new PoodleFactory();
   Polycons.register(app, factory);
@@ -26,16 +17,30 @@ test("a polycon factory can be registered", () => {
   expect(polyconFactoryOf(app)).toEqual(factory);
 });
 
-test("a polycon factory is always registered to the root", () => {
+test("a polycon factory can be registered to a scope besides the root", () => {
   const app = new App();
   const pets = new Construct(app, "pets");
   const factory = new PoodleFactory();
   Polycons.register(pets, factory);
 
-  expect(polyconFactoryOf(app)).toEqual(factory);
+  expect(polyconFactoryOf(pets)).toEqual(factory);
+  expect(polyconFactoryOf(app)).toEqual(undefined);
 });
 
-test("you cannot register two polycon factories to a single tree", () => {
+test("more than one polycon factory can be registered in a construct tree", () => {
+  const app = new App();
+  const cats = new Construct(app, "cats");
+  const dogs = new Construct(app, "dogs");
+  const catFactory = new ShorthairFactory();
+  const dogFactory = new PoodleFactory();
+  Polycons.register(dogs, dogFactory);
+  Polycons.register(cats, catFactory);
+
+  expect(polyconFactoryOf(cats)).toEqual(catFactory);
+  expect(polyconFactoryOf(dogs)).toEqual(dogFactory);
+});
+
+test("you cannot register two polycon factories to the same scope", () => {
   const app = new App();
   Polycons.register(app, new PoodleFactory());
   expect(() => Polycons.register(app, new ShorthairFactory())).toThrowError(
@@ -46,7 +51,7 @@ test("you cannot register two polycon factories to a single tree", () => {
 test("a polycon cannot be instantiated without a factory", () => {
   const app = new App();
   expect(() => new Dog(app, "dog", { name: "piffle", treats: 5 })).toThrowError(
-    /No polycon factory has been registered to the construct tree/
+    /Cannot find a Polycon factory \(directly or indirectly\)/
   );
 });
 
@@ -154,6 +159,19 @@ test("constructs can be composed of polycons, and are still resolved", () => {
     "root/family/Default",
     "root/family/pupper",
   ]);
+});
+
+test("polycons are resolved using the nearest factory", () => {
+  const app = new App();
+  const pets = new Construct(app, "pets");
+  const poodleFactory = new PoodleFactory();
+  const labFactory = new LabradorFactory();
+  Polycons.register(app, poodleFactory);
+  Polycons.register(pets, labFactory);
+  const dog = new Dog(pets, "dog", { name: "piffle", treats: 4 });
+
+  expect(polyconFactoryOf(dog)).toEqual(labFactory);
+  expect(dog.toString()).toEqual("Labrador with 4 treats.");
 });
 
 class App extends Construct {
@@ -294,6 +312,22 @@ class PoodleFactory implements IPolyconFactory {
           });
         }
         return new Poodle(scope, id, props);
+      default:
+        throw new Error(`Qualifier ${qualifier} not implemented.`);
+    }
+  }
+}
+
+class LabradorFactory implements IPolyconFactory {
+  public resolve(
+    qualifier: string,
+    scope: IConstruct,
+    id: string,
+    props?: any
+  ): IConstruct {
+    switch (qualifier) {
+      case DOG_QUALIFIER:
+        return new Labrador(scope, id, props);
       default:
         throw new Error(`Qualifier ${qualifier} not implemented.`);
     }

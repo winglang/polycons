@@ -8,18 +8,18 @@ const FACTORY_SYMBOL = Symbol.for("polycons.PolyconFactory");
  */
 export class Polycons {
   /**
-   * Adds a factory at the root of the construct tree.
-   * This factory will be used for resolving all polycons into constructs.
+   * Adds a factory at given scope. This factory will be used for resolving
+   * polycons under this scope into constructs.
    */
   public static register(scope: IConstruct, factory: IPolyconFactory) {
-    const existing = (scope.node.root as any)[FACTORY_SYMBOL];
+    const existing = (scope as any)[FACTORY_SYMBOL];
     if (existing !== undefined) {
       throw new Error(
-        "There is already a polycon factory registered in this scope. Try removing the existing factory and then registering the new one."
+        "There is already a polycon factory registered in this scope."
       );
     }
 
-    Object.defineProperty(scope.node.root, FACTORY_SYMBOL, {
+    Object.defineProperty(scope, FACTORY_SYMBOL, {
       value: factory,
       enumerable: false,
       writable: false,
@@ -27,8 +27,12 @@ export class Polycons {
   }
 
   /**
-   * Creates a new instance of a polycon by resolving it through the registered
-   * factory.
+   * Creates a new instance of a polycon. The polycon is resolved using the
+   * polycon factory that is registered nearest to it in the tree.
+   *
+   * For example, if a construct tree has Root -> Parent -> MyPoly, and FactoryA
+   * is registered to Root while FactoryB is registered to Parent, then
+   * FactoryB will be used to resolve MyPoly.
    *
    * @param qualifier The type qualifier
    * @param scope The construct scope
@@ -43,6 +47,13 @@ export class Polycons {
     props?: any
   ) {
     const factory = polyconFactoryOf(scope);
+
+    if (!factory) {
+      throw new Error(
+        "Cannot find a Polycon factory (directly or indirectly) to resolve this polycon."
+      );
+    }
+
     return factory.resolve(qualifier, scope, id, props);
   }
 
@@ -52,16 +63,21 @@ export class Polycons {
 /**
  * Returns the polycon factory registered in a given scope.
  */
-export function polyconFactoryOf(scope: IConstruct): IPolyconFactory {
-  const factory = (scope.node.root as any)[FACTORY_SYMBOL] as IPolyconFactory;
+export function polyconFactoryOf(
+  scope: IConstruct
+): IPolyconFactory | undefined {
+  const factory = (scope as any)[FACTORY_SYMBOL] as IPolyconFactory;
 
-  if (!factory) {
-    throw new Error(
-      "No polycon factory has been registered to the construct tree."
-    );
+  if (factory) {
+    return factory;
   }
 
-  return factory;
+  const parent = scope.node.scope;
+  if (!parent) {
+    return undefined;
+  }
+
+  return polyconFactoryOf(parent);
 }
 
 /**
