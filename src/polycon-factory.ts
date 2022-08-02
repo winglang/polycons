@@ -34,14 +34,14 @@ export class Polycons {
    * is registered to Root while FactoryB is registered to Parent, then
    * FactoryB will be used to resolve MyPoly.
    *
-   * @param qualifier The type qualifier
+   * @param polyconId The type identifier
    * @param scope The construct scope
    * @param id The construct identifier
    * @param props The construct props
    * @returns The resolved construct
    */
   public static newInstance(
-    qualifier: string,
+    polyconId: string,
     scope: IConstruct,
     id: string,
     props?: any
@@ -54,7 +54,7 @@ export class Polycons {
       );
     }
 
-    return factory.resolve(qualifier, scope, id, props);
+    return factory.resolve(polyconId, scope, id, props);
   }
 
   private constructor() {}
@@ -88,14 +88,14 @@ export interface IPolyconFactory {
    * Resolve the parameters needed for creating a specific polycon into a
    * concrete construct.
    *
-   * @param qualifier The type qualifier
+   * @param polyconId The type identifier
    * @param scope The construct scope
    * @param id The construct identifier
    * @param props The construct props
    * @returns The resolved construct
    */
   resolve(
-    qualifier: string,
+    polyconId: string,
     scope: IConstruct,
     id: string,
     props?: any

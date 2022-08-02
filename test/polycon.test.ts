@@ -185,7 +185,7 @@ class App extends Construct {
 
 // == dog fixtures ==
 
-const DOG_QUALIFIER = "test.dog";
+const DOG_ID = "test.dog";
 
 interface DogProps {
   readonly name: string;
@@ -228,7 +228,7 @@ abstract class DogBase extends Construct {
 class Dog extends DogBase {
   constructor(scope: Construct, id: string, props: DogProps) {
     super(null as any, id, props);
-    return Polycons.newInstance(DOG_QUALIFIER, scope, id, props) as Dog;
+    return Polycons.newInstance(DOG_ID, scope, id, props) as Dog;
   }
 
   public toString(): string {
@@ -266,7 +266,7 @@ class LabFamily extends Construct {
 
 // == cat fixtures ==
 
-const CAT_QUALIFIER = "test.cat";
+const CAT_ID = "test.cat";
 
 interface CatProps {
   readonly scritches: number;
@@ -276,7 +276,7 @@ interface CatProps {
 
 class Cat {
   constructor(scope: Construct, id: string, props: CatProps) {
-    return Polycons.newInstance(CAT_QUALIFIER, scope, id, props) as Cat;
+    return Polycons.newInstance(CAT_ID, scope, id, props) as Cat;
   }
   public toString(): string {
     throw new Error("unimplemented");
@@ -298,13 +298,13 @@ class Shorthair extends Construct {
 
 class PoodleFactory implements IPolyconFactory {
   public resolve(
-    qualifier: string,
+    polyconId: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (qualifier) {
-      case DOG_QUALIFIER:
+    switch (polyconId) {
+      case DOG_ID:
         if (id === "labrador") {
           return new Labrador(scope, id, {
             ...props,
@@ -313,39 +313,39 @@ class PoodleFactory implements IPolyconFactory {
         }
         return new Poodle(scope, id, props);
       default:
-        throw new Error(`Qualifier ${qualifier} not implemented.`);
+        throw new Error(`Type ${polyconId} not implemented.`);
     }
   }
 }
 
 class LabradorFactory implements IPolyconFactory {
   public resolve(
-    qualifier: string,
+    polyconId: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (qualifier) {
-      case DOG_QUALIFIER:
+    switch (polyconId) {
+      case DOG_ID:
         return new Labrador(scope, id, props);
       default:
-        throw new Error(`Qualifier ${qualifier} not implemented.`);
+        throw new Error(`Type ${polyconId} not implemented.`);
     }
   }
 }
 
 class ShorthairFactory implements IPolyconFactory {
   public resolve(
-    qualifier: string,
+    polyconId: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (qualifier) {
-      case CAT_QUALIFIER:
+    switch (polyconId) {
+      case CAT_ID:
         return new Shorthair(scope, id, props);
       default:
-        throw new Error(`Qualifier ${qualifier} not implemented.`);
+        throw new Error(`Type ${polyconId} not implemented.`);
     }
   }
 }

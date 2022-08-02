@@ -73,7 +73,7 @@ class MyFactory implements IPolyconFactory {
       case BUCKET_ID:
         return new MyBucketImplementation(scope, id, props);
       default:
-        throw new Error(`Polycon id "${polyconId}" not implemented.`);
+        throw new Error(`Type "${polyconId}" not implemented.`);
     }
   }
 }
