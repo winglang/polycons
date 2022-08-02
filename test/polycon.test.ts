@@ -59,7 +59,7 @@ test("a polycon cannot be instantiated if the registered factory does not suppor
   const app = new App();
   Polycons.register(app, new PoodleFactory());
   expect(() => new Cat(app, "cat", { scritches: 5 })).toThrowError(
-    /Qualifier test\.cat not implemented/
+    /Type test\.cat not implemented/
   );
 });
 
