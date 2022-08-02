@@ -61,7 +61,7 @@ export class Polycons {
 }
 
 /**
- * Returns the polycon factory registered in a given scope.
+ * Returns the nearest polycon factory registered in a given scope.
  */
 export function polyconFactoryOf(
   scope: IConstruct
