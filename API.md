@@ -13,8 +13,8 @@ Functions for resolving polycons (polymorphic constructs) into specific construc
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@monadahq/polycons.Polycons.newInstance">newInstance</a></code> | Creates a new instance of a polycon by resolving it through the registered factory. |
-| <code><a href="#@monadahq/polycons.Polycons.register">register</a></code> | Adds a factory at the root of the construct tree. |
+| <code><a href="#@monadahq/polycons.Polycons.newInstance">newInstance</a></code> | Creates a new instance of a polycon. |
+| <code><a href="#@monadahq/polycons.Polycons.register">register</a></code> | Adds a factory at given scope. |
 
 ---
 
@@ -23,16 +23,23 @@ Functions for resolving polycons (polymorphic constructs) into specific construc
 ```typescript
 import { Polycons } from '@monadahq/polycons'
 
-Polycons.newInstance(qualifier: string, scope: IConstruct, id: string, props?: any)
+Polycons.newInstance(polyconId: string, scope: IConstruct, id: string, props?: any)
 ```
 
-Creates a new instance of a polycon by resolving it through the registered factory.
+Creates a new instance of a polycon.
 
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.Polycons.newInstance.parameter.qualifier"></a>
+The polycon is resolved using the
+polycon factory that is registered nearest to it in the tree.
+
+For example, if a construct tree has Root -> Parent -> MyPoly, and FactoryA
+is registered to Root while FactoryB is registered to Parent, then
+FactoryB will be used to resolve MyPoly.
+
+###### `polyconId`<sup>Required</sup> <a name="polyconId" id="@monadahq/polycons.Polycons.newInstance.parameter.polyconId"></a>
 
 - *Type:* string
 
-The type qualifier.
+The type identifier.
 
 ---
 
@@ -68,9 +75,10 @@ import { Polycons } from '@monadahq/polycons'
 Polycons.register(scope: IConstruct, factory: IPolyconFactory)
 ```
 
-Adds a factory at the root of the construct tree.
+Adds a factory at given scope.
 
-This factory will be used for resolving all polycons into constructs.
+This factory will be used for resolving
+polycons under this scope into constructs.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.Polycons.register.parameter.scope"></a>
 
@@ -105,16 +113,16 @@ A factory that determines how to turn polycons into concrete constructs.
 ##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconFactory.resolve"></a>
 
 ```typescript
-public resolve(qualifier: string, scope: IConstruct, id: string, props?: any): IConstruct
+public resolve(polyconId: string, scope: IConstruct, id: string, props?: any): IConstruct
 ```
 
 Resolve the parameters needed for creating a specific polycon into a concrete construct.
 
-###### `qualifier`<sup>Required</sup> <a name="qualifier" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.qualifier"></a>
+###### `polyconId`<sup>Required</sup> <a name="polyconId" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.polyconId"></a>
 
 - *Type:* string
 
-The type qualifier.
+The type identifier.
 
 ---
 
