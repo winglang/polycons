@@ -3,25 +3,25 @@
 ## Polycon factories
 
 To create a polycon factory, create a class with a `resolve` method.
-This method takes a `polyconId` and the polycon's constructor parameters, and should return a concrete construct. For example:
+This method takes a `type` and the polycon's constructor parameters, and should return a concrete construct. For example:
 
 ```ts
 import { DOG_ID, CAT_ID, Labrador, Kitten } from "my-polycons";
 
 class PetFactory implements IPolyconFactory {
   public resolve(
-    polyconId: string,
+    type: string,
     scope: Construct,
     id: string,
     props?: any
   ): Construct {
-    switch (polyconId) {
+    switch (type) {
       case DOG_ID:
         return new Labrador(scope, id, props);
       case CAT_ID:
         return new Kitten(scope, id, props);
       default:
-        throw new Error(`Type "${polyconId}" not implemented.`);
+        throw new Error(`Type "${type}" not implemented.`);
     }
   }
 }

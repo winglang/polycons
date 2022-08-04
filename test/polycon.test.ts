@@ -298,12 +298,12 @@ class Shorthair extends Construct {
 
 class PoodleFactory implements IPolyconFactory {
   public resolve(
-    polyconId: string,
+    type: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (polyconId) {
+    switch (type) {
       case DOG_ID:
         if (id === "labrador") {
           return new Labrador(scope, id, {
@@ -313,39 +313,39 @@ class PoodleFactory implements IPolyconFactory {
         }
         return new Poodle(scope, id, props);
       default:
-        throw new Error(`Type ${polyconId} not implemented.`);
+        throw new Error(`Type ${type} not implemented.`);
     }
   }
 }
 
 class LabradorFactory implements IPolyconFactory {
   public resolve(
-    polyconId: string,
+    type: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (polyconId) {
+    switch (type) {
       case DOG_ID:
         return new Labrador(scope, id, props);
       default:
-        throw new Error(`Type ${polyconId} not implemented.`);
+        throw new Error(`Type ${type} not implemented.`);
     }
   }
 }
 
 class ShorthairFactory implements IPolyconFactory {
   public resolve(
-    polyconId: string,
+    type: string,
     scope: IConstruct,
     id: string,
     props?: any
   ): IConstruct {
-    switch (polyconId) {
+    switch (type) {
       case CAT_ID:
         return new Shorthair(scope, id, props);
       default:
-        throw new Error(`Type ${polyconId} not implemented.`);
+        throw new Error(`Type ${type} not implemented.`);
     }
   }
 }

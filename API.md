@@ -23,7 +23,7 @@ Functions for resolving polycons (polymorphic constructs) into specific construc
 ```typescript
 import { Polycons } from '@monadahq/polycons'
 
-Polycons.newInstance(polyconId: string, scope: IConstruct, id: string, props?: any)
+Polycons.newInstance(type: string, scope: IConstruct, id: string, props?: any)
 ```
 
 Creates a new instance of a polycon.
@@ -35,7 +35,7 @@ For example, if a construct tree has Root -> Parent -> MyPoly, and FactoryA
 is registered to Root while FactoryB is registered to Parent, then
 FactoryB will be used to resolve MyPoly.
 
-###### `polyconId`<sup>Required</sup> <a name="polyconId" id="@monadahq/polycons.Polycons.newInstance.parameter.polyconId"></a>
+###### `type`<sup>Required</sup> <a name="type" id="@monadahq/polycons.Polycons.newInstance.parameter.type"></a>
 
 - *Type:* string
 
@@ -113,12 +113,12 @@ A factory that determines how to turn polycons into concrete constructs.
 ##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconFactory.resolve"></a>
 
 ```typescript
-public resolve(polyconId: string, scope: IConstruct, id: string, props?: any): IConstruct
+public resolve(type: string, scope: IConstruct, id: string, props?: any): IConstruct
 ```
 
 Resolve the parameters needed for creating a specific polycon into a concrete construct.
 
-###### `polyconId`<sup>Required</sup> <a name="polyconId" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.polyconId"></a>
+###### `type`<sup>Required</sup> <a name="type" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.type"></a>
 
 - *Type:* string
 
