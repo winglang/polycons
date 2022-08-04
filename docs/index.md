@@ -2,11 +2,11 @@
 
 ## Polycon factories
 
-To create a polycon factory, create a class with a `resolve` method.
-This method takes a `type` and the polycon's constructor parameters, and should return a concrete construct. For example:
+A polycon factory is an object that implements the `IPolyconFactory` interface, which has a single `resolve()` method.
+This method takes a `type` and the construct arguments, and should return a concrete construct. For example:
 
 ```ts
-import { DOG_ID, CAT_ID, Labrador, Kitten } from "my-polycons";
+import { DOG_ID, CAT_ID, Labrador, Kitten } from "@acme/shared-polycons";
 
 class PetFactory implements IPolyconFactory {
   public resolve(
@@ -27,9 +27,9 @@ class PetFactory implements IPolyconFactory {
 }
 ```
 
-By customizing the `resolve` method, it's possible to change construct IDs, override properties, or even make factories out of other factories.
+By customizing the `resolve()` method, it's possible to change construct IDs, override properties, or even make factories out of other factories.
 
-## Polycons
+## Authoring polycons
 
 You can define a polycon by creating a class that returns a new Polycon instance in the constructor. Each polycon must be associated with a unique identifier.
 

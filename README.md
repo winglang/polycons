@@ -13,7 +13,7 @@ polycons can be used with any CDK framework, including [AWS CDK], [cdktf], and [
 Polycons can be used just like ordinary CDK constructs:
 
 ```ts
-import { Dog } from "my-polycons";
+import { Dog } from "@acme/shared-polycons";
 import { Construct } from "constructs";
 
 class Pets extends Construct {
@@ -30,12 +30,12 @@ This construct contains a `Dog` from a library of polycons.
 The dog could have any implementation -- a `Labrador` implementation, a `Terrier` implementation, and so on.
 
 To use it in an application, you need to register a factory that specifies how to turn polycons into concrete constructs.
-In the example below, a `PetFactory` is registered to the application, ensuring that each `Dog` defined in the construct tree will be resolved into a `Labrador` under the hood.
+In the example below, a `PetFactory` is registered to the application, ensuring that each `Dog` defined in the construct tree will be resolved into a `Labrador`.
 
 ```ts
 import { App } from "<cdk-framework>";
-import { PetFactory } from "my-polycons";
-import { Polycons } from "@monadahq/polycons";
+import { PetFactory } from "@acme/shared-polycons";
+import { Polycons } from "polycons";
 
 const app = new App();
 Polycons.register(app, new PetFactory());
