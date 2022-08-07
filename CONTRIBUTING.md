@@ -7,10 +7,9 @@ and submit Pull Requests to the GitHub repository.
 
 Begin by forking the repository. You can do this using the [Fork](https://github.com/mbonig/so-notifier/fork) button in 
 GitHub. If you already have a fork of the polycons repository that is out of sync, you can update it on your fork's 
-GitHub page using the `Sync Fork` button:
+GitHub page using [Sync Fork].
 
-![Sync Fork](./assets/sync-fork.png)
-
+[Sync Fork]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork
 Clone your fork locally using your favorite method. If you're using the git cli, you can do it like this:
 
 ```shell
