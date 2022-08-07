@@ -29,8 +29,7 @@ $ yarn
 ## Testing
 
 Any changes that you make to the polycons library should be covered with tests. If you are adding new constructs to the 
-library create a new file under the `test/` directory. The test's filename should match the file being tested but with 
-a .test.ts suffix. For example, polycon-factory.ts would have all of its tests in polycon-factory.test.ts.
+library create a new file under the `test/` directory.
 
 This project uses [jest](https://jestjs.io/) testing framework. Please refer to the documentation on it if you are not 
 familiar with it. 
