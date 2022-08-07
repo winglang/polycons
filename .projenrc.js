@@ -1,4 +1,5 @@
 const { cdk, github } = require("projen");
+const { NodePackageManager } = require("projen/lib/javascript");
 const project = new cdk.JsiiProject({
   name: "polycons",
   packageName: "@monadahq/polycons",
@@ -7,7 +8,7 @@ const project = new cdk.JsiiProject({
   authorAddress: "ping@monada.co",
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/monadahq/polycons",
-
+  packageManager: NodePackageManager.NPM,
   peerDeps: ["constructs@^10.0.25"],
   prettier: true,
 
