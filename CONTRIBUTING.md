@@ -1,6 +1,6 @@
 # Contributing to Polycons
 
-Thank you for wanting to contribute to polycons. This will guide you through everything you need to know to make changes 
+Thank you for wanting to contribute to polycons! This will guide you through everything you need to know to make changes 
 and submit Pull Requests to the GitHub repository.
 
 ## Opening Issues
