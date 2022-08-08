@@ -1,26 +1,18 @@
 # Contributing to Polycons
 
 Thank you for wanting to contribute to polycons! This will guide you through everything you need to know to make changes 
-and submit Pull Requests to the GitHub repository.
+and submit pull requests to the GitHub repository.
 
 ## Opening Issues
 
-One of the easiest ways to contribute to this project is by opening [Issues](https://github.com/monadahq/polycons/issues/new).
+One of the easiest ways to contribute to this project is by opening [issues](https://github.com/monadahq/polycons/issues/new).
 If you're reporting a bug, try to include detailed information including steps to reproduce it, and what you expected to happen.
 If you're suggesting a feature or enhancement, please include information about your use case for it.
 
 ## Getting Started
 
-Begin by forking the repository. You can do this using the [Fork](https://github.com/mbonig/so-notifier/fork) button in 
-GitHub. If you already have a fork of the polycons repository that is out of sync, you can update it on your fork's 
-GitHub page using [Sync Fork].
-
-[Sync Fork]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork
-Clone your fork locally using your favorite method. If you're using the git cli, you can do it like this:
-
-```shell
-$ git clone git@github.com:<your user>/polycons.git
-```
+Start by forking or cloning the repository. [GitHub's Guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
+is a great place to get started on this process.
 
 ## Installing Dependencies
 
@@ -89,14 +81,14 @@ $ npm run test:watch
 
 ## Updating the README
 
-Changes in core functionality should include changes to the README.md file explaining the functional changes. Plesae 
+Changes in core functionality should include changes to the README.md file explaining the functional changes. Please 
 consider this when submitting changes. If you feel there is no need to change the README or documentation,
-state your reason when submitting the Pull Request. A lack of updates to the README may cause a delay in a Pull Request 
+state your reason when submitting the pull request. A lack of updates to the README may cause a delay in a pull request 
 being merged.
 
-## Submitting a Pull Request
+## Submitting a pull request
 
-To ensure Pull Requests are reviewed and accepted as quickly as possible, please make sure:
+To ensure pull requests are reviewed and accepted as quickly as possible, please make sure:
 
 [ ] Tests are written for all changes.
 [ ] README.md is updated if new features are being added.
@@ -104,15 +96,16 @@ To ensure Pull Requests are reviewed and accepted as quickly as possible, please
 [ ] Commit messages are clear and descriptive and pushed to your fork.
 [ ] Your fork is in sync with the upstream repository.
 
-Create a new Pull Request [here](https://github.com/monadahq/polycons/compare), selecting your fork for the 'compare' 
+Create a new pull request [here](https://github.com/monadahq/polycons/compare), selecting your fork for the 'compare' 
 and `main` for the 'base'. 
 
-The title of the Pull Request should adhere to [conventional commits](https://www.conventionalcommits.org). For example, 
-if you're adding new features, the Pull Request title should start with `feat:`. If you are fixing a bug, then `fix:` 
+The title of the pull request should adhere to [conventional commits](https://www.conventionalcommits.org). For example, 
+if you're adding new features, the pull request title should start with `feat:`. If you are fixing a bug, then `fix:` 
 should be the title prefix.
 
-In the description reference any open Issues that the changes resolve. Describe the changes you made and include anything
-you think would be useful for a reviewer to know.
+In the description reference any open issues that the changes resolve. Describe the changes you made and include anything
+you think would be useful for a reviewer to know. It's also a great place to add a shout-out to anyone who helped with the 
+changes.
 
 ## Getting Help
 
