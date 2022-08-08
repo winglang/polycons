@@ -6,7 +6,8 @@ and submit Pull Requests to the GitHub repository.
 ## Opening Issues
 
 One of the easiest ways to contribute to this project is by opening [Issues](https://github.com/monadahq/polycons/issues/new).
-Issues should include a description of the problem experienced, steps to reproduce, and the expected results.
+If you're reporting a bug, try to include detailed information including steps to reproduce it, and what you expected to happen.
+If you're suggesting a feature or enhancement, please include information about your use case for it.
 
 ## Getting Started
 
