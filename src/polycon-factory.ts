@@ -50,7 +50,7 @@ export class Polycons {
 
     if (!factory) {
       throw new Error(
-        "Cannot find a Polycon factory (directly or indirectly) to resolve this polycon."
+        `Cannot find a Polycon factory (directly or indirectly) to resolve a polycon with type "${type}".`
       );
     }
 
