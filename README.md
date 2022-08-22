@@ -54,7 +54,7 @@ We welcome community contributions and pull requests. See [CONTRIBUTING.md](./CO
 
 ## 🐣 Getting help
 
-If you need help either using or contributing to this project, please join us on our [Discord server](https://discord.gg/5KP9KNcB).
+If you need help either using or contributing to this project, please join us on our [Discord server](https://discord.gg/sZDPsppJ).
 
 ## ⚖️ License
 
