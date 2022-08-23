@@ -21,7 +21,7 @@ const project = new cdk.JsiiProject({
   githubOptions: {
     projenCredentials: github.GithubCredentials.fromApp(),
   },
-
+  gitignore: [".DS_Store"],
   codeCov: true,
   codeCovTokenSecret: "CODECOV_TOKEN",
 
