@@ -13,13 +13,13 @@ class PetFactory implements IPolyconFactory {
     type: string,
     scope: Construct,
     id: string,
-    props?: any
+    ...args: any[]
   ): Construct {
     switch (type) {
       case DOG_ID:
-        return new Labrador(scope, id, props);
+        return new Labrador(scope, id, ...args);
       case CAT_ID:
-        return new Kitten(scope, id, props);
+        return new Kitten(scope, id, ...args);
       default:
         throw new Error(`Type "${type}" not implemented.`);
     }

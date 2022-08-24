@@ -37,14 +37,14 @@ export class Polycons {
    * @param type The type identifier
    * @param scope The construct scope
    * @param id The construct identifier
-   * @param props The construct props
+   * @param args The rest of the construct's arguments
    * @returns The resolved construct
    */
   public static newInstance(
     type: string,
     scope: IConstruct,
     id: string,
-    props?: any
+    ...args: any[]
   ) {
     const factory = polyconFactoryOf(scope);
 
@@ -54,7 +54,7 @@ export class Polycons {
       );
     }
 
-    return factory.resolve(type, scope, id, props);
+    return factory.resolve(type, scope, id, ...args);
   }
 
   private constructor() {}
@@ -91,8 +91,13 @@ export interface IPolyconFactory {
    * @param type The type identifier
    * @param scope The construct scope
    * @param id The construct identifier
-   * @param props The construct props
+   * @param args The rest of the construct's arguments
    * @returns The resolved construct
    */
-  resolve(type: string, scope: IConstruct, id: string, props?: any): IConstruct;
+  resolve(
+    type: string,
+    scope: IConstruct,
+    id: string,
+    ...args: any[]
+  ): IConstruct;
 }
