@@ -23,7 +23,7 @@ Functions for resolving polycons (polymorphic constructs) into specific construc
 ```typescript
 import { Polycons } from '@monadahq/polycons'
 
-Polycons.newInstance(type: string, scope: IConstruct, id: string, props?: any)
+Polycons.newInstance(type: string, scope: IConstruct, id: string, args: any)
 ```
 
 Creates a new instance of a polycon.
@@ -59,11 +59,11 @@ The construct identifier.
 
 ---
 
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.Polycons.newInstance.parameter.props"></a>
+###### `args`<sup>Required</sup> <a name="args" id="@monadahq/polycons.Polycons.newInstance.parameter.args"></a>
 
 - *Type:* any
 
-The construct props.
+The rest of the construct's arguments.
 
 ---
 
@@ -113,7 +113,7 @@ A factory that determines how to turn polycons into concrete constructs.
 ##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconFactory.resolve"></a>
 
 ```typescript
-public resolve(type: string, scope: IConstruct, id: string, props?: any): IConstruct
+public resolve(type: string, scope: IConstruct, id: string, args: any): IConstruct
 ```
 
 Resolve the parameters needed for creating a specific polycon into a concrete construct.
@@ -142,11 +142,11 @@ The construct identifier.
 
 ---
 
-###### `props`<sup>Optional</sup> <a name="props" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.props"></a>
+###### `args`<sup>Required</sup> <a name="args" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.args"></a>
 
 - *Type:* any
 
-The construct props.
+The rest of the construct's arguments.
 
 ---
 

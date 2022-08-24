@@ -74,7 +74,7 @@ describe("a polycon", () => {
   it("cannot be instantiated if the registered factory does not support it", () => {
     const app = new App();
     Polycons.register(app, new PoodleFactory());
-    expect(() => new Cat(app, "cat", { scritches: 5 })).toThrowError(
+    expect(() => new Cat(app, "cat", "alice", { scritches: 5 })).toThrowError(
       /Type test\.cat not implemented/
     );
   });
@@ -107,7 +107,7 @@ describe("polycons", () => {
   it("polycons can be created without base classes", () => {
     const app = new App();
     Polycons.register(app, new ShorthairFactory());
-    const cat = new Shorthair(app, "muffins", { scritches: 5 });
+    const cat = new Shorthair(app, "muffins", "alice", { scritches: 5 });
 
     expect(cat.toString()).toEqual("Shorthair cat with 5 scritches.");
     expect(app.synth()).toStrictEqual(["root", "root/muffins"]);
@@ -287,8 +287,8 @@ interface CatProps {
 // example of a polycon with no base class
 
 class Cat {
-  constructor(scope: Construct, id: string, props: CatProps) {
-    return Polycons.newInstance(CAT_ID, scope, id, props) as Cat;
+  constructor(scope: Construct, id: string, owner: string, props: CatProps) {
+    return Polycons.newInstance(CAT_ID, scope, id, owner, props) as Cat;
   }
 
   public toString(): string {
@@ -297,10 +297,12 @@ class Cat {
 }
 
 class Shorthair extends Construct {
+  public readonly owner: string;
   public readonly scritches: number;
 
-  constructor(scope: Construct, id: string, props: CatProps) {
+  constructor(scope: Construct, id: string, owner: string, props: CatProps) {
     super(scope, id);
+    this.owner = owner;
     this.scritches = props.scritches;
   }
 
@@ -338,10 +340,11 @@ class LabradorFactory implements IPolyconFactory {
     type: string,
     scope: IConstruct,
     id: string,
-    props?: any
+    ...args: any[]
   ): IConstruct {
     switch (type) {
       case DOG_ID:
+        const props = args[0];
         return new Labrador(scope, id, props);
       default:
         throw new Error(`Type ${type} not implemented.`);
@@ -354,11 +357,12 @@ class ShorthairFactory implements IPolyconFactory {
     type: string,
     scope: IConstruct,
     id: string,
-    props?: any
+    ...args: any[]
   ): IConstruct {
     switch (type) {
       case CAT_ID:
-        return new Shorthair(scope, id, props);
+        const [owner, props] = args;
+        return new Shorthair(scope, id, owner, props);
       default:
         throw new Error(`Type ${type} not implemented.`);
     }
