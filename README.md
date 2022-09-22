@@ -20,17 +20,17 @@ class Pets extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    new Dog(this, "Dog", { treats: 5 });
+    new Dog(this, "Dog", { treats: 5 }); // this is a polycon!
     dog.giveBone();
   }
 }
 ```
 
 This construct contains a `Dog` from a library of polycons.
-The dog could have any implementation -- a `Labrador` implementation, a `Terrier` implementation, and so on.
+The dog could have any implementation -- a `Labrador`, a `Terrier`, or your own implementation.
 
-To use it in an application, you need to register a factory that specifies how to turn polycons into concrete constructs.
-In the example below, a `PetFactory` is registered to the application, ensuring that each `Dog` defined in the construct tree will be resolved into a `Labrador`.
+To use polycons in an application, you need to register a factory that specifies how to turn polycons into concrete constructs.
+In the example below, a `PetFactory` is registered to the application, which has been configured to resolve each `Dog` in the construct tree into a `Labrador`.
 
 ```ts
 import { App } from "<cdk-framework>";
@@ -41,7 +41,7 @@ const app = new App();
 Polycons.register(app, new PetFactory());
 ```
 
-See the documentation for details on how to create your own polycons and polycon factories.
+Check out the documentation for more details about how to create your own polycons and polycon factories.
 
 ## 📖 Documentation
 
