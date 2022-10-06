@@ -38,7 +38,7 @@ import { PetFactory } from "@acme/shared-polycons";
 import { Polycons } from "polycons";
 
 const app = new App();
-Polycons.register(app, new PetFactory());
+Polycons.register(app, PetFactory.create());
 new Pets(app, "Pets");
 ```
 
