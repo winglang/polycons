@@ -4,6 +4,88 @@
 
 ## Classes <a name="Classes" id="Classes"></a>
 
+### PolyconFactory <a name="PolyconFactory" id="@monadahq/polycons.PolyconFactory"></a>
+
+A factory that determines how to turn polycons into concrete constructs.
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@monadahq/polycons.PolyconFactory.newInstance">newInstance</a></code> | Creates a new instance of a polycon. |
+
+---
+
+##### `newInstance` <a name="newInstance" id="@monadahq/polycons.PolyconFactory.newInstance"></a>
+
+```typescript
+public newInstance(type: string, scope: IConstruct, id: string, args: any): IConstruct
+```
+
+Creates a new instance of a polycon.
+
+###### `type`<sup>Required</sup> <a name="type" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.type"></a>
+
+- *Type:* string
+
+The type identifier.
+
+---
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.scope"></a>
+
+- *Type:* constructs.IConstruct
+
+The construct scope.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.id"></a>
+
+- *Type:* string
+
+The construct identifier.
+
+---
+
+###### `args`<sup>Required</sup> <a name="args" id="@monadahq/polycons.PolyconFactory.newInstance.parameter.args"></a>
+
+- *Type:* any
+
+The rest of the construct's arguments.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@monadahq/polycons.PolyconFactory.create">create</a></code> | Creates a polycon factory from a list of individual polycon resolvers. |
+
+---
+
+##### `create` <a name="create" id="@monadahq/polycons.PolyconFactory.create"></a>
+
+```typescript
+import { PolyconFactory } from '@monadahq/polycons'
+
+PolyconFactory.create(resolvers: IPolyconResolver)
+```
+
+Creates a polycon factory from a list of individual polycon resolvers.
+
+No two resolvers can be associated with the same polycon type.
+
+###### `resolvers`<sup>Required</sup> <a name="resolvers" id="@monadahq/polycons.PolyconFactory.create.parameter.resolvers"></a>
+
+- *Type:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
+
+An array of resolvers.
+
+---
+
+
+
 ### Polycons <a name="Polycons" id="@monadahq/polycons.Polycons"></a>
 
 Functions for resolving polycons (polymorphic constructs) into specific constructs.
@@ -72,7 +154,7 @@ The rest of the construct's arguments.
 ```typescript
 import { Polycons } from '@monadahq/polycons'
 
-Polycons.register(scope: IConstruct, factory: IPolyconFactory)
+Polycons.register(scope: IConstruct, factory: PolyconFactory)
 ```
 
 Adds a factory at given scope.
@@ -88,7 +170,7 @@ polycons under this scope into constructs.
 
 ###### `factory`<sup>Required</sup> <a name="factory" id="@monadahq/polycons.Polycons.register.parameter.factory"></a>
 
-- *Type:* <a href="#@monadahq/polycons.IPolyconFactory">IPolyconFactory</a>
+- *Type:* <a href="#@monadahq/polycons.PolyconFactory">PolyconFactory</a>
 
 ---
 
@@ -96,37 +178,29 @@ polycons under this scope into constructs.
 
 ## Protocols <a name="Protocols" id="Protocols"></a>
 
-### IPolyconFactory <a name="IPolyconFactory" id="@monadahq/polycons.IPolyconFactory"></a>
+### IPolyconResolver <a name="IPolyconResolver" id="@monadahq/polycons.IPolyconResolver"></a>
 
-- *Implemented By:* <a href="#@monadahq/polycons.IPolyconFactory">IPolyconFactory</a>
+- *Implemented By:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
 
-A factory that determines how to turn polycons into concrete constructs.
+A resolver that knows how to resolve a specific polycon type.
 
 #### Methods <a name="Methods" id="Methods"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@monadahq/polycons.IPolyconFactory.resolve">resolve</a></code> | Resolve the parameters needed for creating a specific polycon into a concrete construct. |
+| <code><a href="#@monadahq/polycons.IPolyconResolver.resolve">resolve</a></code> | Creates a new instance of a polycon. |
 
 ---
 
-##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconFactory.resolve"></a>
+##### `resolve` <a name="resolve" id="@monadahq/polycons.IPolyconResolver.resolve"></a>
 
 ```typescript
-public resolve(type: string, scope: IConstruct, id: string, args: any): IConstruct
+public resolve(scope: IConstruct, id: string, args: any): IConstruct
 ```
 
-Resolve the parameters needed for creating a specific polycon into a concrete construct.
+Creates a new instance of a polycon.
 
-###### `type`<sup>Required</sup> <a name="type" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.type"></a>
-
-- *Type:* string
-
-The type identifier.
-
----
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.scope"></a>
 
 - *Type:* constructs.IConstruct
 
@@ -134,7 +208,7 @@ The construct scope.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.id"></a>
 
 - *Type:* string
 
@@ -142,7 +216,7 @@ The construct identifier.
 
 ---
 
-###### `args`<sup>Required</sup> <a name="args" id="@monadahq/polycons.IPolyconFactory.resolve.parameter.args"></a>
+###### `args`<sup>Required</sup> <a name="args" id="@monadahq/polycons.IPolyconResolver.resolve.parameter.args"></a>
 
 - *Type:* any
 
@@ -150,4 +224,23 @@ The rest of the construct's arguments.
 
 ---
 
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@monadahq/polycons.IPolyconResolver.property.type">type</a></code> | <code>string</code> | The type identifier of the polycon this resolver can resolve. |
+
+---
+
+##### `type`<sup>Required</sup> <a name="type" id="@monadahq/polycons.IPolyconResolver.property.type"></a>
+
+```typescript
+public readonly type: string;
+```
+
+- *Type:* string
+
+The type identifier of the polycon this resolver can resolve.
+
+---
 
