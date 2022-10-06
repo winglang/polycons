@@ -10,7 +10,7 @@ export class Polycons {
    * Adds a factory at given scope. This factory will be used for resolving
    * polycons under this scope into constructs.
    */
-  public static register(scope: IConstruct, factory: PolyconFactory) {
+  public static register(scope: IConstruct, factory: PolyconFactory): void {
     const existing = (scope as any)[FACTORY_SYMBOL];
     if (existing !== undefined) {
       throw new Error(
@@ -44,7 +44,7 @@ export class Polycons {
     scope: IConstruct,
     id: string,
     ...args: any[]
-  ) {
+  ): IConstruct {
     const factory = polyconFactoryOf(scope);
 
     if (!factory) {
@@ -89,6 +89,19 @@ export class PolyconFactory {
     for (const [type, resolver] of Object.entries(resolvers)) {
       this.resolvers.set(type, resolver);
     }
+  }
+
+  /**
+   * Adds a new resolver to this factory.
+   * @param resolver The resolver to add
+   */
+  public addResolver(resolver: IPolyconResolver): void {
+    if (this.resolvers.has(resolver.type)) {
+      throw new Error(
+        `A polycon resolver has already been registered for type "${resolver.type}".`
+      );
+    }
+    this.resolvers.set(resolver.type, resolver);
   }
 
   /**

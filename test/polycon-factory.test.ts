@@ -51,6 +51,22 @@ describe("factory creation", () => {
       PolyconFactory.create(new PoodleResolver(), new LabradorResolver())
     ).toThrow();
   });
+
+  it("can be extended after initialization", () => {
+    const app = new App();
+    const factory = PolyconFactory.create(new ShorthairResolver());
+    factory.addResolver(new PoodleResolver());
+    expect(factory).toBeDefined();
+    Polycons.register(app, factory);
+
+    const piffle = new Dog(app, "piffle", { name: "piffle", treats: 5 });
+    expect(piffle.toString()).toEqual("Poodle with 5 treats.");
+  });
+
+  it("throws if adding a resolver with the same type", () => {
+    const factory = PolyconFactory.create(new PoodleResolver());
+    expect(() => factory.addResolver(new LabradorResolver())).toThrow();
+  });
 });
 
 describe("factory registration", () => {

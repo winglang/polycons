@@ -12,7 +12,24 @@ A factory that determines how to turn polycons into concrete constructs.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@monadahq/polycons.PolyconFactory.addResolver">addResolver</a></code> | Adds a new resolver to this factory. |
 | <code><a href="#@monadahq/polycons.PolyconFactory.newInstance">newInstance</a></code> | Creates a new instance of a polycon. |
+
+---
+
+##### `addResolver` <a name="addResolver" id="@monadahq/polycons.PolyconFactory.addResolver"></a>
+
+```typescript
+public addResolver(resolver: IPolyconResolver): void
+```
+
+Adds a new resolver to this factory.
+
+###### `resolver`<sup>Required</sup> <a name="resolver" id="@monadahq/polycons.PolyconFactory.addResolver.parameter.resolver"></a>
+
+- *Type:* <a href="#@monadahq/polycons.IPolyconResolver">IPolyconResolver</a>
+
+The resolver to add.
 
 ---
 
