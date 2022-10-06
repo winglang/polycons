@@ -39,6 +39,7 @@ import { Polycons } from "polycons";
 
 const app = new App();
 Polycons.register(app, new PetFactory());
+new Pets(app, "Pets");
 ```
 
 Check out the documentation for more details about how to create your own polycons and polycon factories.

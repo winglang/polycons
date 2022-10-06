@@ -1,5 +1,9 @@
 # Library author guide
 
+<!--
+TODO: make a note somewhere that factories should be registered and customized before constructs are added to the tree.
+-->
+
 ## Polycon factories
 
 A polycon factory is an object that implements the `IPolyconFactory` interface, which has a single `resolve()` method.
