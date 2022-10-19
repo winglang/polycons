@@ -21,6 +21,7 @@ const project = new cdk.JsiiProject({
   githubOptions: {
     projenCredentials: github.GithubCredentials.fromApp(),
   },
+  workflowNodeVersion: "16.x",
   gitignore: [".DS_Store"],
   codeCov: true,
   codeCovTokenSecret: "CODECOV_TOKEN",
