@@ -1,5 +1,6 @@
 import { Construct, IConstruct } from "constructs";
-import { IPolyconFactory, polyconFactoryOf, Polycons } from "../src";
+import { IPolyconFactory, Polycons } from "../src";
+import { polyconFactoryOf } from "../src/internal";
 
 // this is important for languages that use nominal typing (like Java)
 describe("polycon constructor", () => {
