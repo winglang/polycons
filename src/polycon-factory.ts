@@ -45,11 +45,16 @@ export class Polycons {
     id: string,
     ...args: any[]
   ) {
-    const factory = polyconFactoryOf(scope);
+    if (!scope) {
+      throw new Error(
+        `Cannot construct a polycon with a scope of "${scope}". Check that the correct arguments were passed to the constructor.`
+      );
+    }
 
+    const factory = polyconFactoryOf(scope);
     if (!factory) {
       throw new Error(
-        `Cannot find a Polycon factory (directly or indirectly) to resolve a polycon with type "${type}".`
+        `Cannot find a Polycon factory registered to the scope "${scope.node.path}" or its parent scopes.`
       );
     }
 
