@@ -1,5 +1,6 @@
 import { Construct, IConstruct } from "constructs";
-import { IPolyconFactory, polyconFactoryOf, Polycons } from "../src";
+import { IPolyconFactory, Polycons } from "../src";
+import { polyconFactoryOf } from "../src/internal";
 
 // this is important for languages that use nominal typing (like Java)
 describe("polycon constructor", () => {
@@ -69,7 +70,9 @@ describe("a polycon", () => {
     const app = new App();
     expect(
       () => new Dog(app, "dog", { name: "piffle", treats: 5 })
-    ).toThrowError(/Cannot find a Polycon factory \(directly or indirectly\)/);
+    ).toThrowError(
+      /Cannot find a Polycon factory registered to the scope \"root\" or its parent scopes/
+    );
   });
   it("cannot be instantiated if the registered factory does not support it", () => {
     const app = new App();

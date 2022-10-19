@@ -1,6 +1,5 @@
 import { IConstruct } from "constructs";
-
-const FACTORY_SYMBOL = Symbol.for("polycons.PolyconFactory");
+import { FACTORY_SYMBOL, polyconFactoryOf } from "./internal";
 
 /**
  * Functions for resolving polycons (polymorphic constructs) into
@@ -46,11 +45,16 @@ export class Polycons {
     id: string,
     ...args: any[]
   ) {
-    const factory = polyconFactoryOf(scope);
+    if (!scope) {
+      throw new Error(
+        `Cannot construct a polycon with a scope of "${scope}". Check that the correct arguments were passed to the constructor.`
+      );
+    }
 
+    const factory = polyconFactoryOf(scope);
     if (!factory) {
       throw new Error(
-        `Cannot find a Polycon factory (directly or indirectly) to resolve a polycon with type "${type}".`
+        `Cannot find a Polycon factory registered to the scope "${scope.node.path}" or its parent scopes.`
       );
     }
 
@@ -58,26 +62,6 @@ export class Polycons {
   }
 
   private constructor() {}
-}
-
-/**
- * Returns the nearest polycon factory registered in a given scope.
- */
-export function polyconFactoryOf(
-  scope: IConstruct
-): IPolyconFactory | undefined {
-  const factory = (scope as any)[FACTORY_SYMBOL] as IPolyconFactory;
-
-  if (factory) {
-    return factory;
-  }
-
-  const parent = scope.node.scope;
-  if (!parent) {
-    return undefined;
-  }
-
-  return polyconFactoryOf(parent);
 }
 
 /**
