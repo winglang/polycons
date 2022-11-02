@@ -5,7 +5,7 @@ and submit pull requests to the GitHub repository.
 
 ## Opening Issues
 
-One of the easiest ways to contribute to this project is by opening [issues](https://github.com/monadahq/polycons/issues/new).
+One of the easiest ways to contribute to this project is by opening [issues](https://github.com/winglang/polycons/issues/new).
 If you're reporting a bug, try to include detailed information including steps to reproduce it, and what you expected to happen.
 If you're suggesting a feature or enhancement, please include information about your use case for it.
 
@@ -96,7 +96,7 @@ To ensure pull requests are reviewed and accepted as quickly as possible, please
 [ ] Commit messages are clear and descriptive and pushed to your fork.
 [ ] Your fork is in sync with the upstream repository.
 
-Create a new pull request [here](https://github.com/monadahq/polycons/compare), selecting your fork for the 'compare' 
+Create a new pull request [here](https://github.com/winglang/polycons/compare), selecting your fork for the 'compare' 
 and `main` for the 'base'. 
 
 The title of the pull request should adhere to [conventional commits](https://www.conventionalcommits.org). For example, 
