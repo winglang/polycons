@@ -1,8 +1,8 @@
 {
-  "name": "@monadahq/polycons",
+  "name": "@winglang/polycons",
   "repository": {
     "type": "git",
-    "url": "https://github.com/monadahq/polycons"
+    "url": "https://github.com/winglang/polycons"
   },
   "scripts": {
     "build": "npx projen build",

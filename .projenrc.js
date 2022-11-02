@@ -2,12 +2,12 @@ const { cdk, github } = require("projen");
 const { NodePackageManager } = require("projen/lib/javascript");
 const project = new cdk.JsiiProject({
   name: "polycons",
-  packageName: "@monadahq/polycons",
+  packageName: "@winglang/polycons",
   author: "Monada, Inc.",
   authorOrganization: true,
   authorAddress: "ping@monada.co",
   defaultReleaseBranch: "main",
-  repositoryUrl: "https://github.com/monadahq/polycons",
+  repositoryUrl: "https://github.com/winglang/polycons",
   packageManager: NodePackageManager.NPM,
   peerDeps: ["constructs@^10.0.25"],
   prettier: true,
@@ -32,8 +32,8 @@ const project = new cdk.JsiiProject({
   //   module: "polycons",
   // },
   // publishToMaven: {
-  //   mavenGroupId: "io.github.monadahq",
-  //   javaPackage: "io.github.monadahq.polycons",
+  //   mavenGroupId: "io.github.winglang",
+  //   javaPackage: "io.github.winglang.polycons",
   //   mavenArtifactId: "polycons",
   // },
   // publishToNuget: {
@@ -41,7 +41,7 @@ const project = new cdk.JsiiProject({
   //   dotNetNamespace: "Monada.Polycons",
   // },
   // publishToGo: {
-  //   moduleName: "github.com/monadahq/polycons-go",
+  //   moduleName: "github.com/winglang/polycons-go",
   // },
 });
 project.synth();
