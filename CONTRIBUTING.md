@@ -90,11 +90,11 @@ being merged.
 
 To ensure pull requests are reviewed and accepted as quickly as possible, please make sure:
 
-[ ] Tests are written for all changes.
-[ ] README.md is updated if new features are being added.
-[ ] `npm run build` has been run to lint, build, and update API docs.
-[ ] Commit messages are clear and descriptive and pushed to your fork.
-[ ] Your fork is in sync with the upstream repository.
+- [ ] Tests are written for all changes.
+- [ ] README.md is updated if new features are being added.
+- [ ] `npm run build` has been run to lint, build, and update API docs.
+- [ ] Commit messages are clear and descriptive and pushed to your fork.
+- [ ] Your fork is in sync with the upstream repository.
 
 Create a new pull request [here](https://github.com/winglang/polycons/compare), selecting your fork for the 'compare' 
 and `main` for the 'base'. 
@@ -106,8 +106,3 @@ should be the title prefix.
 In the description reference any open issues that the changes resolve. Describe the changes you made and include anything
 you think would be useful for a reviewer to know. It's also a great place to add a shout-out to anyone who helped with the 
 changes.
-
-## Getting Help
-
-If you need help in contributing to this project please join our [Discord server](https://discord.gg/5KP9KNcB) where 
-people are waiting to help in the #help channel.
