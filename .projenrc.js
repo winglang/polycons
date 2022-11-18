@@ -19,7 +19,7 @@ const project = new cdk.JsiiProject({
     secret: "PROJEN_GITHUB_TOKEN",
   },
   githubOptions: {
-    projenCredentials: github.GithubCredentials.fromApp(),
+    projenCredentials: github.GithubCredentials.fromPersonalAccessToken(),
   },
   workflowNodeVersion: "16.x",
   gitignore: [".DS_Store"],

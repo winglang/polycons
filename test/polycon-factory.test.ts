@@ -287,10 +287,9 @@ interface CatProps {
   readonly scritches: number;
 }
 
-// example of a polycon with no base class
-
-class Cat {
+class Cat extends Construct {
   constructor(scope: Construct, id: string, owner: string, props: CatProps) {
+    super(null as any, id);
     return Polycons.newInstance(CAT_ID, scope, id, owner, props) as Cat;
   }
 
