@@ -63,6 +63,11 @@
   "peerDependencies": {
     "constructs": "^10.0.25"
   },
+  "keywords": [
+    "cdk",
+    "constructs",
+    "jsii"
+  ],
   "main": "lib/index.js",
   "license": "MIT",
   "version": "0.0.0",

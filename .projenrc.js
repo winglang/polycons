@@ -7,6 +7,7 @@ const project = new cdk.JsiiProject({
   authorOrganization: true,
   authorAddress: "ping@monada.co",
   license: "MIT",
+  keywords: ["constructs", "cdk", "jsii"],
 
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/winglang/polycons",
