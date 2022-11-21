@@ -1,6 +1,7 @@
 # Polycons
 
-A meta CDK framework for building polymorphic [constructs](https://github.com/aws/constructs). Think of polycons like dependency injection, for constructs.
+A framework for building polymorphic [constructs](https://github.com/aws/constructs).
+Think of polycons like dependency injection for constructs.
 
 polycons can be used with any CDK framework, including [AWS CDK], [cdktf], and [cdk8s].
 
@@ -10,7 +11,7 @@ polycons can be used with any CDK framework, including [AWS CDK], [cdktf], and [
 
 ## 🚀 Getting started
 
-Polycons can be used just like ordinary CDK constructs:
+Polycons can be used just like ordinary constructs:
 
 ```ts
 import { Dog } from "@acme/shared-polycons";
@@ -110,7 +111,8 @@ export class Dog extends Construct {
 
 The `Dog` class definition serves as an empty shell, or placeholder -- only when a user calls `new Dog()`, a real construct will be returned.
 
-In the constructor of `Dog`, a null value MUST be passed as the first argument to `super()` (1). This is needed because actually two constructs are produced (one by calling `super`, and one by calling `Polycons.newInstance`), and the first one should be thrown away, and not added to the construct tree.
+In the constructor of `Dog`, a null value MUST be passed as the first argument to `super()` (1). 
+This is because actually two constructs are made by the constructor, and the first one should be thrown away (and not be added to the construct tree).
 
 Concrete implementations of a polycon can be written like ordinary constructs:
 

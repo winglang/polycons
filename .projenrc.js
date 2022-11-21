@@ -2,7 +2,7 @@ const { cdk, github } = require("projen");
 const { NodePackageManager } = require("projen/lib/javascript");
 const project = new cdk.JsiiProject({
   name: "polycons",
-  packageName: "@winglang/polycons",
+  packageName: "polycons",
   author: "Monada, Inc.",
   authorOrganization: true,
   authorAddress: "ping@monada.co",
