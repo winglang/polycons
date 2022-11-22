@@ -2,17 +2,19 @@ const { cdk, github } = require("projen");
 const { NodePackageManager } = require("projen/lib/javascript");
 const project = new cdk.JsiiProject({
   name: "polycons",
-  packageName: "@winglang/polycons",
+  packageName: "polycons",
   author: "Monada, Inc.",
   authorOrganization: true,
   authorAddress: "ping@monada.co",
+  license: "MIT",
+  keywords: ["constructs", "cdk", "jsii"],
+
   defaultReleaseBranch: "main",
   repositoryUrl: "https://github.com/winglang/polycons",
   packageManager: NodePackageManager.NPM,
   peerDeps: ["constructs@^10.0.25"],
   prettier: true,
 
-  npmRegistryUrl: "https://npm.pkg.github.com",
   autoApproveUpgrades: true,
   autoApproveOptions: {
     allowedUsernames: ["monada-bot[bot]"],
@@ -26,11 +28,13 @@ const project = new cdk.JsiiProject({
   codeCov: true,
   codeCovTokenSecret: "CODECOV_TOKEN",
 
+  releaseToNpm: true,
+  publishToPypi: {
+    distName: "polycons",
+    module: "polycons",
+  },
+
   // disabled until we have publishing accounts set up...
-  // publishToPypi: {
-  //   distName: "polycons",
-  //   module: "polycons",
-  // },
   // publishToMaven: {
   //   mavenGroupId: "io.github.winglang",
   //   javaPackage: "io.github.winglang.polycons",
